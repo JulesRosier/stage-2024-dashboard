@@ -4,10 +4,13 @@ import (
 	"Stage-2024-dashboard/pkg/helper"
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/jackc/pgx/v5"
 
 	_ "embed"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 var (
@@ -18,8 +21,15 @@ var (
 
 func Init() *Queries {
 	ctx := context.Background()
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=disable",
-		"postgres", "password", "testing", "localhost", 5432)
+
+	DbUser := os.Getenv("DB_USER")
+	DbPassword := os.Getenv("DB_PASSWORD")
+	DbDatabase := os.Getenv("DB_DATABASE")
+	DbHost := os.Getenv("DB_HOST")
+	DbPort := os.Getenv("DB_PORT")
+
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
+		DbUser, DbPassword, DbDatabase, DbHost, DbPort)
 
 	db, err := pgx.Connect(ctx, connStr)
 	if err != nil {

@@ -29,8 +29,6 @@ func temp() {
 	cl := kafka.GetClient()
 	rcl := kafka.GetRepoClient()
 
-	fmt.Println("aaa")
-
 	ctx := context.Background()
 	c := make(map[int]*serde.Serde)
 	for {

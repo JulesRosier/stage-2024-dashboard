@@ -1,5 +1,20 @@
 # Project Stage-2024-dashboard
 
+## Env vars
+
+example
+
+```env
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=testing
+DB_HOST=localhost
+DB_PORT=5432
+
+SEED_BROKER=localhost:19092
+REGISTRY=localhost:18081
+```
+
 ## Dev Setup
 
 ### Dependencies
