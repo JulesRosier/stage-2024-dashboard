@@ -13,21 +13,45 @@ import (
 
 const createEvent = `-- name: CreateEvent :one
 INSERT INTO events (
-    data, topic_name
+    event_timestamp, topic_name, topic_offset,
+    topic_partition, event_headers, event_key, event_value
 ) VALUES (
-  $1, $2
+  $1, $2, $3, $4, $5, $6, $7
 )
-RETURNING id, data, topic_name
+RETURNING id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
 `
 
 type CreateEventParams struct {
-	Data      []byte
-	TopicName pgtype.Text
+	EventTimestamp pgtype.Timestamp
+	TopicName      string
+	TopicOffset    int64
+	TopicPartition int32
+	EventHeaders   []byte
+	EventKey       []byte
+	EventValue     []byte
 }
 
 func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event, error) {
-	row := q.db.QueryRow(ctx, createEvent, arg.Data, arg.TopicName)
+	row := q.db.QueryRow(ctx, createEvent,
+		arg.EventTimestamp,
+		arg.TopicName,
+		arg.TopicOffset,
+		arg.TopicPartition,
+		arg.EventHeaders,
+		arg.EventKey,
+		arg.EventValue,
+	)
 	var i Event
-	err := row.Scan(&i.ID, &i.Data, &i.TopicName)
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.EventTimestamp,
+		&i.TopicName,
+		&i.TopicOffset,
+		&i.TopicPartition,
+		&i.EventHeaders,
+		&i.EventKey,
+		&i.EventValue,
+	)
 	return i, err
 }
