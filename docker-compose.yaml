@@ -75,16 +75,12 @@ services:
           adminApi:
             enabled: true
             urls: ["http://redpanda-0:9644"]
-        connect:
-          enabled: true
-          clusters:
-            - name: local-connect-cluster
-              url: http://connect:8083
+        logger:
+          level: debug
     ports:
       - 8080:8080
     depends_on:
       - redpanda-0
-      - connect
 
   postgres:
     image: postgres

@@ -2,14 +2,17 @@ package main
 
 import (
 	"Stage-2024-dashboard/pkg/database"
-	"Stage-2024-dashboard/pkg/helper"
 	"Stage-2024-dashboard/pkg/kafka"
-	"Stage-2024-dashboard/pkg/serde"
 	"context"
+	"encoding/json"
 	"fmt"
 	"log/slog"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/redpanda-data/console/backend/pkg/serde"
 )
 
 func main() {
@@ -27,10 +30,20 @@ func main() {
 func temp() {
 	q := database.GetQueries()
 	cl := kafka.GetClient()
-	rcl := kafka.GetRepoClient()
+	s := kafka.CreateSerde()
 
 	ctx := context.Background()
-	c := make(map[int]*serde.Serde)
+
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		<-interrupt
+		fmt.Println("\nReceived an interrupt signal, exiting...")
+		os.Exit(0)
+	}()
+
+	slog.Info("Waiting for events...")
 	for {
 		fetches := cl.PollFetches(ctx)
 		if errs := fetches.Errors(); len(errs) > 0 {
@@ -40,14 +53,36 @@ func temp() {
 		iter := fetches.RecordIter()
 		for !iter.Done() {
 			record := iter.Next()
-			j, err := serde.HandleDecode(ctx, rcl, record.Value, c)
-			helper.MaybeDieErr(err)
-			fmt.Println(string(j))
-			q.CreateEvent(ctx, database.CreateEventParams{
-				Data:      j,
-				TopicName: pgtype.Text{String: record.Topic, Valid: true},
-			})
+
+			sRecord := s.DeserializeRecord(
+				ctx,
+				record,
+				serde.DeserializationOptions{
+					KeyEncoding:        serde.PayloadEncodingUnspecified,
+					ValueEncoding:      serde.PayloadEncodingUnspecified,
+					IgnoreMaxSizeLimit: true,
+				},
+			)
+			if m, ok := sRecord.Value.DeserializedPayload.(map[string]any); ok {
+				b, err := json.Marshal(m)
+				if err != nil {
+					slog.Warn("Failed to marshal record to bjson", "err", err)
+					continue
+				}
+				e, err := q.CreateEvent(ctx, database.CreateEventParams{
+					Data:      b,
+					TopicName: pgtype.Text{String: record.Topic, Valid: true},
+				})
+				if err != nil {
+					slog.Warn("Failed to write event to database", "err", err, "topic", record.Topic)
+					continue
+				}
+				slog.Info("Event saved", "id", e.ID)
+			} else {
+				slog.Warn("Bad DeserializedPayload")
+			}
 		}
 
 	}
+
 }
