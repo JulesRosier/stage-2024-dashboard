@@ -6,20 +6,8 @@
 package database
 
 import (
-	"context"
-
 	"github.com/jackc/pgx/v5/pgtype"
 )
-
-const createEvent = `-- name: CreateEvent :one
-INSERT INTO events (
-    event_timestamp, topic_name, topic_offset,
-    topic_partition, event_headers, event_key, event_value
-) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
-)
-RETURNING id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
-`
 
 type CreateEventParams struct {
 	EventTimestamp pgtype.Timestamp
@@ -29,29 +17,4 @@ type CreateEventParams struct {
 	EventHeaders   []byte
 	EventKey       []byte
 	EventValue     []byte
-}
-
-func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event, error) {
-	row := q.db.QueryRow(ctx, createEvent,
-		arg.EventTimestamp,
-		arg.TopicName,
-		arg.TopicOffset,
-		arg.TopicPartition,
-		arg.EventHeaders,
-		arg.EventKey,
-		arg.EventValue,
-	)
-	var i Event
-	err := row.Scan(
-		&i.ID,
-		&i.InsertedAt,
-		&i.EventTimestamp,
-		&i.TopicName,
-		&i.TopicOffset,
-		&i.TopicPartition,
-		&i.EventHeaders,
-		&i.EventKey,
-		&i.EventValue,
-	)
-	return i, err
 }

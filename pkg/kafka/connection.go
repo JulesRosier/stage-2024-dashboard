@@ -18,7 +18,7 @@ func GetClient() *kgo.Client {
 		kgo.SeedBrokers(seed),
 		kgo.ConsumeTopics("[A-Za-z].*"),
 		kgo.ConsumeRegex(),
-		kgo.ConsumerGroup("Testing"),
+		// kgo.ConsumerGroup("Testing"),
 	)
 	if err != nil {
 		panic(err)

@@ -44,6 +44,7 @@ func temp() {
 	}()
 
 	slog.Info("Waiting for events...")
+	var dbEvents []database.CreateEventParams
 	for {
 		fetches := cl.PollFetches(ctx)
 		if errs := fetches.Errors(); len(errs) > 0 {
@@ -100,23 +101,30 @@ func temp() {
 					continue
 				}
 			}
+			// e, err := q.CreateEvent(ctx,
 
-			e, err := q.CreateEvent(ctx, database.CreateEventParams{
-				EventTimestamp: pgtype.Timestamp{Time: record.Timestamp, Valid: true},
-				TopicName:      record.Topic,
-				TopicOffset:    record.Offset,
-				TopicPartition: record.Partition,
-				EventHeaders:   hb,
-				EventKey:       kb,
-				EventValue:     vb,
-			})
-			if err != nil {
-				slog.Warn("Failed to write event to database", "err", err, "topic", record.Topic)
-				continue
+			dbEvents = append(dbEvents,
+				database.CreateEventParams{
+					EventTimestamp: pgtype.Timestamp{Time: record.Timestamp, Valid: true},
+					TopicName:      record.Topic,
+					TopicOffset:    record.Offset,
+					TopicPartition: record.Partition,
+					EventHeaders:   hb,
+					EventKey:       kb,
+					EventValue:     vb,
+				},
+			)
+			if len(dbEvents) > 300 {
+				e, err := q.CreateEvent(ctx, dbEvents)
+				dbEvents = []database.CreateEventParams{}
+				if err != nil {
+					slog.Warn("Failed to write event to database", "err", err, "topic", record.Topic)
+					continue
+				}
+
+				slog.LogAttrs(ctx, slog.LevelInfo, "Events saved", slog.Int64("id", e))
 			}
-			slog.Info("Event saved", "id", e.ID)
 		}
-
 	}
 
 }
