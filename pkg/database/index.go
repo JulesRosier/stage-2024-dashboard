@@ -15,12 +15,35 @@ WHERE
     AND events.topic_name = '%s';
 `
 
-// AND events.index_bikestation IS NULL;
+const IndexNew = `
+UPDATE events
+SET %s = (e.event_value%s)::VARCHAR
+FROM events e
+WHERE 
+    events.id = e.id 
+    AND events.topic_name = '%s'
+	AND events.index_bikestation IS NULL;
+`
 
 func (q *Queries) FullIndex(ctx context.Context, config EventKeyConfig) error {
+	query := fmt.Sprintf(Index, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName)
+	slog.Info("Indexing", "config_id", config.ID)
+	_, err := q.db.Exec(ctx, query)
+	return err
+}
+
+// only index those that not has been indexed jet
+func (q *Queries) IndexNew(ctx context.Context, config EventKeyConfig) error {
+	query := fmt.Sprintf(IndexNew, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName) + ";"
+	slog.Info("Indexing", "config_id", config.ID)
+	_, err := q.db.Exec(ctx, query)
+	return err
+}
+
+func createJsonSelector(qs []string) string {
 	jsonSelect := ""
-	l := len(config.KeySelector) - 1
-	for i, s := range config.KeySelector {
+	l := len(qs) - 1
+	for i, s := range qs {
 		if l == i {
 			jsonSelect += "->>"
 		} else {
@@ -28,8 +51,5 @@ func (q *Queries) FullIndex(ctx context.Context, config EventKeyConfig) error {
 		}
 		jsonSelect += "'" + s + "'"
 	}
-	query := fmt.Sprintf(Index, config.IndexColumn, jsonSelect, config.TopicName)
-	slog.Info("Indexing", "config_id", config.ID)
-	_, err := q.db.Exec(ctx, query)
-	return err
+	return jsonSelect
 }
