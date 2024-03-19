@@ -4,8 +4,6 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
-	"os"
-	"os/signal"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -26,17 +24,19 @@ func NewServer() *Server {
 	return NewServer
 }
 
+// Starts the server in a new routine
 func (s *Server) Start() {
-
+	slog.Info("Starting server")
 	go func() {
 		if err := s.e.Start("127.0.0.1:3000"); err != nil && err != http.ErrServerClosed {
 			slog.Error("Shutting down the server", "error", err.Error())
 		}
 	}()
+}
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
+// Tries to the stops the server gracefully
+func (s *Server) Stop() {
+	slog.Info("Stopping server")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := s.e.Shutdown(ctx); err != nil {
