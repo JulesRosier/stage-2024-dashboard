@@ -6,3 +6,14 @@ INSERT INTO events (
   $1, $2, $3, $4, $5, $6, $7
 )
 RETURNING *;
+
+-- name: ListTopicEvents : many
+select
+
+-- name: CreateEventKeyConfig :one
+INSERT INTO event_key_configs (
+    topic_name, key_selector, index_column
+) VALUES (
+ $1, $2, $3
+)
+RETURNING *;

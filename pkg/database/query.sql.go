@@ -55,3 +55,62 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 	)
 	return i, err
 }
+
+const createEventKeyConfig = `-- name: CreateEventKeyConfig :one
+INSERT INTO event_key_configs (
+    topic_name, key_selector, index_column
+) VALUES (
+ $1, $2, $3
+)
+RETURNING id, inserted_at, topic_name, key_selector, index_column
+`
+
+type CreateEventKeyConfigParams struct {
+	TopicName   string
+	KeySelector []string
+	IndexColumn string
+}
+
+func (q *Queries) CreateEventKeyConfig(ctx context.Context, arg CreateEventKeyConfigParams) (EventKeyConfig, error) {
+	row := q.db.QueryRow(ctx, createEventKeyConfig, arg.TopicName, arg.KeySelector, arg.IndexColumn)
+	var i EventKeyConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
+		&i.IndexColumn,
+	)
+	return i, err
+}
+
+const listEventKeyConfigs = `-- name: ListEventKeyConfigs :many
+SELECT id, inserted_at, topic_name, key_selector, index_column
+FROM event_key_configs
+`
+
+func (q *Queries) ListEventKeyConfigs(ctx context.Context) ([]EventKeyConfig, error) {
+	rows, err := q.db.Query(ctx, listEventKeyConfigs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []EventKeyConfig
+	for rows.Next() {
+		var i EventKeyConfig
+		if err := rows.Scan(
+			&i.ID,
+			&i.InsertedAt,
+			&i.TopicName,
+			&i.KeySelector,
+			&i.IndexColumn,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

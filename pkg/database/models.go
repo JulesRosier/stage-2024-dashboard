@@ -19,3 +19,11 @@ type Event struct {
 	EventKey       []byte
 	EventValue     []byte
 }
+
+type EventKeyConfig struct {
+	ID          int32
+	InsertedAt  pgtype.Timestamptz
+	TopicName   string
+	KeySelector []string
+	IndexColumn string
+}

@@ -6,8 +6,9 @@ import (
 	"log/slog"
 )
 
-const AddColumn = `ALTER TABLE events ADD COLUMN %s VARCHAR(255)`
+const AddColumn = `ALTER TABLE events ADD COLUMN IF NOT EXISTS %s VARCHAR(255)`
 
+// Add given column if not exists
 func (q *Queries) AddColumn(ctx context.Context, columnName string) error {
 	query := fmt.Sprintf(AddColumn, columnName)
 	slog.Info("Adding Column", "column_name", columnName)
