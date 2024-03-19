@@ -4,6 +4,7 @@ import (
 	"Stage-2024-dashboard/pkg/helper"
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/jackc/pgx/v5"
@@ -28,6 +29,7 @@ func Init() *Queries {
 	DbHost := os.Getenv("DB_HOST")
 	DbPort := os.Getenv("DB_PORT")
 
+	slog.Info("Starting database", "host", DbHost, "database", DbDatabase)
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
 		DbUser, DbPassword, DbDatabase, DbHost, DbPort)
 

@@ -5,7 +5,7 @@ import (
 )
 
 func (s *Server) RegisterRoutes() {
-	e := &s.e
+	e := s.e
 
 	e.Static("/static", "./static")
 	e.GET("/", handlers.HelloWebHandler)

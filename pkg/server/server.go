@@ -12,14 +12,16 @@ import (
 
 type Server struct {
 	// port int
-	e echo.Echo
+	e *echo.Echo
 }
 
 func NewServer() *Server {
+	e := echo.New()
 	NewServer := &Server{
 		// port: port,
-		e: *echo.New(),
+		e: e,
 	}
+	e.HideBanner = true
 
 	return NewServer
 }

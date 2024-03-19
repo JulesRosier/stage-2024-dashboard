@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"Stage-2024-dashboard/pkg/helper"
+	"log/slog"
 	"os"
 	"time"
 
@@ -18,6 +19,8 @@ import (
 // Creates  serde.Service and all other services that are need to start it.
 func CreateSerde() *serde.Service {
 	registry := "http://" + os.Getenv("REGISTRY")
+
+	slog.Info("Creating serde service", "registry", registry)
 
 	logger := zap.L()
 
