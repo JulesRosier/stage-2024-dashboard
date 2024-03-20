@@ -7,10 +7,9 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/jackc/pgx/v5"
-
 	_ "embed"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -33,7 +32,8 @@ func Init() *Queries {
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
 		DbUser, DbPassword, DbDatabase, DbHost, DbPort)
 
-	db, err := pgx.Connect(ctx, connStr)
+	// db, err := pgx.Connect(ctx, connStr)
+	db, err := pgxpool.New(ctx, connStr)
 	if err != nil {
 		helper.DieMsg("Database err", err)
 	}
@@ -42,6 +42,7 @@ func Init() *Queries {
 	if _, err := db.Exec(ctx, ddl); err != nil {
 		panic(err)
 	}
+
 	queries = New(db)
 	return queries
 }
