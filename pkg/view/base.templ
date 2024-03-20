@@ -5,11 +5,28 @@ templ base() {
 	<html lang="en">
 		<head>
 			<meta charset="utf-8"/>
-			<title>Go Blueprint Hello</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="color-scheme" content="light dark"/>
+			<title>Event Viewer</title>
 			<script src="/static/js/htmx.min.js"></script>
+			<link rel="stylesheet" href="css/pico.pink.min.css"/>
+			<link
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pink.min.css"
+			/>
 		</head>
+		<nav class="container-fluid">
+			<ul>
+				<li><a href="/"><strong>Event Viewer</strong></a></li>
+			</ul>
+			<ul>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Services</a></li>
+				<li><a href="#">Products</a></li>
+			</ul>
+		</nav>
 		<body>
-			<main>
+			<main class="container">
 				{ children... }
 			</main>
 		</body>

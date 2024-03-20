@@ -7,9 +7,6 @@ INSERT INTO events (
 )
 RETURNING *;
 
--- name: ListTopicEvents : many
-select
-
 -- name: CreateEventKeyConfig :one
 INSERT INTO event_key_configs (
     topic_name, key_selector, index_column
@@ -17,3 +14,7 @@ INSERT INTO event_key_configs (
  $1, $2, $3
 )
 RETURNING *;
+
+-- name: ListEventKeyConfigs :many
+SELECT *
+FROM event_key_configs;

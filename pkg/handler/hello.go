@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"Stage-2024-dashboard/pkg/view"
