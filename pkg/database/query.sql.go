@@ -94,9 +94,29 @@ func (q *Queries) DeleteEventIndexConfigs(ctx context.Context, id int32) error {
 	return err
 }
 
+const getEventIndexConfig = `-- name: GetEventIndexConfig :one
+SELECT id, inserted_at, topic_name, key_selector, index_column
+FROM event_index_configs
+WHERE id = $1
+`
+
+func (q *Queries) GetEventIndexConfig(ctx context.Context, id int32) (EventIndexConfig, error) {
+	row := q.db.QueryRow(ctx, getEventIndexConfig, id)
+	var i EventIndexConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
+		&i.IndexColumn,
+	)
+	return i, err
+}
+
 const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
 SELECT id, inserted_at, topic_name, key_selector, index_column
 FROM event_index_configs
+ORDER BY inserted_at desc
 `
 
 func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig, error) {
@@ -123,4 +143,38 @@ func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateEventIndexConfig = `-- name: UpdateEventIndexConfig :one
+UPDATE event_index_configs
+SET topic_name = $2,
+  index_column = $3,
+  key_selector = $4
+WHERE id = $1
+RETURNING id, inserted_at, topic_name, key_selector, index_column
+`
+
+type UpdateEventIndexConfigParams struct {
+	ID          int32
+	TopicName   string
+	IndexColumn string
+	KeySelector []string
+}
+
+func (q *Queries) UpdateEventIndexConfig(ctx context.Context, arg UpdateEventIndexConfigParams) (EventIndexConfig, error) {
+	row := q.db.QueryRow(ctx, updateEventIndexConfig,
+		arg.ID,
+		arg.TopicName,
+		arg.IndexColumn,
+		arg.KeySelector,
+	)
+	var i EventIndexConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
+		&i.IndexColumn,
+	)
+	return i, err
 }

@@ -8,8 +8,11 @@ func (s *Server) RegisterRoutes() {
 	e.Static("/static", "./static")
 	e.GET("/", handler.HelloWebHandler)
 
-	e.GET("/event_index_config", handler.EventIndexConfig)
+	e.GET("/event_index_config", handler.EventIndexConfigHome)
 	e.POST("/event_index_config", handler.EventIndexConfigCreate)
+	e.GET("/event_index_config/:id", handler.EventIndexConfig)
 	e.DELETE("/event_index_config/:id", handler.EventIndexConfigDelete)
+	e.PUT("/event_index_config/:id", handler.EventIndexConfigEdit)
+	e.GET("/event_index_config/:id/edit", handler.EventIndexConfigEditForm)
 	e.GET("/h/event_index_config/list", handler.EventIndexConfigList)
 }

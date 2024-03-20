@@ -35,23 +35,104 @@ templ EventIndexConfigCreateForm() {
 	</form>
 }
 
+templ EventIndexConfigEditForm(config database.EventIndexConfig) {
+	<article>
+		<header>
+			<hgroup>
+				<h4>Config - { strconv.FormatInt(int64(config.ID), 10) }</h4>
+				<p>{ config.InsertedAt.Time.String() }</p>
+			</hgroup>
+		</header>
+		<form
+			hx-put={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+			hx-swap="outerHTML"
+			hx-target="closest article"
+			id={ strconv.FormatInt(int64(config.ID), 10) }
+		>
+			<label>
+				Topic name
+				<input type="text" name="topic" value={ config.TopicName } required/>
+			</label>
+			<label>
+				Index column	
+				<input type="text" name="column" value={ config.IndexColumn } required/>
+			</label>
+			<label>
+				Keys
+				<input type="text" name="keys" value={ strings.Join(config.KeySelector, ",") } required/>
+			</label>
+		</form>
+		<footer>
+			// <button
+			// 	hx-put={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+			// 	hx-swap="outerHTML"
+			// 	hx-include="previous form"
+			// 	hx-target="closest article"
+			// >
+			// 	Edit
+			// </button>
+			<button
+				type="submut"
+				form={ strconv.FormatInt(int64(config.ID), 10) }
+			>Edit</button>
+			<button
+				hx-get={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+				hx-swap="outerHTML"
+				hx-target="closest article"
+				class="secondary"
+			>
+				Cancel
+			</button>
+		</footer>
+	</article>
+}
+
 templ ListConfigs(configs []database.EventIndexConfig) {
+	// TODO: better with grid?
+	<style>
+			me {
+				display: flex;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}	
+			me article {
+				flex-grow: 1;
+			}
+	</style>
 	for _, config := range(configs) {
-		<article>
-			<p>{ config.IndexColumn }</p>
-			<p>{ config.TopicName }</p>
-			<p>{ strings.Join(config.KeySelector, ",") }</p>
-			<p>{ config.InsertedAt.Time.String() }</p>
-			<p>{ strconv.FormatInt(int64(config.ID), 10) }</p>
-			<footer>
-				<button
-					hx-delete={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
-					hx-confirm="Are you sure?"
-					class="pico-background-red-500"
-				>
-					Delete	
-				</button>
-			</footer>
-		</article>
+		@EventIndexConfig(config)
 	}
+}
+
+templ EventIndexConfig(config database.EventIndexConfig) {
+	<article>
+		<header>
+			<hgroup>
+				<h4>Config - { strconv.FormatInt(int64(config.ID), 10) }</h4>
+				<p>{ config.InsertedAt.Time.String() }</p>
+			</hgroup>
+		</header>
+		<div>
+			<p>{ config.TopicName }</p>
+			<p>{ config.IndexColumn }</p>
+			<p>{ strings.Join(config.KeySelector, ",") }</p>
+		</div>
+		<footer>
+			<button
+				hx-get={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) + "/edit" }
+				hx-swap="outerHTML"
+				hx-target="closest article"
+				class="secondary"
+			>
+				Edit
+			</button>
+			<button
+				hx-delete={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+				hx-confirm="Are you sure?"
+				class="pico-background-red-500"
+			>
+				Delete	
+			</button>
+		</footer>
+	</article>
 }

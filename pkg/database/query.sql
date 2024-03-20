@@ -17,8 +17,23 @@ RETURNING *;
 
 -- name: ListEventIndexConfigs :many
 SELECT *
-FROM event_index_configs;
+FROM event_index_configs
+ORDER BY inserted_at desc;
 
 -- name: DeleteEventIndexConfigs :exec
 DELETE FROM event_index_configs
 WHERE id = $1;
+
+-- name: GetEventIndexConfig :one
+SELECT *
+FROM event_index_configs
+WHERE id = $1;
+
+-- name: UpdateEventIndexConfig :one
+UPDATE event_index_configs
+SET topic_name = $2,
+  index_column = $3,
+  key_selector = $4
+WHERE id = $1
+RETURNING *;
+
