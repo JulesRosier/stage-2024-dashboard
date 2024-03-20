@@ -25,7 +25,7 @@ WHERE
 	AND events.index_bikestation IS NULL;
 `
 
-func (q *Queries) FullIndex(ctx context.Context, config EventKeyConfig) error {
+func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error {
 	query := fmt.Sprintf(Index, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName)
 	slog.Info("Indexing", "config_id", config.ID)
 	_, err := q.db.Exec(ctx, query)
@@ -33,7 +33,7 @@ func (q *Queries) FullIndex(ctx context.Context, config EventKeyConfig) error {
 }
 
 // only index those that not has been indexed jet
-func (q *Queries) IndexNew(ctx context.Context, config EventKeyConfig) error {
+func (q *Queries) IndexNew(ctx context.Context, config EventIndexConfig) error {
 	query := fmt.Sprintf(IndexNew, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName) + ";"
 	slog.Info("Indexing", "config_id", config.ID)
 	_, err := q.db.Exec(ctx, query)

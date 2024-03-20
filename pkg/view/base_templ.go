@@ -23,7 +23,7 @@ func base() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><meta name=\"color-scheme\" content=\"light dark\"><title>Event Viewer</title><script src=\"/static/js/htmx.min.js\"></script><link rel=\"stylesheet\" href=\"css/pico.pink.min.css\"><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pink.min.css\"></head><nav class=\"container-fluid\"><ul><li><a href=\"/\"><strong>Event Viewer</strong></a></li></ul><ul><li><a href=\"#\">About</a></li><li><a href=\"#\">Services</a></li><li><a href=\"#\">Products</a></li></ul></nav><body><main class=\"container\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><meta name=\"color-scheme\" content=\"light dark\"><title>Event Viewer</title><script src=\"/static/js/htmx.min.js\"></script><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pink.min.css\"><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css\"></head><nav class=\"container-fluid\"><ul><li><a href=\"/\"><strong>Event Viewer</strong></a></li></ul><ul><li><a href=\"/event_index_config\">Index Config</a></li><li><a href=\"#\">Services</a></li><li><a href=\"#\">Products</a></li></ul></nav><body><main class=\"container\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

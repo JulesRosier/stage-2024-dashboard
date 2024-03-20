@@ -1,0 +1,57 @@
+package view
+
+import "Stage-2024-dashboard/pkg/database"
+import "strconv"
+import "strings"
+
+templ EventIndexConfigHome(configs []database.EventIndexConfig) {
+	@base() {
+		<h1>Event Index Configs</h1>
+		<hr/>
+		<details>
+			<summary>Add Config</summary>
+			@EventIndexConfigCreateForm()
+		</details>
+		<hr/>
+		<div hx-trigger="load, newConfig from:body" hx-get="/h/event_index_config/list"></div>
+	}
+}
+
+templ EventIndexConfigCreateForm() {
+	<form hx-post="/event_index_config" hx-target="this">
+		<label>
+			Topic name
+			<input type="text" name="topic" required/>
+		</label>
+		<label>
+			Index column	
+			<input type="text" name="column" required/>
+		</label>
+		<label>
+			Keys
+			<input type="text" name="keys" required/>
+		</label>
+		<button>Submit</button>
+	</form>
+}
+
+templ ListConfigs(configs []database.EventIndexConfig) {
+	for _, config := range(configs) {
+		<article>
+			<p>{ config.IndexColumn }</p>
+			<p>{ config.TopicName }</p>
+			<p>{ strings.Join(config.KeySelector, ",") }</p>
+			<p>{ config.InsertedAt.Time.String() }</p>
+			<p>{ strconv.FormatInt(int64(config.ID), 10) }</p>
+			<footer>
+				<button
+					hx-delete={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+					hx-confirm="Are you sure?"
+					class="pico-background-red-550"
+				>
+					Delete	
+				</button>
+			</footer>
+		</article>
+	}
+}

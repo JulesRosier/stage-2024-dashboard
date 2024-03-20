@@ -56,8 +56,8 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 	return i, err
 }
 
-const createEventKeyConfig = `-- name: CreateEventKeyConfig :one
-INSERT INTO event_key_configs (
+const createEventIndexConfig = `-- name: CreateEventIndexConfig :one
+INSERT INTO event_index_configs (
     topic_name, key_selector, index_column
 ) VALUES (
  $1, $2, $3
@@ -65,15 +65,15 @@ INSERT INTO event_key_configs (
 RETURNING id, inserted_at, topic_name, key_selector, index_column
 `
 
-type CreateEventKeyConfigParams struct {
+type CreateEventIndexConfigParams struct {
 	TopicName   string
 	KeySelector []string
 	IndexColumn string
 }
 
-func (q *Queries) CreateEventKeyConfig(ctx context.Context, arg CreateEventKeyConfigParams) (EventKeyConfig, error) {
-	row := q.db.QueryRow(ctx, createEventKeyConfig, arg.TopicName, arg.KeySelector, arg.IndexColumn)
-	var i EventKeyConfig
+func (q *Queries) CreateEventIndexConfig(ctx context.Context, arg CreateEventIndexConfigParams) (EventIndexConfig, error) {
+	row := q.db.QueryRow(ctx, createEventIndexConfig, arg.TopicName, arg.KeySelector, arg.IndexColumn)
+	var i EventIndexConfig
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
@@ -84,20 +84,30 @@ func (q *Queries) CreateEventKeyConfig(ctx context.Context, arg CreateEventKeyCo
 	return i, err
 }
 
-const listEventKeyConfigs = `-- name: ListEventKeyConfigs :many
-SELECT id, inserted_at, topic_name, key_selector, index_column
-FROM event_key_configs
+const deleteEventIndexConfigs = `-- name: DeleteEventIndexConfigs :exec
+DELETE FROM event_index_configs
+WHERE id = $1
 `
 
-func (q *Queries) ListEventKeyConfigs(ctx context.Context) ([]EventKeyConfig, error) {
-	rows, err := q.db.Query(ctx, listEventKeyConfigs)
+func (q *Queries) DeleteEventIndexConfigs(ctx context.Context, id int32) error {
+	_, err := q.db.Exec(ctx, deleteEventIndexConfigs, id)
+	return err
+}
+
+const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
+SELECT id, inserted_at, topic_name, key_selector, index_column
+FROM event_index_configs
+`
+
+func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig, error) {
+	rows, err := q.db.Query(ctx, listEventIndexConfigs)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []EventKeyConfig
+	var items []EventIndexConfig
 	for rows.Next() {
-		var i EventKeyConfig
+		var i EventIndexConfig
 		if err := rows.Scan(
 			&i.ID,
 			&i.InsertedAt,

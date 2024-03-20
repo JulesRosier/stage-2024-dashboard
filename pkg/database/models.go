@@ -20,7 +20,7 @@ type Event struct {
 	EventValue     []byte
 }
 
-type EventKeyConfig struct {
+type EventIndexConfig struct {
 	ID          int32
 	InsertedAt  pgtype.Timestamptz
 	TopicName   string

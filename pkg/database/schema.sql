@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS events (
     event_value JSONB
 );
 
-CREATE TABLE IF NOT EXISTS event_key_configs (
+CREATE TABLE IF NOT EXISTS event_index_configs (
     id SERIAL PRIMARY KEY,
     inserted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     topic_name VARCHAR(255) NOT NULL,

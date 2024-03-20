@@ -7,14 +7,18 @@ INSERT INTO events (
 )
 RETURNING *;
 
--- name: CreateEventKeyConfig :one
-INSERT INTO event_key_configs (
+-- name: CreateEventIndexConfig :one
+INSERT INTO event_index_configs (
     topic_name, key_selector, index_column
 ) VALUES (
  $1, $2, $3
 )
 RETURNING *;
 
--- name: ListEventKeyConfigs :many
+-- name: ListEventIndexConfigs :many
 SELECT *
-FROM event_key_configs;
+FROM event_index_configs;
+
+-- name: DeleteEventIndexConfigs :exec
+DELETE FROM event_index_configs
+WHERE id = $1;
