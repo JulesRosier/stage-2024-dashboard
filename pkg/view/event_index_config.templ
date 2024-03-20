@@ -47,7 +47,7 @@ templ ListConfigs(configs []database.EventIndexConfig) {
 				<button
 					hx-delete={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
 					hx-confirm="Are you sure?"
-					class="pico-background-red-550"
+					class="pico-background-red-500"
 				>
 					Delete	
 				</button>

@@ -26,6 +26,16 @@ templ base() {
 				<li><a href="/event_index_config">Index Config</a></li>
 				<li><a href="#">Services</a></li>
 				<li><a href="#">Products</a></li>
+				<li>
+					<details class="dropdown">
+						<summary role="button" class="secondary outline">Theme</summary>
+						<ul>
+							<li><a href="#" data-theme-switcher="auto">Auto</a></li>
+							<li><a href="#" data-theme-switcher="light">Light</a></li>
+							<li><a href="#" data-theme-switcher="dark">Dark</a></li>
+						</ul>
+					</details>
+				</li>
 			</ul>
 		</nav>
 		<body>
@@ -33,5 +43,6 @@ templ base() {
 				{ children... }
 			</main>
 		</body>
+		<script src="/static/js/theme-switcher.js"></script>
 	</html>
 }
