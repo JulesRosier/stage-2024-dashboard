@@ -1,0 +1,14 @@
+package view
+
+templ Home() {
+	@base() {
+		<button
+			hx-post="/index/full"
+			hx-disabled-elt="this"
+			hx-target="#index_duration"
+		>
+			Full Index
+		</button>
+		<p>Duration last index: <span id="index_duration">N/A</span></p>
+	}
+}

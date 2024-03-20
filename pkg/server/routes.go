@@ -6,7 +6,10 @@ func (s *Server) RegisterRoutes() {
 	e := s.e
 
 	e.Static("/static", "./static")
-	e.GET("/", handler.HelloWebHandler)
+
+	e.GET("/", handler.Home)
+
+	e.POST("/index/full", handler.FullIndex)
 
 	e.GET("/event_index_config", handler.EventIndexConfigHome)
 	e.POST("/event_index_config", handler.EventIndexConfigCreate)
