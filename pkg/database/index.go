@@ -33,7 +33,7 @@ func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error 
 }
 
 // only index those that not has been indexed jet
-func (q *Queries) IndexNew(ctx context.Context, config EventIndexConfig) error {
+func (q *Queries) PartialIndex(ctx context.Context, config EventIndexConfig) error {
 	query := fmt.Sprintf(IndexNew, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName, config.IndexColumn)
 
 	slog.Info("Indexing", "config_id", config.ID)
