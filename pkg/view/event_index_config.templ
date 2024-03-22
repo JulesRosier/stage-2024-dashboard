@@ -63,18 +63,10 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 			</label>
 		</form>
 		<footer>
-			// <button
-			// 	hx-put={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
-			// 	hx-swap="outerHTML"
-			// 	hx-include="previous form"
-			// 	hx-target="closest article"
-			// >
-			// 	Edit
-			// </button>
 			<button
 				type="submut"
 				form={ strconv.FormatInt(int64(config.ID), 10) }
-			>Edit</button>
+			>Save</button>
 			<button
 				hx-get={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
 				hx-swap="outerHTML"
