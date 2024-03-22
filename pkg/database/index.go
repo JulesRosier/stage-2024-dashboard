@@ -22,7 +22,7 @@ FROM events e
 WHERE 
     events.id = e.id 
     AND events.topic_name = '%s'
-	AND events.index_bikestation IS NULL;
+	AND events.%s IS NULL;
 `
 
 func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error {
@@ -34,7 +34,8 @@ func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error 
 
 // only index those that not has been indexed jet
 func (q *Queries) IndexNew(ctx context.Context, config EventIndexConfig) error {
-	query := fmt.Sprintf(IndexNew, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName) + ";"
+	query := fmt.Sprintf(IndexNew, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName, config.IndexColumn)
+
 	slog.Info("Indexing", "config_id", config.ID)
 	_, err := q.db.Exec(ctx, query)
 	return err
