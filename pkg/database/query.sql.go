@@ -113,6 +113,33 @@ func (q *Queries) GetEventIndexConfig(ctx context.Context, id int32) (EventIndex
 	return i, err
 }
 
+const getIndexColumns = `-- name: GetIndexColumns :many
+SELECT column_name::text
+FROM information_schema.columns
+WHERE table_name   = 'events'
+and column_name like 'index_%'
+`
+
+func (q *Queries) GetIndexColumns(ctx context.Context) ([]string, error) {
+	rows, err := q.db.Query(ctx, getIndexColumns)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var column_name string
+		if err := rows.Scan(&column_name); err != nil {
+			return nil, err
+		}
+		items = append(items, column_name)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
 SELECT id, inserted_at, topic_name, key_selector, index_column
 FROM event_index_configs

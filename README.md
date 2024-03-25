@@ -41,3 +41,14 @@ go install github.com/cosmtrek/air@latest
 sqlc generate
 templ generate
 ```
+
+## Queries
+
+```sql
+UPDATE events
+SET index_bikestation = (e.event_value->>'stationId')::VARCHAR
+FROM events e
+WHERE
+    events.id = 441304
+    AND events.topic_name = 'donkey-locations';
+```

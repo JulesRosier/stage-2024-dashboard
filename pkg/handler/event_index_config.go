@@ -4,7 +4,6 @@ import (
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/view"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,13 +12,7 @@ import (
 )
 
 func EventIndexConfigHome(c echo.Context) error {
-	q := database.GetQueries()
-	configs, err := q.ListEventIndexConfigs(c.Request().Context())
-	if err != nil {
-		slog.Warn(err.Error())
-		return err
-	}
-	return render(c, view.EventIndexConfigHome(configs))
+	return render(c, view.EventIndexConfigHome())
 }
 
 func EventIndexConfigList(c echo.Context) error {

@@ -19,4 +19,7 @@ func (s *Server) RegisterRoutes() {
 	e.PUT("/event_index_config/:id", handler.EventIndexConfigEdit)
 	e.GET("/event_index_config/:id/edit", handler.EventIndexConfigEditForm)
 	e.GET("/h/event_index_config/list", handler.EventIndexConfigList)
+
+	e.GET("/query", handler.QueryHome)
+	e.POST("/query/search", handler.QuerySearch)
 }

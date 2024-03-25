@@ -1,0 +1,93 @@
+package view
+
+import "Stage-2024-dashboard/pkg/database"
+import "strconv"
+
+import "encoding/json"
+
+// import "fmt"
+templ QueryHome(columns []string) {
+	@base() {
+		<h1>Query</h1>
+		<form
+			role="search"
+			hx-post="/query/search"
+			hx-target="#results"
+		>
+			<select name="column" aria-label="Select your favorite cuisine..." required>
+				<option selected disabled value="">
+					Select a index column
+				</option>
+				for _, column := range(columns) {
+					<option>{ column }</option>
+				}
+			</select>
+			<input name="search" type="search" placeholder="Search Key" required/>
+			<input type="submit" value="Search" hx-disabled-elt="this"/>
+		</form>
+		<div id="results"></div>
+		<style>
+			.json-key { color: #0074D9; }
+			.json-string { color: #2ECC40; }
+			.json-number { color: #FF4136; }
+			.json-boolean { color: #B10DC9; }
+		</style>
+		<script>
+			function colorizeJson(element) {
+				const content = element.textContent;
+				const coloredContent = content
+					.replace(/"(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, match => {
+						if (/^"/.test(match)) {
+							return '<span class="json-string">' + match + '</span>';
+						} else if (/true|false/.test(match)) {
+							return '<span class="json-boolean">' + match + '</span>';
+						} else if (/null/.test(match)) {
+							return '<span class="json-null">' + match + '</span>';
+						} else {
+							return '<span class="json-number">' + match + '</span>';
+						}
+					})
+					.replace(/[{}\[\],]/g, match => {
+						return '<span class="json-brace">' + match + '</span>';
+					});
+				element.innerHTML = coloredContent;
+			};
+
+</script>
+	}
+}
+
+templ ListEvents(events []database.Event) {
+	<div>
+		for _, event := range(events) {
+			@Event(event)
+		}
+		<script>
+		document.querySelectorAll('.json-blob').forEach(colorizeJson);
+	</script>
+	</div>
+}
+
+templ Event(event database.Event) {
+	<article>
+		<header>
+			<hgroup>
+				<h4>{ event.TopicName } - { strconv.FormatInt(int64(event.ID), 10) }</h4>
+				<p>{ event.EventTimestamp.Time.String() }</p>
+			</hgroup>
+			<div>
+				<pre class="json-blob">{ bytesToJson(event.EventValue) }</pre>
+				// <p>{ event.  }</p>
+			</div>
+		</header>
+	</article>
+}
+
+func bytesToJson(b []byte) string {
+	var prettyJSON bytes.Buffer
+	err := json.Indent(&prettyJSON, b, "", "  ")
+	if err != nil {
+		return "ERROR"
+	}
+	return string(prettyJSON.Bytes())
+}
