@@ -35,7 +35,7 @@ func QueryHome(columns []string) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1>Query</h1><form role=\"search\" hx-post=\"/query/search\" hx-target=\"#results\"><select name=\"column\" aria-label=\"Select your favorite cuisine...\" required><option selected disabled value=\"\">Select a index column\r</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container\"><h1>Query</h1><form role=\"search\" hx-post=\"/query/search\" hx-target=\"#results\"><select name=\"column\" aria-label=\"Select your favorite cuisine...\" required><option selected disabled value=\"\">Select a index column\r</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -47,7 +47,7 @@ func QueryHome(columns []string) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(column)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 22, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 23, Col: 22}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -58,7 +58,7 @@ func QueryHome(columns []string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <input name=\"search\" type=\"search\" placeholder=\"Search Key\" required> <input type=\"submit\" value=\"Search\" hx-disabled-elt=\"this\"></form><div id=\"results\"></div><style>\r\n\t\t\t.json-key { color: #0074D9; }\r\n\t\t\t.json-string { color: #2ECC40; }\r\n\t\t\t.json-number { color: #FF4136; }\r\n\t\t\t.json-boolean { color: #B10DC9; }\r\n\t\t</style> <script>\r\n\t\t\tfunction colorizeJson(element) {\r\n\t\t\t\tconst content = element.textContent;\r\n\t\t\t\tconst coloredContent = content\r\n\t\t\t\t\t.replace(/\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g, match => {\r\n\t\t\t\t\t\tif (/^\"/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-string\">' + match + '</span>';\r\n\t\t\t\t\t\t} else if (/true|false/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-boolean\">' + match + '</span>';\r\n\t\t\t\t\t\t} else if (/null/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-null\">' + match + '</span>';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-number\">' + match + '</span>';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t})\r\n\t\t\t\t\t.replace(/[{}\\[\\],]/g, match => {\r\n\t\t\t\t\t\treturn '<span class=\"json-brace\">' + match + '</span>';\r\n\t\t\t\t\t});\r\n\t\t\t\telement.innerHTML = coloredContent;\r\n\t\t\t};\r\n\r\n</script>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <input name=\"search\" type=\"search\" placeholder=\"Search Key\" required> <input type=\"submit\" value=\"Search\" hx-disabled-elt=\"this\"></form></div><div id=\"results\"></div><style>\r\n\t\t\t.json-key { color: #0074D9; }\r\n\t\t\t.json-string { color: #2ECC40; }\r\n\t\t\t.json-number { color: #FF4136; }\r\n\t\t\t.json-boolean { color: #B10DC9; }\r\n\t\t</style> <script>\r\n\t\t\tfunction colorizeJson(element) {\r\n\t\t\t\tconst content = element.textContent;\r\n\t\t\t\tconst coloredContent = content\r\n\t\t\t\t\t.replace(/\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g, match => {\r\n\t\t\t\t\t\tif (/^\"/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-string\">' + match + '</span>';\r\n\t\t\t\t\t\t} else if (/true|false/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-boolean\">' + match + '</span>';\r\n\t\t\t\t\t\t} else if (/null/.test(match)) {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-null\">' + match + '</span>';\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\treturn '<span class=\"json-number\">' + match + '</span>';\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t})\r\n\t\t\t\t\t.replace(/[{}\\[\\],]/g, match => {\r\n\t\t\t\t\t\treturn '<span class=\"json-brace\">' + match + '</span>';\r\n\t\t\t\t\t});\r\n\t\t\t\telement.innerHTML = coloredContent;\r\n\t\t\t};\r\n\r\n</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -67,7 +67,7 @@ func QueryHome(columns []string) templ.Component {
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = base(true).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -132,7 +132,7 @@ func Event(event database.Event) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(event.TopicName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 75, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 77, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -145,7 +145,7 @@ func Event(event database.Event) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(event.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 75, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 77, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -158,26 +158,26 @@ func Event(event database.Event) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(event.EventTimestamp.Time.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 76, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 78, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup><div><pre class=\"json-blob\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup></header><div><pre class=\"json-blob\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(bytesToJson(event.EventValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 79, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 82, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</pre></div></header></article>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</pre></div></article>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

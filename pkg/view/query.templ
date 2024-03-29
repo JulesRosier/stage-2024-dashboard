@@ -7,24 +7,26 @@ import "encoding/json"
 
 // import "fmt"
 templ QueryHome(columns []string) {
-	@base() {
-		<h1>Query</h1>
-		<form
-			role="search"
-			hx-post="/query/search"
-			hx-target="#results"
-		>
-			<select name="column" aria-label="Select your favorite cuisine..." required>
-				<option selected disabled value="">
-					Select a index column
-				</option>
-				for _, column := range(columns) {
-					<option>{ column }</option>
-				}
-			</select>
-			<input name="search" type="search" placeholder="Search Key" required/>
-			<input type="submit" value="Search" hx-disabled-elt="this"/>
-		</form>
+	@base(true) {
+		<div class="container">
+			<h1>Query</h1>
+			<form
+				role="search"
+				hx-post="/query/search"
+				hx-target="#results"
+			>
+				<select name="column" aria-label="Select your favorite cuisine..." required>
+					<option selected disabled value="">
+						Select a index column
+					</option>
+					for _, column := range(columns) {
+						<option>{ column }</option>
+					}
+				</select>
+				<input name="search" type="search" placeholder="Search Key" required/>
+				<input type="submit" value="Search" hx-disabled-elt="this"/>
+			</form>
+		</div>
 		<div id="results"></div>
 		<style>
 			.json-key { color: #0074D9; }
@@ -75,11 +77,10 @@ templ Event(event database.Event) {
 				<h4>{ event.TopicName } - { strconv.FormatInt(int64(event.ID), 10) }</h4>
 				<p>{ event.EventTimestamp.Time.String() }</p>
 			</hgroup>
-			<div>
-				<pre class="json-blob">{ bytesToJson(event.EventValue) }</pre>
-				// <p>{ event.  }</p>
-			</div>
 		</header>
+		<div>
+			<pre class="json-blob">{ bytesToJson(event.EventValue) }</pre>
+		</div>
 	</article>
 }
 

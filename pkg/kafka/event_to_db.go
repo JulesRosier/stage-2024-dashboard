@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"reflect"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/redpanda-data/console/backend/pkg/serde"
@@ -39,7 +40,10 @@ func EventImporter() {
 				},
 			)
 			if _, ok := sRecord.Value.DeserializedPayload.(map[string]any); !ok {
-				slog.Warn("Bad DeserializedPayload")
+				slog.Warn("Bad DeserializedPayload",
+					"topic", record.Topic,
+					"type", reflect.TypeOf(sRecord.Value.DeserializedPayload),
+					"payload", fmt.Sprintf("%v", sRecord.Value.DeserializedPayload))
 			}
 
 			var err error

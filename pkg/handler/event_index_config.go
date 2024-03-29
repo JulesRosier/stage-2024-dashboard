@@ -3,7 +3,6 @@ package handler
 import (
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/view"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -97,11 +96,6 @@ func EventIndexConfigEdit(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(topic)
-	fmt.Println(column)
-	fmt.Println(keys)
-
 	return render(c, view.EventIndexConfig(config))
 }
 

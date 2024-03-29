@@ -1,6 +1,6 @@
 package view
 
-templ base() {
+templ base(fluid bool) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -43,7 +43,13 @@ templ base() {
 			</ul>
 		</nav>
 		<body>
-			<main class="container">
+			<main
+				if fluid {
+					class="container-fluid"
+				} else {
+					class="container"
+				}
+			>
 				{ children... }
 			</main>
 		</body>

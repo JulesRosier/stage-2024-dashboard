@@ -5,6 +5,8 @@ import (
 	"context"
 )
 
+const IndexPrefix = "index_"
+
 func FullIndex(ctx context.Context) error {
 	q := database.GetQueries()
 	configs, err := q.ListEventIndexConfigs(ctx)
@@ -12,7 +14,7 @@ func FullIndex(ctx context.Context) error {
 		return err
 	}
 	for _, config := range configs {
-		err := q.AddColumn(ctx, config.IndexColumn)
+		err := q.AddColumn(ctx, IndexPrefix+config.IndexColumn)
 		if err != nil {
 			return err
 		}

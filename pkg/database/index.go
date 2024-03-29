@@ -8,7 +8,7 @@ import (
 
 const Index = `
 UPDATE events
-SET %s = (e.event_value%s)::VARCHAR
+SET index_%s = (e.event_value%s)::VARCHAR
 FROM events e
 WHERE 
     events.id = e.id 
@@ -17,7 +17,7 @@ WHERE
 
 const IndexNew = `
 UPDATE events
-SET %s = (e.event_value%s)::VARCHAR
+SET index_%s = (e.event_value%s)::VARCHAR
 FROM events e
 WHERE 
     events.id = e.id 
