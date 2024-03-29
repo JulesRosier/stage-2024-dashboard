@@ -14,10 +14,13 @@ class JSONViewer extends HTMLElement {
     );
 
     const coloredContent = pjson
+
       .replace(
         /"(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
         (match) => {
-          if (/^"/.test(match)) {
+          if (/"(\w+)"\s*:/g.test(match)) {
+            return '<span class="json-key">' + match + "</span>";
+          } else if (/^"/.test(match)) {
             return '<span class="json-string">' + match + "</span>";
           } else if (/true|false/.test(match)) {
             return '<span class="json-boolean">' + match + "</span>";
