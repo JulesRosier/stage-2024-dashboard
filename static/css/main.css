@@ -2,3 +2,16 @@
   /* --pico-spacing: 0.75rem; */
   /* --pico-font-size: 99%; */
 }
+
+.json-key {
+  color: #0074d9;
+}
+.json-string {
+  color: #2ecc40;
+}
+.json-number {
+  color: #ff4136;
+}
+.json-boolean {
+  color: #b10dc9;
+}
