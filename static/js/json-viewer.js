@@ -3,12 +3,12 @@ class JSONViewer extends HTMLElement {
     super();
   }
   connectedCallback() {
-    if (!this.hasAttribute("data")) {
-      this.setAttribute("data", this.innerText);
+    if (!this.hasAttribute("data-json")) {
+      this.setAttribute("data-json", this.innerHTML);
     }
 
     const pjson = JSON.stringify(
-      JSON.parse(this.getAttribute("data")),
+      JSON.parse(atob(this.getAttribute("data-json"))),
       null,
       2
     );

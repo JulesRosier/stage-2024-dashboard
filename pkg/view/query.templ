@@ -1,10 +1,11 @@
 package view
 
 import "Stage-2024-dashboard/pkg/database"
-import "strconv"
+import "encoding/base64"
+import "strings"
 
 templ QueryHome(columns []string) {
-	@base(true) {
+	@base(false) {
 		<script src="/static/js/json-viewer.js"></script>
 		<div class="container">
 			<h1>Query</h1>
@@ -30,25 +31,54 @@ templ QueryHome(columns []string) {
 }
 
 templ ListEvents(events []database.Event) {
-	<div>
-		for _, event := range(events) {
-			@Event(event)
-		}
-	</div>
+	<style>
+			me {
+				display: flex;
+				flex-direction: column;
+			}
+			me article {
+				width: 550px;
+				align-self: center;
+			}
+			me article details {
+				margin: 1em;
+			}
+			me article details summary {
+				font-size: 1.3rem;
+			}
+			me .event {
+				display: flex;
+				justify-content: center;
+			}
+			me .event p {
+				padding: 1em;
+			}
+	</style>
+	for _, event := range(events) {
+		@Event(event)
+	}
 }
 
 templ Event(event database.Event) {
-	<article>
-		<header>
-			<hgroup>
-				<h4>{ event.TopicName } - { strconv.FormatInt(int64(event.ID), 10) }</h4>
-				<p>{ event.EventTimestamp.Time.String() }</p>
-			</hgroup>
-		</header>
-		<div>
-			<json-viewer>
-				{ string(event.EventValue) }
-			</json-viewer>
-		</div>
-	</article>
+	<div class="event">
+		<p>
+			{ event.EventTimestamp.Time.String() }
+		</p>
+		<article>
+			<details>
+				<summary>
+					{ prittyName(event.TopicName) }
+				</summary>
+				<div>
+					<json-viewer>
+						{  base64.StdEncoding.EncodeToString(event.EventValue) }
+					</json-viewer>
+				</div>
+			</details>
+		</article>
+	</div>
+}
+
+func prittyName(s string) string {
+	return strings.Title(strings.ReplaceAll(s, "_", " "))
 }
