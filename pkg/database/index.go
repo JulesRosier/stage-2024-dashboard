@@ -22,7 +22,7 @@ FROM events e
 WHERE 
     events.id = e.id 
     AND events.topic_name = '%s'
-	AND events.%s IS NULL;
+	AND events.index_%s IS NULL;
 `
 
 func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error {
