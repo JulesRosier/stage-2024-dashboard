@@ -89,7 +89,7 @@ func ListEvents(events []database.Event) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style>\r\n\t\t\tme {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\tflex-direction: column;\r\n\t\t\t}\r\n\t\t\tme article {\r\n\t\t\t\twidth: 550px;\r\n\t\t\t\talign-self: center;\r\n\t\t\t}\r\n\t\t\tme article details {\r\n\t\t\t\tmargin: 1em;\r\n\t\t\t}\r\n\t\t\tme article details summary {\r\n\t\t\t\tfont-size: 1.3rem;\r\n\t\t\t}\r\n\t\t\tme .event {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\tjustify-content: center;\r\n\t\t\t}\r\n\t\t\tme .event p {\r\n\t\t\t\tpadding: 1em;\r\n\t\t\t}\r\n\t</style>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style>\r\n\t\t\tme {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\tflex-direction: column;\r\n\t\t\t}\r\n\t\t\tme article {\r\n\t\t\t\twidth: 650px;\r\n\t\t\t\talign-self: center;\r\n\t\t\t}\r\n\t\t\tme article details {\r\n\t\t\t\tmargin: 1em;\r\n\t\t\t}\r\n\t\t\tme article details summary {\r\n\t\t\t\tfont-size: 1.3rem;\r\n\t\t\t}\r\n\t\t\tme .event {\r\n\t\t\t\tdisplay: flex;\r\n\t\t\t\tjustify-content: center;\r\n\t\t\t}\r\n\t\t\tme .event p {\r\n\t\t\t\tpadding: 1em;\r\n\t\t\t}\r\n\t</style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

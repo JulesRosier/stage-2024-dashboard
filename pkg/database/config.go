@@ -41,6 +41,10 @@ func (q *Queries) PartialIndex(ctx context.Context, config EventIndexConfig) err
 	return err
 }
 
+const TimestampConfigQuery = `
+	dsfs
+`
+
 func createJsonSelector(qs []string) string {
 	jsonSelect := ""
 	l := len(qs) - 1

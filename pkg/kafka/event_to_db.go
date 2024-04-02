@@ -81,13 +81,13 @@ func EventImporter() {
 			}
 
 			e, err := q.CreateEvent(ctx, database.CreateEventParams{
-				EventTimestamp: pgtype.Timestamp{Time: record.Timestamp, Valid: true},
-				TopicName:      record.Topic,
-				TopicOffset:    record.Offset,
-				TopicPartition: record.Partition,
-				EventHeaders:   hb,
-				EventKey:       kb,
-				EventValue:     vb,
+				EventhubTimestamp: pgtype.Timestamp{Time: record.Timestamp, Valid: true},
+				TopicName:         record.Topic,
+				TopicOffset:       record.Offset,
+				TopicPartition:    record.Partition,
+				EventHeaders:      hb,
+				EventKey:          kb,
+				EventValue:        vb,
 			})
 			if err != nil {
 				slog.Warn("Failed to write event to database", "err", err, "topic", record.Topic)

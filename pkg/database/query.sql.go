@@ -13,27 +13,27 @@ import (
 
 const createEvent = `-- name: CreateEvent :one
 INSERT INTO events (
-    event_timestamp, topic_name, topic_offset,
+    eventhub_timestamp, topic_name, topic_offset,
     topic_partition, event_headers, event_key, event_value
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7
 )
-RETURNING id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
 `
 
 type CreateEventParams struct {
-	EventTimestamp pgtype.Timestamp
-	TopicName      string
-	TopicOffset    int64
-	TopicPartition int32
-	EventHeaders   []byte
-	EventKey       []byte
-	EventValue     []byte
+	EventhubTimestamp pgtype.Timestamp
+	TopicName         string
+	TopicOffset       int64
+	TopicPartition    int32
+	EventHeaders      []byte
+	EventKey          []byte
+	EventValue        []byte
 }
 
 func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event, error) {
 	row := q.db.QueryRow(ctx, createEvent,
-		arg.EventTimestamp,
+		arg.EventhubTimestamp,
 		arg.TopicName,
 		arg.TopicOffset,
 		arg.TopicPartition,
@@ -45,6 +45,7 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
+		&i.EventhubTimestamp,
 		&i.EventTimestamp,
 		&i.TopicName,
 		&i.TopicOffset,
@@ -84,6 +85,38 @@ func (q *Queries) CreateEventIndexConfig(ctx context.Context, arg CreateEventInd
 	return i, err
 }
 
+const createTimestampConfig = `-- name: CreateTimestampConfig :one
+
+INSERT INTO timestamp_configs (
+    topic_name, key_selector 
+) VALUES (
+ $1, $2 
+)
+RETURNING id, inserted_at, topic_name, key_selector
+`
+
+type CreateTimestampConfigParams struct {
+	TopicName   string
+	KeySelector []string
+}
+
+// -- name: tesmpppp :many
+// select id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+// from events
+// where index_bike = '133'
+// order by event_timestamp desc;
+func (q *Queries) CreateTimestampConfig(ctx context.Context, arg CreateTimestampConfigParams) (TimestampConfig, error) {
+	row := q.db.QueryRow(ctx, createTimestampConfig, arg.TopicName, arg.KeySelector)
+	var i TimestampConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
+	)
+	return i, err
+}
+
 const deleteEventIndexConfigs = `-- name: DeleteEventIndexConfigs :exec
 DELETE FROM event_index_configs
 WHERE id = $1
@@ -91,6 +124,16 @@ WHERE id = $1
 
 func (q *Queries) DeleteEventIndexConfigs(ctx context.Context, id int32) error {
 	_, err := q.db.Exec(ctx, deleteEventIndexConfigs, id)
+	return err
+}
+
+const deleteTimestampConfigs = `-- name: DeleteTimestampConfigs :exec
+DELETE FROM timestamp_configs
+WHERE id = $1
+`
+
+func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
+	_, err := q.db.Exec(ctx, deleteTimestampConfigs, id)
 	return err
 }
 
@@ -140,6 +183,24 @@ func (q *Queries) GetIndexColumns(ctx context.Context) ([]string, error) {
 	return items, nil
 }
 
+const getTimestampConfig = `-- name: GetTimestampConfig :one
+SELECT id, inserted_at, topic_name, key_selector
+FROM timestamp_configs
+WHERE id = $1
+`
+
+func (q *Queries) GetTimestampConfig(ctx context.Context, id int32) (TimestampConfig, error) {
+	row := q.db.QueryRow(ctx, getTimestampConfig, id)
+	var i TimestampConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
+	)
+	return i, err
+}
+
 const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
 SELECT id, inserted_at, topic_name, key_selector, index_column
 FROM event_index_configs
@@ -161,6 +222,37 @@ func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig
 			&i.TopicName,
 			&i.KeySelector,
 			&i.IndexColumn,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listTimestampConfigs = `-- name: ListTimestampConfigs :many
+SELECT id, inserted_at, topic_name, key_selector
+FROM timestamp_configs
+ORDER BY inserted_at desc
+`
+
+func (q *Queries) ListTimestampConfigs(ctx context.Context) ([]TimestampConfig, error) {
+	rows, err := q.db.Query(ctx, listTimestampConfigs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TimestampConfig
+	for rows.Next() {
+		var i TimestampConfig
+		if err := rows.Scan(
+			&i.ID,
+			&i.InsertedAt,
+			&i.TopicName,
+			&i.KeySelector,
 		); err != nil {
 			return nil, err
 		}
@@ -202,6 +294,32 @@ func (q *Queries) UpdateEventIndexConfig(ctx context.Context, arg UpdateEventInd
 		&i.TopicName,
 		&i.KeySelector,
 		&i.IndexColumn,
+	)
+	return i, err
+}
+
+const updateTimestampConfig = `-- name: UpdateTimestampConfig :one
+UPDATE timestamp_configs
+SET topic_name = $2,
+  key_selector = $3
+WHERE id = $1
+RETURNING id, inserted_at, topic_name, key_selector
+`
+
+type UpdateTimestampConfigParams struct {
+	ID          int32
+	TopicName   string
+	KeySelector []string
+}
+
+func (q *Queries) UpdateTimestampConfig(ctx context.Context, arg UpdateTimestampConfigParams) (TimestampConfig, error) {
+	row := q.db.QueryRow(ctx, updateTimestampConfig, arg.ID, arg.TopicName, arg.KeySelector)
+	var i TimestampConfig
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.TopicName,
+		&i.KeySelector,
 	)
 	return i, err
 }

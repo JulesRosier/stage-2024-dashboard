@@ -9,15 +9,16 @@ import (
 )
 
 type Event struct {
-	ID             int32
-	InsertedAt     pgtype.Timestamptz
-	EventTimestamp pgtype.Timestamp
-	TopicName      string
-	TopicOffset    int64
-	TopicPartition int32
-	EventHeaders   []byte
-	EventKey       []byte
-	EventValue     []byte
+	ID                int32
+	InsertedAt        pgtype.Timestamptz
+	EventhubTimestamp pgtype.Timestamp
+	EventTimestamp    pgtype.Timestamp
+	TopicName         string
+	TopicOffset       int64
+	TopicPartition    int32
+	EventHeaders      []byte
+	EventKey          []byte
+	EventValue        []byte
 }
 
 type EventIndexConfig struct {
@@ -26,4 +27,11 @@ type EventIndexConfig struct {
 	TopicName   string
 	KeySelector []string
 	IndexColumn string
+}
+
+type TimestampConfig struct {
+	ID          int32
+	InsertedAt  pgtype.Timestamptz
+	TopicName   string
+	KeySelector []string
 }

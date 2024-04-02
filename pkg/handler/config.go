@@ -11,7 +11,7 @@ import (
 )
 
 func EventIndexConfigHome(c echo.Context) error {
-	return render(c, view.EventIndexConfigHome())
+	return render(c, view.ConfigHome())
 }
 
 func EventIndexConfigList(c echo.Context) error {
@@ -20,7 +20,7 @@ func EventIndexConfigList(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return render(c, view.ListConfigs(configs))
+	return render(c, view.ListEventIndexConfigs(configs))
 }
 
 func EventIndexConfigCreate(c echo.Context) error {
@@ -113,4 +113,103 @@ func EventIndexConfig(c echo.Context) error {
 	}
 
 	return render(c, view.EventIndexConfig(config))
+}
+
+// ================================
+// TIMESTAMP
+// ================================
+
+func TimestampConfigList(c echo.Context) error {
+	q := database.GetQueries()
+	configs, err := q.ListTimestampConfigs(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	return render(c, view.ListTimestampConfigs(configs))
+}
+
+func TimestampConfigCreate(c echo.Context) error {
+	// TODO: field validation
+	topic := strings.TrimSpace(c.FormValue("topic"))
+	keys := strings.TrimSpace(c.FormValue("keys"))
+
+	q := database.GetQueries()
+	q.CreateTimestampConfig(c.Request().Context(), database.CreateTimestampConfigParams{
+		TopicName:   topic,
+		KeySelector: strings.Split(keys, ","),
+	})
+
+	c.Response().Header().Add("HX-Trigger", "newTimestampConfig")
+	return render(c, view.TimestampConfigCreateForm())
+}
+
+func TimestampConfigDelete(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 32)
+	if err != nil {
+		return echo.NotFoundHandler(c)
+	}
+
+	q := database.GetQueries()
+	err = q.DeleteTimestampConfigs(c.Request().Context(), int32(id))
+	if err != nil {
+		return err
+	}
+
+	c.Response().Header().Add("HX-Trigger", "newTimestampConfig")
+	return c.NoContent(http.StatusNoContent)
+}
+
+func TimestampConfigEditForm(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 32)
+	if err != nil {
+		return echo.NotFoundHandler(c)
+	}
+
+	q := database.GetQueries()
+	config, err := q.GetTimestampConfig(c.Request().Context(), int32(id))
+	if err != nil {
+		return err
+	}
+
+	return render(c, view.TimestampConfigEditForm(config))
+}
+
+func TimestampConfigEdit(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 32)
+	if err != nil {
+		return echo.NotFoundHandler(c)
+	}
+	// TODO: field validation
+	topic := strings.TrimSpace(c.FormValue("topic"))
+	keys := strings.TrimSpace(c.FormValue("keys"))
+
+	q := database.GetQueries()
+	config, err := q.UpdateTimestampConfig(c.Request().Context(), database.UpdateTimestampConfigParams{
+		ID:          int32(id),
+		TopicName:   topic,
+		KeySelector: strings.Split(keys, ","),
+	})
+	if err != nil {
+		return err
+	}
+	return render(c, view.TimestampConfig(config))
+}
+
+func TimestampConfig(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 32)
+	if err != nil {
+		return echo.NotFoundHandler(c)
+	}
+
+	q := database.GetQueries()
+	config, err := q.GetTimestampConfig(c.Request().Context(), int32(id))
+	if err != nil {
+		return err
+	}
+
+	return render(c, view.TimestampConfig(config))
 }

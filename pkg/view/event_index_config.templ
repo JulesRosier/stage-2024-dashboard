@@ -4,16 +4,24 @@ import "Stage-2024-dashboard/pkg/database"
 import "strconv"
 import "strings"
 
-templ EventIndexConfigHome() {
+templ ConfigHome() {
 	@base(false) {
-		<h1>Event Index Configs</h1>
+		<h1 id="event-index">Event Index Configs</h1>
 		<hr/>
 		<details>
-			<summary>Add Config</summary>
+			<summary>Add event config</summary>
 			@EventIndexConfigCreateForm()
 		</details>
 		<hr/>
 		<div hx-trigger="load, newConfig from:body" hx-get="/h/event_index_config/list"></div>
+		<h1 id="timestamp">Timestamp Configs</h1>
+		<hr/>
+		<details>
+			<summary>Add timestamp config</summary>
+			@TimestampConfigCreateForm()
+		</details>
+		<hr/>
+		<div hx-trigger="load, newTimestampConfig from:body" hx-get="/h/timestamp_config/list"></div>
 	}
 }
 
@@ -47,7 +55,7 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 			hx-put={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
 			hx-swap="outerHTML"
 			hx-target="closest article"
-			id={ strconv.FormatInt(int64(config.ID), 10) }
+			id={ strconv.FormatInt(int64(config.ID), 10) + "event-index" }
 		>
 			<label>
 				Topic name
@@ -65,7 +73,7 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 		<footer>
 			<button
 				type="submut"
-				form={ strconv.FormatInt(int64(config.ID), 10) }
+				form={ strconv.FormatInt(int64(config.ID), 10) + "event-index" }
 			>Save</button>
 			<button
 				hx-get={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
@@ -79,7 +87,7 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 	</article>
 }
 
-templ ListConfigs(configs []database.EventIndexConfig) {
+templ ListEventIndexConfigs(configs []database.EventIndexConfig) {
 	// TODO: better with grid?
 	<style>
 			me {
@@ -120,6 +128,110 @@ templ EventIndexConfig(config database.EventIndexConfig) {
 			</button>
 			<button
 				hx-delete={ "/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) }
+				hx-confirm="Are you sure?"
+				class="pico-background-red-500"
+			>
+				Delete	
+			</button>
+		</footer>
+	</article>
+}
+
+// TIMESTAMP
+templ TimestampConfigCreateForm() {
+	<form hx-post="/timestamp_config" hx-target="this">
+		<label>
+			Topic name
+			<input type="text" name="topic" required/>
+		</label>
+		<label>
+			Keys
+			<input type="text" name="keys" required/>
+		</label>
+		<button>Submit</button>
+	</form>
+}
+
+templ TimestampConfigEditForm(config database.TimestampConfig) {
+	<article>
+		<header>
+			<hgroup>
+				<h4>Config - { strconv.FormatInt(int64(config.ID), 10) }</h4>
+				<p>{ config.InsertedAt.Time.String() }</p>
+			</hgroup>
+		</header>
+		<form
+			hx-put={ "/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10) }
+			hx-swap="outerHTML"
+			hx-target="closest article"
+			id={ strconv.FormatInt(int64(config.ID), 10) + "timestamp" }
+		>
+			<label>
+				Topic name
+				<input type="text" name="topic" value={ config.TopicName } required/>
+			</label>
+			<label>
+				Keys
+				<input type="text" name="keys" value={ strings.Join(config.KeySelector, ",") } required/>
+			</label>
+		</form>
+		<footer>
+			<button
+				type="submut"
+				form={ strconv.FormatInt(int64(config.ID), 10) + "timestamp" }
+			>Save</button>
+			<button
+				hx-get={ "/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10) }
+				hx-swap="outerHTML"
+				hx-target="closest article"
+				class="secondary"
+			>
+				Cancel
+			</button>
+		</footer>
+	</article>
+}
+
+templ ListTimestampConfigs(configs []database.TimestampConfig) {
+	// TODO: better with grid?
+	<style>
+			me {
+				display: flex;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}	
+			me article {
+				flex-grow: 1;
+			}
+	</style>
+	for _, config := range(configs) {
+		@TimestampConfig(config)
+	}
+}
+
+templ TimestampConfig(config database.TimestampConfig) {
+	<article>
+		<header>
+			<hgroup>
+				<h4>Config - { strconv.FormatInt(int64(config.ID), 10) }</h4>
+				<p>{ config.InsertedAt.Time.String() }</p>
+			</hgroup>
+		</header>
+		<div>
+			<p>{ config.TopicName }</p>
+			<p>{ strings.Join(config.KeySelector, ",") }</p>
+		</div>
+		<footer>
+			<button
+				hx-get={ "/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10) + "/edit" }
+				hx-swap="outerHTML"
+				hx-target="closest article"
+				class="secondary"
+			>
+				Edit
+			</button>
+			<button
+				hx-delete={ "/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10) }
 				hx-confirm="Are you sure?"
 				class="pico-background-red-500"
 			>

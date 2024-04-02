@@ -1,6 +1,6 @@
 -- name: CreateEvent :one
 INSERT INTO events (
-    event_timestamp, topic_name, topic_offset,
+    eventhub_timestamp, topic_name, topic_offset,
     topic_partition, event_headers, event_key, event_value
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7
@@ -48,3 +48,32 @@ and column_name like 'index_%';
 -- from events
 -- where index_bike = '133'
 -- order by event_timestamp desc;
+
+-- name: CreateTimestampConfig :one
+INSERT INTO timestamp_configs (
+    topic_name, key_selector 
+) VALUES (
+ $1, $2 
+)
+RETURNING *;
+
+-- name: ListTimestampConfigs :many
+SELECT *
+FROM timestamp_configs
+ORDER BY inserted_at desc;
+
+-- name: DeleteTimestampConfigs :exec
+DELETE FROM timestamp_configs
+WHERE id = $1;
+
+-- name: GetTimestampConfig :one
+SELECT *
+FROM timestamp_configs
+WHERE id = $1;
+
+-- name: UpdateTimestampConfig :one
+UPDATE timestamp_configs
+SET topic_name = $2,
+  key_selector = $3
+WHERE id = $1
+RETURNING *;
