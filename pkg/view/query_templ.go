@@ -33,7 +33,7 @@ func QueryHome(columns []string) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/static/js/json-viewer.js\"></script> <div class=\"container\"><h1>Query</h1><form role=\"search\" hx-post=\"/query/search\" hx-target=\"#results\"><select name=\"column\" aria-label=\"Select your favorite cuisine...\" required><option selected disabled value=\"\">Select a index column\r</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/static/js/json-viewer.js\"></script> <div class=\"container\"><h1>Query</h1><form role=\"search\" hx-get=\"/query/search\" hx-target=\"#results\"><select name=\"column\" aria-label=\"Select your favorite cuisine...\" required><option selected disabled value=\"\">Select a index column\r</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

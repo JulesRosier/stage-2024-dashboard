@@ -21,5 +21,5 @@ func (s *Server) RegisterRoutes() {
 	e.GET("/h/event_index_config/list", handler.EventIndexConfigList)
 
 	e.GET("/query", handler.QueryHome)
-	e.POST("/query/search", handler.QuerySearch)
+	e.GET("/query/search", handler.QuerySearch)
 }

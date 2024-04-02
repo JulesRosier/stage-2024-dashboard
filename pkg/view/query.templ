@@ -11,7 +11,7 @@ templ QueryHome(columns []string) {
 			<h1>Query</h1>
 			<form
 				role="search"
-				hx-post="/query/search"
+				hx-get="/query/search"
 				hx-target="#results"
 			>
 				<select name="column" aria-label="Select your favorite cuisine..." required>
