@@ -4,7 +4,7 @@ import "Stage-2024-dashboard/pkg/database"
 import "strconv"
 import "strings"
 
-templ ConfigHome() {
+templ ConfigHome(topics []string) {
 	@base(false) {
 		<h1 id="event-index">Event Index Configs</h1>
 		<hr/>
@@ -22,6 +22,11 @@ templ ConfigHome() {
 		</details>
 		<hr/>
 		<div hx-trigger="load, newTimestampConfig from:body" hx-get="/h/timestamp_config/list"></div>
+		<datalist id="topics">
+			for _, topic := range(topics) {
+				<option value={ topic }></option>
+			}
+		</datalist>
 	}
 }
 
@@ -29,7 +34,7 @@ templ EventIndexConfigCreateForm() {
 	<form hx-post="/event_index_config" hx-target="this">
 		<label>
 			Topic name
-			<input type="text" name="topic" required/>
+			<input type="text" name="topic" list="topics" required/>
 		</label>
 		<label>
 			Index column	
@@ -137,12 +142,14 @@ templ EventIndexConfig(config database.EventIndexConfig) {
 	</article>
 }
 
+//==========================
 // TIMESTAMP
+//==========================
 templ TimestampConfigCreateForm() {
 	<form hx-post="/timestamp_config" hx-target="this">
 		<label>
 			Topic name
-			<input type="text" name="topic" required/>
+			<input type="text" name="topic" list="topics" required/>
 		</label>
 		<label>
 			Keys

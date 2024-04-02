@@ -201,6 +201,31 @@ func (q *Queries) GetTimestampConfig(ctx context.Context, id int32) (TimestampCo
 	return i, err
 }
 
+const listAllTopics = `-- name: ListAllTopics :many
+SELECT DISTINCT topic_name
+FROM events
+`
+
+func (q *Queries) ListAllTopics(ctx context.Context) ([]string, error) {
+	rows, err := q.db.Query(ctx, listAllTopics)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var topic_name string
+		if err := rows.Scan(&topic_name); err != nil {
+			return nil, err
+		}
+		items = append(items, topic_name)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
 SELECT id, inserted_at, topic_name, key_selector, index_column
 FROM event_index_configs

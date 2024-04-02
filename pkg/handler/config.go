@@ -11,7 +11,12 @@ import (
 )
 
 func EventIndexConfigHome(c echo.Context) error {
-	return render(c, view.ConfigHome())
+	q := database.GetQueries()
+	topics, err := q.ListAllTopics(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	return render(c, view.ConfigHome(topics))
 }
 
 func EventIndexConfigList(c echo.Context) error {
@@ -30,14 +35,16 @@ func EventIndexConfigCreate(c echo.Context) error {
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	q := database.GetQueries()
-	q.CreateEventIndexConfig(c.Request().Context(),
+	_, err := q.CreateEventIndexConfig(c.Request().Context(),
 		database.CreateEventIndexConfigParams{
 			TopicName:   topic,
 			KeySelector: strings.Split(keys, ","),
 			IndexColumn: column,
 		},
 	)
-
+	if err != nil {
+		return err
+	}
 	c.Response().Header().Add("HX-Trigger", "newConfig")
 	return render(c, view.EventIndexConfigCreateForm())
 }
@@ -134,10 +141,13 @@ func TimestampConfigCreate(c echo.Context) error {
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	q := database.GetQueries()
-	q.CreateTimestampConfig(c.Request().Context(), database.CreateTimestampConfigParams{
+	_, err := q.CreateTimestampConfig(c.Request().Context(), database.CreateTimestampConfigParams{
 		TopicName:   topic,
 		KeySelector: strings.Split(keys, ","),
 	})
+	if err != nil {
+		return err
+	}
 
 	c.Response().Header().Add("HX-Trigger", "newTimestampConfig")
 	return render(c, view.TimestampConfigCreateForm())

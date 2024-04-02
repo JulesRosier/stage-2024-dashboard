@@ -77,3 +77,7 @@ SET topic_name = $2,
   key_selector = $3
 WHERE id = $1
 RETURNING *;
+
+-- name: ListAllTopics :many
+SELECT DISTINCT topic_name
+FROM events;
