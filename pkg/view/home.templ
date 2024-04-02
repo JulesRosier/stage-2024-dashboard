@@ -22,5 +22,15 @@ templ Home() {
 			</button>
 			<p>Duration last index: <span id="index_new_duration">N/A</span></p>
 		</div>
+		<div>
+			<button
+				hx-post="/index/timestamp"
+				hx-disabled-elt="this"
+				hx-target="#index_timestamps_duration"
+			>
+				Index Timestamps
+			</button>
+			<p>Duration last index: <span id="index_timestamps_duration">N/A</span></p>
+		</div>
 	}
 }

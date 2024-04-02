@@ -6,7 +6,7 @@ import (
 )
 
 const querySearch = `
-select id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+select id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
 from events
 where %s = $1
 order by event_timestamp desc
@@ -26,6 +26,7 @@ func (q *Queries) QuearySearch(ctx context.Context, column string, key string) (
 		if err := rows.Scan(
 			&i.ID,
 			&i.InsertedAt,
+			&i.EventhubTimestamp,
 			&i.EventTimestamp,
 			&i.TopicName,
 			&i.TopicOffset,

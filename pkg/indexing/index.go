@@ -42,3 +42,18 @@ func PartialIndex(ctx context.Context) error {
 	}
 	return nil
 }
+
+func TimestampIndex(ctx context.Context) error {
+	q := database.GetQueries()
+	configs, err := q.ListTimestampConfigs(ctx)
+	if err != nil {
+		return err
+	}
+	for _, config := range configs {
+		err := q.TimestampIndex(ctx, config)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

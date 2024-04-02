@@ -1,5 +1,9 @@
 # Project Stage-2024-dashboard
 
+## TODO
+
+- [ ] Red buttons stil have a blue border
+
 ## Env vars
 
 example

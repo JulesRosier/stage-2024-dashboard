@@ -11,6 +11,7 @@ func (s *Server) RegisterRoutes() {
 
 	e.POST("/index/full", handler.FullIndex)
 	e.POST("/index/new", handler.IndexNewEvents)
+	e.POST("/index/timestamp", handler.IndexTimestamps)
 
 	e.GET("/config", handler.EventIndexConfigHome)
 	e.POST("/event_index_config", handler.EventIndexConfigCreate)
