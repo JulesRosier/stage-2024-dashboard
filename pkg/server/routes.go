@@ -28,6 +28,8 @@ func (s *Server) RegisterRoutes() {
 	e.GET("/timestamp_config/:id/edit", handler.TimestampConfigEditForm)
 	e.GET("/h/timestamp_config/list", handler.TimestampConfigList)
 
+	e.POST("/timestamp_config/auto", handler.TimestampConfigAuto)
+
 	e.GET("/query", handler.QueryHome)
 	e.GET("/query/search", handler.QuerySearch)
 }

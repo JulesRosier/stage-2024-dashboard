@@ -81,3 +81,8 @@ RETURNING *;
 -- name: ListAllTopics :many
 SELECT DISTINCT topic_name
 FROM events;
+
+-- name: GetEachEventType :many
+SELECT DISTINCT ON (topic_name) *
+FROM events
+ORDER BY topic_name, id desc;

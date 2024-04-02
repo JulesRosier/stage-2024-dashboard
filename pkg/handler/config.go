@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"Stage-2024-dashboard/pkg/config"
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/view"
 	"net/http"
@@ -222,4 +223,13 @@ func TimestampConfig(c echo.Context) error {
 	}
 
 	return render(c, view.TimestampConfig(config))
+}
+
+func TimestampConfigAuto(c echo.Context) error {
+	err := config.AutoTimestampConfig(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	c.Response().Header().Add("HX-Trigger", "newTimestampConfig")
+	return c.NoContent(http.StatusNoContent)
 }

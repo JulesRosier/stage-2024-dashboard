@@ -18,6 +18,10 @@ templ ConfigHome(topics []string) {
 		<hr/>
 		<details>
 			<summary>Add timestamp config</summary>
+			<button
+				hx-post="/timestamp_config/auto"
+				hx-disabled-elt="this"
+			>Auto config</button>
 			@TimestampConfigCreateForm()
 		</details>
 		<hr/>

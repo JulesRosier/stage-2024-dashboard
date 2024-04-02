@@ -137,6 +137,43 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 	return err
 }
 
+const getEachEventType = `-- name: GetEachEventType :many
+SELECT DISTINCT ON (topic_name) id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+FROM events
+ORDER BY topic_name, id desc
+`
+
+func (q *Queries) GetEachEventType(ctx context.Context) ([]Event, error) {
+	rows, err := q.db.Query(ctx, getEachEventType)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Event
+	for rows.Next() {
+		var i Event
+		if err := rows.Scan(
+			&i.ID,
+			&i.InsertedAt,
+			&i.EventhubTimestamp,
+			&i.EventTimestamp,
+			&i.TopicName,
+			&i.TopicOffset,
+			&i.TopicPartition,
+			&i.EventHeaders,
+			&i.EventKey,
+			&i.EventValue,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getEventIndexConfig = `-- name: GetEventIndexConfig :one
 SELECT id, inserted_at, topic_name, key_selector, index_column
 FROM event_index_configs
