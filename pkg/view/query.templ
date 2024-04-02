@@ -1,8 +1,15 @@
 package view
 
-import "Stage-2024-dashboard/pkg/database"
-import "encoding/base64"
-import "strings"
+import (
+	"Stage-2024-dashboard/pkg/database"
+	"encoding/base64"
+	"strings"
+)
+
+type EventWithDate struct {
+	Event    database.Event
+	ShowDate bool
+}
 
 templ QueryHome(columns []string) {
 	@base(false) {
@@ -30,7 +37,7 @@ templ QueryHome(columns []string) {
 	}
 }
 
-templ ListEvents(events []database.Event) {
+templ ListEvents(events []EventWithDate) {
 	<style>
 			me {
 				display: flex;
@@ -55,14 +62,17 @@ templ ListEvents(events []database.Event) {
 			}
 	</style>
 	for _, event := range(events) {
-		@Event(event)
+		if event.ShowDate {
+			<h2>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h2>
+		}
+		@Event(event.Event)
 	}
 }
 
 templ Event(event database.Event) {
 	<div class="event">
 		<p>
-			{ event.EventTimestamp.Time.String() }
+			{ event.EventTimestamp.Time.Format("15:04:05.000") }
 		</p>
 		<article>
 			<details>

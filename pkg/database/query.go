@@ -13,8 +13,8 @@ order by event_timestamp desc
 limit %d;
 `
 
-func (q *Queries) QuearySearch(ctx context.Context, column string, key string) ([]Event, error) {
-	query := fmt.Sprintf(querySearch, column, 10)
+func (q *Queries) QuearySearch(ctx context.Context, column string, key string, limit int) ([]Event, error) {
+	query := fmt.Sprintf(querySearch, column, limit)
 	rows, err := q.db.Query(ctx, query, key)
 	if err != nil {
 		return nil, err
