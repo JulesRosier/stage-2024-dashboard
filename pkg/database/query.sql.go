@@ -137,14 +137,15 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 	return err
 }
 
-const getEachEventType = `-- name: GetEachEventType :many
-SELECT DISTINCT ON (topic_name) id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
-FROM events
-ORDER BY topic_name, id desc
+const getEachEventTypeWithNoConfig = `-- name: GetEachEventTypeWithNoConfig :many
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value
+FROM timestamp_configs tc
+right join events e on tc.topic_name = e.topic_name
+where key_selector is null
 `
 
-func (q *Queries) GetEachEventType(ctx context.Context) ([]Event, error) {
-	rows, err := q.db.Query(ctx, getEachEventType)
+func (q *Queries) GetEachEventTypeWithNoConfig(ctx context.Context) ([]Event, error) {
+	rows, err := q.db.Query(ctx, getEachEventTypeWithNoConfig)
 	if err != nil {
 		return nil, err
 	}

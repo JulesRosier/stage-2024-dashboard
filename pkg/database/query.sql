@@ -82,7 +82,8 @@ RETURNING *;
 SELECT DISTINCT topic_name
 FROM events;
 
--- name: GetEachEventType :many
-SELECT DISTINCT ON (topic_name) *
-FROM events
-ORDER BY topic_name, id desc;
+-- name: GetEachEventTypeWithNoConfig :many
+SELECT DISTINCT ON (e.topic_name) e.*
+FROM timestamp_configs tc
+right join events e on tc.topic_name = e.topic_name
+where key_selector is null;

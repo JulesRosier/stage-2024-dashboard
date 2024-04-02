@@ -11,13 +11,14 @@ import (
 
 func AutoTimestampConfig(ctx context.Context) error {
 	q := database.GetQueries()
-	events, err := q.GetEachEventType(ctx)
+	events, err := q.GetEachEventTypeWithNoConfig(ctx)
 	if err != nil {
 		return err
 	}
 
 	var data map[string]interface{}
 	for _, event := range events {
+
 		err := json.Unmarshal(event.EventValue, &data)
 		if err != nil {
 			slog.Warn("Failed to unmarshal event", "error", err)
