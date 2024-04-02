@@ -15,3 +15,7 @@
 .json-boolean {
   color: #b10dc9;
 }
+
+body {
+  padding-bottom: 40vh;
+}
