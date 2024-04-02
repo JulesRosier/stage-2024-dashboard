@@ -64,7 +64,7 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 		>
 			<label>
 				Topic name
-				<input type="text" name="topic" value={ config.TopicName } required/>
+				<input type="text" name="topic" value={ config.TopicName } list="topics" required/>
 			</label>
 			<label>
 				Index column	
@@ -175,7 +175,7 @@ templ TimestampConfigEditForm(config database.TimestampConfig) {
 		>
 			<label>
 				Topic name
-				<input type="text" name="topic" value={ config.TopicName } required/>
+				<input type="text" name="topic" value={ config.TopicName } list="topics" required/>
 			</label>
 			<label>
 				Keys

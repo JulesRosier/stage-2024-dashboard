@@ -194,7 +194,7 @@ func EventIndexConfigEditForm(config database.EventIndexConfig) templ.Component 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required></label> <label>Index column\t\r <input type=\"text\" name=\"column\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" list=\"topics\" required></label> <label>Index column\t\r <input type=\"text\" name=\"column\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -507,7 +507,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required></label> <label>Keys\r <input type=\"text\" name=\"keys\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" list=\"topics\" required></label> <label>Keys\r <input type=\"text\" name=\"keys\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
