@@ -20,3 +20,25 @@
 body {
   padding-bottom: 40vh;
 }
+
+.eventlist {
+  display: flex;
+  flex-direction: column;
+}
+.eventlist article {
+  width: 650px;
+  align-self: center;
+}
+.eventlist article details {
+  margin: 1em;
+}
+.eventlist article details summary {
+  font-size: 1.3rem;
+}
+.eventlist .event {
+  display: flex;
+  justify-content: center;
+}
+.eventlist .event p {
+  padding: 1em;
+}

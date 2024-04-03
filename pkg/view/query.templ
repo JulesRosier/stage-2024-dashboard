@@ -40,34 +40,11 @@ templ QueryHome(columns []string) {
 				Advanced
 			</label>
 		</div>
-		<div id="results"></div>
+		<div id="results" class="eventlist"></div>
 	}
 }
 
 templ ListEvents(events []EventWithDate, nerd bool) {
-	<style>
-			me {
-				display: flex;
-				flex-direction: column;
-			}
-			me article {
-				width: 650px;
-				align-self: center;
-			}
-			me article details {
-				margin: 1em;
-			}
-			me article details summary {
-				font-size: 1.3rem;
-			}
-			me .event {
-				display: flex;
-				justify-content: center;
-			}
-			me .event p {
-				padding: 1em;
-			}
-	</style>
 	for _, event := range(events) {
 		if event.ShowDate {
 			<h2>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h2>
