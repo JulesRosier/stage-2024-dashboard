@@ -20,8 +20,8 @@ services:
         required: true
     environment:
       - DB_HOST=postgres
-      - SEED_BROKER=redpanda-0:19092
-      - REGISTRY=redpanda-0:18081
+      - SEED_BROKER=redpanda-0:9092
+      - REGISTRY=redpanda-0:8081
     networks:
       - redpanda_network
       - postgress_network
