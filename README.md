@@ -23,6 +23,8 @@ REGISTRY=localhost:18081
 
 ### Docker
 
+#### Setup
+
 Order matters!!
 
 ```sh
@@ -33,6 +35,13 @@ Make sure your `.env` is configured
 
 ```sh
 docker compose up -d
+```
+
+#### Building
+
+```sh
+docker build . -t  ghcr.io/julesrosier/stage-2024-dashboard:latest
+docker push ghcr.io/julesrosier/stage-2024-dashboard:latest
 ```
 
 ### Dependencies
