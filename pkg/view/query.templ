@@ -67,14 +67,22 @@ templ Event(event database.Event, nerd bool) {
 					}
 				</summary>
 				<div>
-					if nerd {
-						<div>Database timestamp: { event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<div>Eventhub timestamp: { event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<div>offset: { strconv.FormatInt(event.TopicOffset, 10) }</div>
-						<div>partition: { strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
-					}
-					<div>headers: { string(event.EventHeaders) }</div>
-					<div>key: { string(event.EventKey) }</div>
+					<div class="tab">
+						if nerd {
+							<div>Database timestamp </div>
+							<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
+							<div>Eventhub timestamp</div>
+							<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
+							<div>Offset</div>
+							<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
+							<div>Partition</div>
+							<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
+						}
+						<div>headers</div>
+						<div>{ string(event.EventHeaders) }</div>
+						<div>key</div>
+						<div>{ string(event.EventKey) }</div>
+					</div>
 					<json-viewer>
 						{  base64.StdEncoding.EncodeToString(event.EventValue) }
 					</json-viewer>

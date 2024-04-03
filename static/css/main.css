@@ -42,3 +42,12 @@ body {
 .eventlist .event p {
   padding: 1em;
 }
+
+.tab {
+  display: grid;
+  grid-template-columns: min-content auto;
+  gap: 0 1em;
+}
+.tab div {
+  white-space: nowrap;
+}
