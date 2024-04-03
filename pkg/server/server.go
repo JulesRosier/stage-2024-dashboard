@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -29,8 +30,12 @@ func NewServer() *Server {
 // Starts the server in a new routine
 func (s *Server) Start() {
 	slog.Info("Starting server")
+	bind := os.Getenv("HOST")
+	if bind == "" {
+		bind = "127.0.0.1"
+	}
 	go func() {
-		if err := s.e.Start("127.0.0.1:3000"); err != nil && err != http.ErrServerClosed {
+		if err := s.e.Start(bind + ":3000"); err != nil && err != http.ErrServerClosed {
 			slog.Error("Shutting down the server", "error", err.Error())
 		}
 	}()
