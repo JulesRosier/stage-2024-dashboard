@@ -4,6 +4,7 @@ import (
 	"Stage-2024-dashboard/pkg/database"
 	"encoding/base64"
 	"strings"
+	"strconv"
 )
 
 type EventWithDate struct {
@@ -20,6 +21,8 @@ templ QueryHome(columns []string) {
 				role="search"
 				hx-get="/query/search"
 				hx-target="#results"
+				hx-disabled-elt="[type='submit']"
+				hx-include="[name='nerd_mode']"
 			>
 				<select name="column" required>
 					<option selected disabled value="">
@@ -30,14 +33,18 @@ templ QueryHome(columns []string) {
 					}
 				</select>
 				<input name="search" type="search" placeholder="Search Key" required/>
-				<input type="submit" value="Search" hx-disabled-elt="this"/>
+				<input type="submit" value="Search"/>
 			</form>
+			<label>
+				<input name="nerd_mode" type="checkbox" role="switch"/>
+				Advanced
+			</label>
 		</div>
 		<div id="results"></div>
 	}
 }
 
-templ ListEvents(events []EventWithDate) {
+templ ListEvents(events []EventWithDate, nerd bool) {
 	<style>
 			me {
 				display: flex;
@@ -65,11 +72,11 @@ templ ListEvents(events []EventWithDate) {
 		if event.ShowDate {
 			<h2>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h2>
 		}
-		@Event(event.Event)
+		@Event(event.Event, nerd)
 	}
 }
 
-templ Event(event database.Event) {
+templ Event(event database.Event, nerd bool) {
 	<div class="event">
 		<p>
 			{ event.EventTimestamp.Time.Format("15:04:05.000") }
@@ -78,8 +85,19 @@ templ Event(event database.Event) {
 			<details>
 				<summary>
 					{ prittyName(event.TopicName) }
+					if nerd {
+						- { strconv.FormatInt(int64(event.ID), 10) }
+					}
 				</summary>
 				<div>
+					if nerd {
+						<div>Database timestamp: { event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
+						<div>Eventhub timestamp: { event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
+						<div>offset: { strconv.FormatInt(event.TopicOffset, 10) }</div>
+						<div>partition: { strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
+					}
+					<div>headers: { string(event.EventHeaders) }</div>
+					<div>key: { string(event.EventKey) }</div>
 					<json-viewer>
 						{  base64.StdEncoding.EncodeToString(event.EventValue) }
 					</json-viewer>

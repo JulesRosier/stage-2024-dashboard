@@ -22,6 +22,11 @@ func QueryHome(c echo.Context) error {
 func QuerySearch(c echo.Context) error {
 	column := strings.TrimSpace(c.FormValue("column"))
 	search := strings.TrimSpace(c.FormValue("search"))
+	nerdStr := c.FormValue("nerd_mode")
+	nerd := false
+	if nerdStr == "on" {
+		nerd = true
+	}
 
 	q := database.GetQueries()
 	e, err := q.QuearySearch(c.Request().Context(), column, search, 20)
@@ -44,5 +49,5 @@ func QuerySearch(c echo.Context) error {
 		})
 	}
 
-	return render(c, view.ListEvents(ewd))
+	return render(c, view.ListEvents(ewd, nerd))
 }
