@@ -137,15 +137,15 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 	return err
 }
 
-const getEachEventTypeWithNoConfig = `-- name: GetEachEventTypeWithNoConfig :many
+const getEachEventTypeWithNoTimestampConfig = `-- name: GetEachEventTypeWithNoTimestampConfig :many
 SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value
 FROM timestamp_configs tc
 right join events e on tc.topic_name = e.topic_name
 where key_selector is null
 `
 
-func (q *Queries) GetEachEventTypeWithNoConfig(ctx context.Context) ([]Event, error) {
-	rows, err := q.db.Query(ctx, getEachEventTypeWithNoConfig)
+func (q *Queries) GetEachEventTypeWithNoTimestampConfig(ctx context.Context) ([]Event, error) {
+	rows, err := q.db.Query(ctx, getEachEventTypeWithNoTimestampConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -239,13 +239,13 @@ func (q *Queries) GetTimestampConfig(ctx context.Context, id int32) (TimestampCo
 	return i, err
 }
 
-const listAllTopics = `-- name: ListAllTopics :many
+const listAllTopicNames = `-- name: ListAllTopicNames :many
 SELECT DISTINCT topic_name
 FROM events
 `
 
-func (q *Queries) ListAllTopics(ctx context.Context) ([]string, error) {
-	rows, err := q.db.Query(ctx, listAllTopics)
+func (q *Queries) ListAllTopicNames(ctx context.Context) ([]string, error) {
+	rows, err := q.db.Query(ctx, listAllTopicNames)
 	if err != nil {
 		return nil, err
 	}
@@ -257,6 +257,42 @@ func (q *Queries) ListAllTopics(ctx context.Context) ([]string, error) {
 			return nil, err
 		}
 		items = append(items, topic_name)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listAllTopics = `-- name: ListAllTopics :many
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value
+FROM events e
+`
+
+func (q *Queries) ListAllTopics(ctx context.Context) ([]Event, error) {
+	rows, err := q.db.Query(ctx, listAllTopics)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Event
+	for rows.Next() {
+		var i Event
+		if err := rows.Scan(
+			&i.ID,
+			&i.InsertedAt,
+			&i.EventhubTimestamp,
+			&i.EventTimestamp,
+			&i.TopicName,
+			&i.TopicOffset,
+			&i.TopicPartition,
+			&i.EventHeaders,
+			&i.EventKey,
+			&i.EventValue,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

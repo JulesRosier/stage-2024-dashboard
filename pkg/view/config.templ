@@ -10,6 +10,10 @@ templ ConfigHome(topics []string) {
 		<hr/>
 		<details>
 			<summary>Add event config</summary>
+			<button
+				hx-post="/event_index_config/auto"
+				hx-disabled-elt="this"
+			>Auto config</button>
 			@EventIndexConfigCreateForm()
 		</details>
 		<hr/>

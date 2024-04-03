@@ -11,7 +11,7 @@ import (
 
 func AutoTimestampConfig(ctx context.Context) error {
 	q := database.GetQueries()
-	events, err := q.GetEachEventTypeWithNoConfig(ctx)
+	events, err := q.GetEachEventTypeWithNoTimestampConfig(ctx)
 	if err != nil {
 		return err
 	}

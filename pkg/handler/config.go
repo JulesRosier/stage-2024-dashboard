@@ -13,7 +13,7 @@ import (
 
 func EventIndexConfigHome(c echo.Context) error {
 	q := database.GetQueries()
-	topics, err := q.ListAllTopics(c.Request().Context())
+	topics, err := q.ListAllTopicNames(c.Request().Context())
 	if err != nil {
 		return err
 	}
@@ -231,5 +231,14 @@ func TimestampConfigAuto(c echo.Context) error {
 		return err
 	}
 	c.Response().Header().Add("HX-Trigger", "newTimestampConfig")
+	return c.NoContent(http.StatusNoContent)
+}
+
+func EventIndexConfigAuto(c echo.Context) error {
+	err := config.AutoEventIndexConfig(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	c.Response().Header().Add("HX-Trigger", "newConfig")
 	return c.NoContent(http.StatusNoContent)
 }

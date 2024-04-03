@@ -78,11 +78,15 @@ SET topic_name = $2,
 WHERE id = $1
 RETURNING *;
 
--- name: ListAllTopics :many
+-- name: ListAllTopicNames :many
 SELECT DISTINCT topic_name
 FROM events;
 
--- name: GetEachEventTypeWithNoConfig :many
+-- name: ListAllTopics :many
+SELECT DISTINCT ON (e.topic_name) e.*
+FROM events e;
+
+-- name: GetEachEventTypeWithNoTimestampConfig :many
 SELECT DISTINCT ON (e.topic_name) e.*
 FROM timestamp_configs tc
 right join events e on tc.topic_name = e.topic_name
