@@ -1,0 +1,25 @@
+networks:
+  redpanda_network:
+    name: redpanda_network
+    driver: bridge
+    external: true
+  postgress_network:
+    name: postgress_network
+    driver: bridge
+    external: true
+
+services:
+  server:
+    image: ghcr.io/julesrosier/stage-2024-dashboard:latest
+    ports:
+      - 3000:3000
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      - DB_HOST=postgres
+      - SEED_BROKER=redpanda-0:19092
+      - REGISTRY=redpanda-0:18081
+    networks:
+      - redpanda_network
+      - postgress_network

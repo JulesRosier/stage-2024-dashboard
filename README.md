@@ -21,6 +21,20 @@ REGISTRY=localhost:18081
 
 ## Dev Setup
 
+### Docker
+
+Order matters!!
+
+```sh
+docker compose -f .\docker-compose-dev.yaml up -d
+```
+
+Make sure your `.env` is configured
+
+```sh
+docker compose up -d
+```
+
 ### Dependencies
 
 Latest version of Go and the following codegen tools.

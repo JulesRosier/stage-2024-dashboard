@@ -5,11 +5,11 @@ networks:
   redpanda_network:
     name: redpanda_network
     driver: bridge
-    external: true
+    attachable: true
   postgress_network:
     name: postgress_network
     driver: bridge
-    external: true
+    attachable: true
 
 volumes:
   redpanda-0: null
@@ -99,16 +99,3 @@ services:
       - local_pgdata:/var/lib/postgresql/data
     networks:
       - postgress_network
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   container_name: pgadmin4_container
-  #   restart: always
-  #   ports:
-  #     - "8888:80"
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-  #     PGADMIN_DEFAULT_PASSWORD: strong-password
-  #   volumes:
-  #     - pgadmin-data:/var/lib/pgadmin
-  #   networks:
-  #     - postgress_network
