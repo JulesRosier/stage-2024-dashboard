@@ -4,15 +4,25 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"reflect"
+	"strings"
 )
 
 const Index = `
 UPDATE events
-SET index_%s = (e.event_value%s)::VARCHAR
+SET %s
 FROM events e
 WHERE 
     events.id = e.id 
     AND events.topic_name = '%s';
+`
+
+const setFromJson = `
+index_%s = (e.event_value%s)::VARCHAR
+`
+
+const setFromJsonTimestamp = `
+event_timestamp = TO_TIMESTAMP(SUBSTRING(e.event_value%s FROM 1 FOR 26), 'YYYY-MM-DD"T"HH24:MI:SS.USZ')
 `
 
 const IndexNew = `
@@ -25,9 +35,24 @@ WHERE
 	AND events.index_%s IS NULL;
 `
 
-func (q *Queries) FullIndex(ctx context.Context, config EventIndexConfig) error {
-	query := fmt.Sprintf(Index, config.IndexColumn, createJsonSelector(config.KeySelector), config.TopicName)
-	slog.Info("Indexing", "config_id", config.ID)
+// TimestampConfig is optional
+func (q *Queries) FullIndex(ctx context.Context, configs []EventIndexConfig, timestampConfig TimestampConfig) error {
+	sets := strings.Builder{}
+	l := len(configs)
+	for i, config := range configs {
+		sets.WriteString(fmt.Sprintf(setFromJson, config.IndexColumn, createJsonSelector(config.KeySelector)))
+		if l-1 > i {
+			sets.WriteString(",")
+		}
+	}
+	indexTimestamp := !reflect.ValueOf(timestampConfig).IsZero()
+	if indexTimestamp {
+		sets.WriteString(",")
+		sets.WriteString(fmt.Sprintf(setFromJsonTimestamp, createJsonSelector(timestampConfig.KeySelector)))
+	}
+
+	query := fmt.Sprintf(Index, sets.String(), configs[0].TopicName)
+	slog.Info("Indexing", "topic", configs[0].TopicName, "timestamp?", indexTimestamp)
 	_, err := q.db.Exec(ctx, query)
 	return err
 }

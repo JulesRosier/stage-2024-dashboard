@@ -221,6 +221,31 @@ func (q *Queries) GetIndexColumns(ctx context.Context) ([]string, error) {
 	return items, nil
 }
 
+const getIndexColumnsFromConfigs = `-- name: GetIndexColumnsFromConfigs :many
+select distinct index_column
+from event_index_configs
+`
+
+func (q *Queries) GetIndexColumnsFromConfigs(ctx context.Context) ([]string, error) {
+	rows, err := q.db.Query(ctx, getIndexColumnsFromConfigs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var index_column string
+		if err := rows.Scan(&index_column); err != nil {
+			return nil, err
+		}
+		items = append(items, index_column)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getTimestampConfig = `-- name: GetTimestampConfig :one
 SELECT id, inserted_at, topic_name, key_selector
 FROM timestamp_configs

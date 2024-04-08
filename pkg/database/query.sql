@@ -91,3 +91,7 @@ SELECT DISTINCT ON (e.topic_name) e.*
 FROM timestamp_configs tc
 right join events e on tc.topic_name = e.topic_name
 where key_selector is null;
+
+-- name: GetIndexColumnsFromConfigs :many
+select distinct index_column
+from event_index_configs;
