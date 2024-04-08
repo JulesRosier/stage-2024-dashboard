@@ -9,9 +9,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func FullIndex(c echo.Context) error {
+func (h *Handler) FullIndex(c echo.Context) error {
 	start := time.Now()
-	err := indexing.FullIndex(c.Request().Context())
+	err := indexing.FullIndex(c.Request().Context(), h.Q)
 	if err != nil {
 		slog.Warn("Failed to full index", "error", err)
 		return err
@@ -20,9 +20,9 @@ func FullIndex(c echo.Context) error {
 	return c.String(http.StatusOK, d.String())
 }
 
-func IndexNewEvents(c echo.Context) error {
+func (h *Handler) IndexNewEvents(c echo.Context) error {
 	start := time.Now()
-	err := indexing.PartialIndex(c.Request().Context())
+	err := indexing.PartialIndex(c.Request().Context(), h.Q)
 	if err != nil {
 		slog.Warn("Failed to partial index", "error", err)
 		return err
@@ -31,9 +31,9 @@ func IndexNewEvents(c echo.Context) error {
 	return c.String(http.StatusOK, d.String())
 }
 
-func IndexTimestamps(c echo.Context) error {
+func (h *Handler) IndexTimestamps(c echo.Context) error {
 	start := time.Now()
-	err := indexing.TimestampIndex(c.Request().Context())
+	err := indexing.TimestampIndex(c.Request().Context(), h.Q)
 	if err != nil {
 		slog.Warn("Failed to index timestamps", "error", err)
 		return err

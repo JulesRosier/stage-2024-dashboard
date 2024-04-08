@@ -12,8 +12,7 @@ import (
 	"github.com/redpanda-data/console/backend/pkg/serde"
 )
 
-func EventImporter() {
-	q := database.GetQueries()
+func EventImporter(q *database.Queries) {
 	cl := GetClient()
 	s := CreateSerde()
 

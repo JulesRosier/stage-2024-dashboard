@@ -7,8 +7,7 @@ import (
 
 const IndexPrefix = "index_"
 
-func FullIndex(ctx context.Context) error {
-	q := database.GetQueries()
+func FullIndex(ctx context.Context, q *database.Queries) error {
 	configs, err := q.ListEventIndexConfigs(ctx)
 	if err != nil {
 		return err
@@ -27,8 +26,7 @@ func FullIndex(ctx context.Context) error {
 	return nil
 }
 
-func PartialIndex(ctx context.Context) error {
-	q := database.GetQueries()
+func PartialIndex(ctx context.Context, q *database.Queries) error {
 	configs, err := q.ListEventIndexConfigs(ctx)
 	if err != nil {
 		return err
@@ -43,8 +41,7 @@ func PartialIndex(ctx context.Context) error {
 	return nil
 }
 
-func TimestampIndex(ctx context.Context) error {
-	q := database.GetQueries()
+func TimestampIndex(ctx context.Context, q *database.Queries) error {
 	configs, err := q.ListTimestampConfigs(ctx)
 	if err != nil {
 		return err

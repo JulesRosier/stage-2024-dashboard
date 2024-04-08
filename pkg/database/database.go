@@ -15,11 +15,10 @@ import (
 
 var (
 	//go:embed schema.sql
-	ddl     string
-	queries *Queries
+	ddl string
 )
 
-func Init() *Queries {
+func NewQueries() *Queries {
 	ctx := context.Background()
 
 	DbUser := os.Getenv("DB_USER")
@@ -43,10 +42,6 @@ func Init() *Queries {
 		panic(err)
 	}
 
-	queries = New(db)
-	return queries
-}
-
-func GetQueries() *Queries {
+	queries := New(db)
 	return queries
 }

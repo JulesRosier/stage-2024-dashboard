@@ -6,6 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Home(c echo.Context) error {
+func (h *Handler) Home(c echo.Context) error {
 	return render(c, view.Home())
 }

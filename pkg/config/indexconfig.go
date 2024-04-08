@@ -8,8 +8,7 @@ import (
 	"regexp"
 )
 
-func AutoEventIndexConfig(ctx context.Context) error {
-	q := database.GetQueries()
+func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
 	events, err := q.ListAllTopics(ctx)
 	if err != nil {
 		return err

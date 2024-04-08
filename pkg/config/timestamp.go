@@ -9,8 +9,7 @@ import (
 	"time"
 )
 
-func AutoTimestampConfig(ctx context.Context) error {
-	q := database.GetQueries()
+func AutoTimestampConfig(ctx context.Context, q *database.Queries) error {
 	events, err := q.GetEachEventTypeWithNoTimestampConfig(ctx)
 	if err != nil {
 		return err
