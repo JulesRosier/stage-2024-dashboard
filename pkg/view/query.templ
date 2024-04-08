@@ -22,7 +22,10 @@ templ QueryHome(columns []string) {
 				hx-get="/query/search"
 				hx-target="#results"
 				hx-disabled-elt="[type='submit']"
+				hx-trigger="onLoadC, submit"
 				hx-include="[name='nerd_mode']"
+				hx-ext="push-url-w-params"
+				data-push-url="/query"
 			>
 				<select name="column" required>
 					<option selected disabled value="">
@@ -50,6 +53,16 @@ templ QueryHome(columns []string) {
 			</label>
 		</div>
 		<div id="results" class="eventlist"></div>
+		<script>
+		window.onload = (e) => {
+			let params = new URLSearchParams(document.location.search);
+			document.getElementsByName("search")[0].value = params.get("search")
+			document.getElementsByName("column")[0].value = params.get("column")
+			if (params.get("search") && params.get("column")) {
+				htmx.trigger("[role='search']", "onLoadC")
+			}
+		}
+		</script>
 	}
 }
 

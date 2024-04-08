@@ -2,6 +2,7 @@
   /* --pico-spacing: 0.75rem; */
   /* --pico-font-size: 99%; */
   --pico-form-element-spacing-vertical: 0.4em;
+  scrollbar-gutter: stable;
 }
 
 .json-key {
