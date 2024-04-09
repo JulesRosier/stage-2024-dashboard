@@ -18,14 +18,6 @@ func (h *Handler) QueryHome(c echo.Context) error {
 	return render(c, view.QueryHome(columns))
 }
 
-func (h *Handler) QueryForm(c echo.Context) error {
-	columns, err := h.Q.GetIndexColumns(c.Request().Context())
-	if err != nil {
-		return err
-	}
-	return render(c, view.QueryForm(columns))
-}
-
 func (h *Handler) QuerySearch(c echo.Context) error {
 	var cs []string
 	var ss []string

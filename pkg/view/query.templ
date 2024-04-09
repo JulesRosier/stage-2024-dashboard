@@ -17,10 +17,12 @@ type EventShow struct {
 templ QueryHome(columns []string) {
 	@base(true) {
 		<script src="/static/js/json-viewer.js"></script>
+		<script src="/static/js/queries.js"></script>
 		<div class="container">
 			<h1>Query</h1>
 			<div>
 				<form
+					id="main-form"
 					hx-get="/query/search"
 					hx-target="#results"
 					hx-disabled-elt="[type='submit'], [class='ext-form']"
@@ -39,16 +41,13 @@ templ QueryHome(columns []string) {
 									<option>{ column }</option>
 								}
 							</select>
-							<input name="search" type="search" placeholder="Search Key" required/>
+							<input name="search" placeholder="Search Key" required/>
 						</fieldset>
 					</div>
 					<input type="submit" value="Search"/>
 				</form>
 			</div>
-			<button
-				hx-get="/query/form"
-				hx-swap="none"
-			>Add query</button>
+			<button id="add-form">+</button>
 			<label>
 				<input name="nerd_mode" type="checkbox" role="switch"/>
 				<script>
@@ -74,23 +73,21 @@ templ QueryHome(columns []string) {
 		// 	}
 		// }
 		// </script>
+		<template id="form-template">
+			<fieldset role="group">
+				<select name="column" required>
+					<option selected disabled value="">
+						Select a index column
+					</option>
+					for _, column := range(columns) {
+						<option>{ column }</option>
+					}
+				</select>
+				<input name="search" placeholder="Search Key" required/>
+				<button class="rm-form">-</button>
+			</fieldset>
+		</template>
 	}
-}
-
-templ QueryForm(columns []string) {
-	<div hx-swap-oob="beforeend:#queries">
-		<fieldset role="group">
-			<select name="column" required>
-				<option selected disabled value="">
-					Select a index column
-				</option>
-				for _, column := range(columns) {
-					<option>{ column }</option>
-				}
-			</select>
-			<input name="search" type="search" placeholder="Search Key" required/>
-		</fieldset>
-	</div>
 }
 
 templ ListEvents(events []EventShow, nerd bool) {

@@ -33,5 +33,4 @@ func (s *Server) RegisterRoutes(hdlr *handler.Handler) {
 
 	e.GET("/query", hdlr.QueryHome)
 	e.GET("/query/search", hdlr.QuerySearch)
-	e.GET("/query/form", hdlr.QueryForm)
 }
