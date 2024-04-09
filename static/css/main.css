@@ -18,6 +18,16 @@
   color: #b10dc9;
 }
 
+.json ul li {
+  list-style-type: none;
+  list-style: none;
+}
+
+.json > ul {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   padding-bottom: 40vh;
 }
@@ -33,7 +43,7 @@ body {
 }
 .eventlist article {
   margin: 0;
-  max-width: 500px;
+  max-width: 600px;
 }
 .eventlist article details {
   margin: 1em;

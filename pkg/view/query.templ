@@ -2,7 +2,7 @@ package view
 
 import (
 	"Stage-2024-dashboard/pkg/database"
-	"encoding/base64"
+	// "encoding/base64"
 	"strings"
 	"strconv"
 	"fmt"
@@ -133,9 +133,12 @@ templ Event(event database.Event, nerd bool) {
 					<div>key</div>
 					<div>{ string(event.EventKey) }</div>
 				</div>
-				<json-viewer>
-					{  base64.StdEncoding.EncodeToString(event.EventValue) }
-				</json-viewer>
+				// <json-viewer>
+				// 	{  base64.StdEncoding.EncodeToString(event.EventValue) }
+				// </json-viewer>
+				<div class="json">
+					@templ.Raw(FormatJson(event.EventValue))
+				</div>
 			</div>
 		</details>
 	</article>
