@@ -5,39 +5,50 @@ import (
 	"encoding/base64"
 	"strings"
 	"strconv"
+	"fmt"
 )
 
-type EventWithDate struct {
+type EventShow struct {
 	Event    database.Event
+	Column   int
 	ShowDate bool
 }
 
 templ QueryHome(columns []string) {
-	@base(false) {
+	@base(true) {
 		<script src="/static/js/json-viewer.js"></script>
 		<div class="container">
 			<h1>Query</h1>
-			<form
-				role="search"
-				hx-get="/query/search"
-				hx-target="#results"
-				hx-disabled-elt="[type='submit']"
-				hx-trigger="onLoadC, submit"
-				hx-include="[name='nerd_mode']"
-				hx-ext="push-url-w-params"
-				data-push-url="/query"
-			>
-				<select name="column" required>
-					<option selected disabled value="">
-						Select a index column
-					</option>
-					for _, column := range(columns) {
-						<option>{ column }</option>
-					}
-				</select>
-				<input name="search" type="search" placeholder="Search Key" required/>
-				<input type="submit" value="Search"/>
-			</form>
+			<div>
+				<form
+					hx-get="/query/search"
+					hx-target="#results"
+					hx-disabled-elt="[type='submit'], [class='ext-form']"
+					hx-trigger="onLoadC, submit"
+					hx-include="[name='nerd_mode']"
+					hx-ext="push-url-w-params"
+				>
+					// data-push-url="/query"
+					<div id="queries">
+						<fieldset role="group">
+							<select name="column" required>
+								<option selected disabled value="">
+									Select a index column
+								</option>
+								for _, column := range(columns) {
+									<option>{ column }</option>
+								}
+							</select>
+							<input name="search" type="search" placeholder="Search Key" required/>
+						</fieldset>
+					</div>
+					<input type="submit" value="Search"/>
+				</form>
+			</div>
+			<button
+				hx-get="/query/form"
+				hx-swap="none"
+			>Add query</button>
 			<label>
 				<input name="nerd_mode" type="checkbox" role="switch"/>
 				<script>
@@ -53,65 +64,85 @@ templ QueryHome(columns []string) {
 			</label>
 		</div>
 		<div id="results" class="eventlist"></div>
-		<script>
-		window.onload = (e) => {
-			let params = new URLSearchParams(document.location.search);
-			document.getElementsByName("search")[0].value = params.get("search")
-			document.getElementsByName("column")[0].value = params.get("column")
-			if (params.get("search") && params.get("column")) {
-				htmx.trigger("[role='search']", "onLoadC")
-			}
-		}
-		</script>
+		// <script>
+		// window.onload = (e) => {
+		// 	let params = new URLSearchParams(document.location.search);
+		// 	document.getElementsByName("search")[0].value = params.get("search")
+		// 	document.getElementsByName("column")[0].value = params.get("column")
+		// 	if (params.get("search") && params.get("column")) {
+		// 		htmx.trigger("[role='search']", "onLoadC")
+		// 	}
+		// }
+		// </script>
 	}
 }
 
-templ ListEvents(events []EventWithDate, nerd bool) {
+templ QueryForm(columns []string) {
+	<div hx-swap-oob="beforeend:#queries">
+		<fieldset role="group">
+			<select name="column" required>
+				<option selected disabled value="">
+					Select a index column
+				</option>
+				for _, column := range(columns) {
+					<option>{ column }</option>
+				}
+			</select>
+			<input name="search" type="search" placeholder="Search Key" required/>
+		</fieldset>
+	</div>
+}
+
+templ ListEvents(events []EventShow, nerd bool) {
 	for _, event := range(events) {
-		if event.ShowDate {
-			<h2>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h2>
-		}
+		<div class="event-timestamp">
+			if event.ShowDate {
+				<h3>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h3>
+			}
+			<p>
+				{ event.Event.EventTimestamp.Time.Format("15:04:05.000") }
+			</p>
+		</div>
+		@templ.Raw(fmt.Sprintf("<div style='grid-column: %d'>", event.Column))
 		@Event(event.Event, nerd)
+		@templ.Raw("</div>")
 	}
 }
 
 templ Event(event database.Event, nerd bool) {
-	<div class="event">
-		<p>
-			{ event.EventTimestamp.Time.Format("15:04:05.000") }
-		</p>
-		<article>
-			<details>
-				<summary>
-					{ prittyName(event.TopicName) }
+	// <div class="event">
+	<article>
+		<details>
+			<summary>
+				{ prittyName(event.TopicName) }
+				if nerd {
+					- { strconv.FormatInt(int64(event.ID), 10) }
+				}
+			</summary>
+			<div>
+				<div class="tab">
 					if nerd {
-						- { strconv.FormatInt(int64(event.ID), 10) }
+						<div>Database timestamp </div>
+						<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
+						<div>Eventhub timestamp</div>
+						<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
+						<div>Offset</div>
+						<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
+						<div>Partition</div>
+						<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
 					}
-				</summary>
-				<div>
-					<div class="tab">
-						if nerd {
-							<div>Database timestamp </div>
-							<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
-							<div>Eventhub timestamp</div>
-							<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
-							<div>Offset</div>
-							<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
-							<div>Partition</div>
-							<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
-						}
-						<div>headers</div>
-						<div>{ string(event.EventHeaders) }</div>
-						<div>key</div>
-						<div>{ string(event.EventKey) }</div>
-					</div>
-					<json-viewer>
-						{  base64.StdEncoding.EncodeToString(event.EventValue) }
-					</json-viewer>
+					<div>headers</div>
+					<div>{ string(event.EventHeaders) }</div>
+					<div>key</div>
+					<div>{ string(event.EventKey) }</div>
 				</div>
-			</details>
-		</article>
-	</div>
+				<json-viewer>
+					{  base64.StdEncoding.EncodeToString(event.EventValue) }
+				</json-viewer>
+			</div>
+		</details>
+	</article>
+	// </div>
 }
 
 func prittyName(s string) string {

@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/view"
 	"log/slog"
-	"strings"
+	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -17,34 +18,64 @@ func (h *Handler) QueryHome(c echo.Context) error {
 	return render(c, view.QueryHome(columns))
 }
 
+func (h *Handler) QueryForm(c echo.Context) error {
+	columns, err := h.Q.GetIndexColumns(c.Request().Context())
+	if err != nil {
+		return err
+	}
+	return render(c, view.QueryForm(columns))
+}
+
 func (h *Handler) QuerySearch(c echo.Context) error {
-	column := strings.TrimSpace(c.FormValue("column"))
-	search := strings.TrimSpace(c.FormValue("search"))
-	nerdStr := c.FormValue("nerd_mode")
+	var cs []string
+	var ss []string
+	for name, p := range c.QueryParams() {
+		switch name {
+		case "column":
+			cs = p
+		case "search":
+			ss = p
+		}
+	}
+	if len(cs) != len(ss) {
+		c.Response().Writer.WriteHeader(http.StatusBadRequest)
+		return nil
+	}
+	ps := []database.QueryParams{}
+	for i, c := range cs {
+		ps = append(ps, database.QueryParams{
+			Column: c,
+			Search: ss[i],
+		})
+	}
+
+	nerdStr := c.QueryParam("nerd_mode")
+
 	nerd := false
 	if nerdStr == "on" {
 		nerd = true
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), column, search, 20)
+	e, err := h.Q.QuearySearch(c.Request().Context(), ps, 50)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err
 	}
-	ewd := []view.EventWithDate{}
+	events := []view.EventShow{}
 	prev := time.Unix(0, 0).Format("2006-01-02")
 	for _, event := range e {
 		x := false
-		d := event.EventTimestamp.Time.Format("2006-01-02")
+		d := event.Event.EventTimestamp.Time.Format("2006-01-02")
 		if prev != d {
 			x = true
 			prev = d
 		}
-		ewd = append(ewd, view.EventWithDate{
-			Event:    event,
+		events = append(events, view.EventShow{
+			Event:    event.Event,
 			ShowDate: x,
+			Column:   event.Selected + 2,
 		})
 	}
 
-	return render(c, view.ListEvents(ewd, nerd))
+	return render(c, view.ListEvents(events, nerd))
 }
