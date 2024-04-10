@@ -36,7 +36,7 @@ WHERE
 `
 
 // TimestampConfig is optional
-func (q *Queries) FullIndex(ctx context.Context, configs []EventIndexConfig, timestampConfig TimestampConfig) error {
+func (q *Queries) FullIndex(ctx context.Context, configs []EventIndexConfig, timestampConfig TimestampConfig) (int64, error) {
 	sets := strings.Builder{}
 	l := len(configs)
 	for i, config := range configs {
@@ -53,8 +53,8 @@ func (q *Queries) FullIndex(ctx context.Context, configs []EventIndexConfig, tim
 
 	query := fmt.Sprintf(Index, sets.String(), configs[0].TopicName)
 	slog.Info("Indexing", "topic", configs[0].TopicName, "timestamp?", indexTimestamp)
-	_, err := q.db.Exec(ctx, query)
-	return err
+	r, err := q.db.Exec(ctx, query)
+	return r.RowsAffected(), err
 }
 
 // only index those that not has been indexed jet

@@ -8,15 +8,15 @@ import (
 
 const IndexPrefix = "index_"
 
-func FullIndex(ctx context.Context, q *database.Queries) error {
+func FullIndex(ctx context.Context, q *database.Queries) (int64, error) {
 	err := CreateIndexColumns(ctx, q)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	configs, err := q.ListEventIndexConfigs(ctx)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	byTopic := map[string][]database.EventIndexConfig{}
@@ -26,21 +26,23 @@ func FullIndex(ctx context.Context, q *database.Queries) error {
 
 	timestampConfigs, err := q.ListTimestampConfigs(ctx)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	timestampByTopic := map[string]database.TimestampConfig{}
 	for _, config := range timestampConfigs {
 		timestampByTopic[config.TopicName] = config
 	}
 
+	var count int64
 	for topic, configs := range byTopic {
-		err := q.FullIndex(ctx, configs, timestampByTopic[topic])
+		r, err := q.FullIndex(ctx, configs, timestampByTopic[topic])
 		if err != nil {
 			slog.Warn("Index failed", "topic", topic, "error", err)
 		}
+		count += r
 	}
 
-	return nil
+	return count, nil
 }
 
 func PartialIndex(ctx context.Context, q *database.Queries) error {

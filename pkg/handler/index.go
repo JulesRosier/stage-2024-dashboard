@@ -2,6 +2,7 @@ package handler
 
 import (
 	"Stage-2024-dashboard/pkg/indexing"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -11,13 +12,13 @@ import (
 
 func (h *Handler) FullIndex(c echo.Context) error {
 	start := time.Now()
-	err := indexing.FullIndex(c.Request().Context(), h.Q)
+	r, err := indexing.FullIndex(c.Request().Context(), h.Q)
 	if err != nil {
 		slog.Warn("Failed to full index", "error", err)
 		return err
 	}
 	d := time.Since(start)
-	return c.String(http.StatusOK, d.String())
+	return c.String(http.StatusOK, fmt.Sprintf("%v (%d rows effected)", d, r))
 }
 
 func (h *Handler) IndexNewEvents(c echo.Context) error {
