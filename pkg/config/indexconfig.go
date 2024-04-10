@@ -28,9 +28,6 @@ func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
 		uuidKeys := make(map[string][]string)
 		findUUIDKeys(data, []string{}, &uuidKeys)
 
-		if event.TopicName == "station_full" {
-			slog.Info("qq", "q", uuidKeys, "d", data, "a", event)
-		}
 		for _, path := range uuidKeys {
 			allow := true
 			for _, config := range configs {
