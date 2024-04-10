@@ -45,7 +45,13 @@ templ QueryHome(columns []string) {
 							<input name="search" placeholder="Search Key" required/>
 						</fieldset>
 					</div>
-					<input type="submit" value="Search"/>
+					<div>
+						<fieldset role="group">
+							<input type="datetime-local" name="start" aria-label="Datetime local" required/>
+							<input type="datetime-local" name="end" aria-label="Datetime local" required/>
+						</fieldset>
+						<input type="submit" value="Search"/>
+					</div>
 				</form>
 			</div>
 			<button id="add-form">+</button>

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 )
 
 const querySearch = `
@@ -14,8 +15,9 @@ CASE
 id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
 from events
 where %s
+AND event_timestamp BETWEEN '%s' and '%s'
 order by event_timestamp desc
-limit %d;
+LIMIT 100;
 `
 
 const queryCase = `
@@ -32,7 +34,12 @@ type QueriedEvent struct {
 	Event    Event
 }
 
-func (q *Queries) QuearySearch(ctx context.Context, qps []QueryParams, limit int) ([]QueriedEvent, error) {
+func (q *Queries) QuearySearch(
+	ctx context.Context,
+	qps []QueryParams,
+	start time.Time,
+	end time.Time,
+) ([]QueriedEvent, error) {
 	cases := strings.Builder{}
 	wheres := strings.Builder{}
 	l := len(qps)
@@ -44,7 +51,8 @@ func (q *Queries) QuearySearch(ctx context.Context, qps []QueryParams, limit int
 		}
 	}
 
-	query := fmt.Sprintf(querySearch, cases.String(), wheres.String(), limit)
+	format := "2006-01-02 15:04:05"
+	query := fmt.Sprintf(querySearch, cases.String(), wheres.String(), start.Format(format), end.Format(format))
 	rows, err := q.db.Query(ctx, query)
 	if err != nil {
 		return nil, err

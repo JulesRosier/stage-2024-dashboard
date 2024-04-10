@@ -43,13 +43,26 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	}
 
 	nerdStr := c.QueryParam("nerd_mode")
-
 	nerd := false
 	if nerdStr == "on" {
 		nerd = true
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), ps, 50)
+	layout := "2006-01-02T15:04"
+	startStr := c.QueryParam("start")
+	start, err := time.Parse(layout, startStr)
+	if err != nil {
+		return err
+	}
+	endStr := c.QueryParam("end")
+	end, err := time.Parse(layout, endStr)
+	if err != nil {
+		return err
+	}
+
+	slog.Info("aaa", "start", start, "end", end)
+
+	e, err := h.Q.QuearySearch(c.Request().Context(), ps, start, end)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err
