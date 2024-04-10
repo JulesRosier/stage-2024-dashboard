@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS events (
     topic_partition INTEGER NOT NULL,
     event_headers JSONB,
     event_key JSONB,
-    event_value JSONB
+    event_value JSONB,
+    last_indexed_at TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS event_index_configs (

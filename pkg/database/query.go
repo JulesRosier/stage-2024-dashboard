@@ -12,7 +12,7 @@ select
 CASE
 	%s
 	END AS selection,
-id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at
 from events
 where %s
 AND event_timestamp BETWEEN '%s' and '%s'
@@ -74,6 +74,7 @@ func (q *Queries) QuearySearch(
 			&i.EventHeaders,
 			&i.EventKey,
 			&i.EventValue,
+			&i.LastIndexedAt,
 		); err != nil {
 			return nil, err
 		}

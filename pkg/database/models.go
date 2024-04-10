@@ -19,6 +19,7 @@ type Event struct {
 	EventHeaders      []byte
 	EventKey          []byte
 	EventValue        []byte
+	LastIndexedAt     pgtype.Timestamp
 }
 
 type EventIndexConfig struct {

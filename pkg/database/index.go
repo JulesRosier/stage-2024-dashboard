@@ -10,7 +10,7 @@ import (
 
 const Index = `
 UPDATE events
-SET %s
+SET last_indexed_at = current_timestamp, %s
 FROM events e
 WHERE 
     events.id = e.id 

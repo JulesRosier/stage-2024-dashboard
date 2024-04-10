@@ -18,7 +18,7 @@ INSERT INTO events (
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7
 )
-RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
+RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at
 `
 
 type CreateEventParams struct {
@@ -53,6 +53,7 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 		&i.EventHeaders,
 		&i.EventKey,
 		&i.EventValue,
+		&i.LastIndexedAt,
 	)
 	return i, err
 }
@@ -138,7 +139,7 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 }
 
 const getEachEventTypeWithNoTimestampConfig = `-- name: GetEachEventTypeWithNoTimestampConfig :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM timestamp_configs tc
 right join events e on tc.topic_name = e.topic_name
 where key_selector is null
@@ -164,6 +165,7 @@ func (q *Queries) GetEachEventTypeWithNoTimestampConfig(ctx context.Context) ([]
 			&i.EventHeaders,
 			&i.EventKey,
 			&i.EventValue,
+			&i.LastIndexedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -290,7 +292,7 @@ func (q *Queries) ListAllTopicNames(ctx context.Context) ([]string, error) {
 }
 
 const listAllTopics = `-- name: ListAllTopics :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM events e
 `
 
@@ -314,6 +316,7 @@ func (q *Queries) ListAllTopics(ctx context.Context) ([]Event, error) {
 			&i.EventHeaders,
 			&i.EventKey,
 			&i.EventValue,
+			&i.LastIndexedAt,
 		); err != nil {
 			return nil, err
 		}
