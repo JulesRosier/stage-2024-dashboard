@@ -18,8 +18,8 @@ func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
 		return err
 	}
 
-	var data map[string]interface{}
 	for _, event := range events {
+		var data map[string]interface{}
 		err := json.Unmarshal(event.EventValue, &data)
 		if err != nil {
 			slog.Warn("Failed to unmarshal event", "error", err)
@@ -28,6 +28,9 @@ func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
 		uuidKeys := make(map[string][]string)
 		findUUIDKeys(data, []string{}, &uuidKeys)
 
+		if event.TopicName == "station_full" {
+			slog.Info("qq", "q", uuidKeys, "d", data, "a", event)
+		}
 		for _, path := range uuidKeys {
 			allow := true
 			for _, config := range configs {
