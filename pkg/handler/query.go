@@ -2,6 +2,7 @@ package handler
 
 import (
 	"Stage-2024-dashboard/pkg/database"
+	renderer "Stage-2024-dashboard/pkg/render"
 	"Stage-2024-dashboard/pkg/view"
 	"log/slog"
 	"net/http"
@@ -53,6 +54,17 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		slog.Warn(err.Error())
 		return err
 	}
+
+	configs, err := h.Q.ListEventIndexConfigs(c.Request().Context())
+	if err != nil {
+		return err
+	}
+
+	byTopic := map[string][]database.EventIndexConfig{}
+	for _, config := range configs {
+		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
+	}
+
 	events := []view.EventShow{}
 	prev := time.Unix(0, 0).Format("2006-01-02")
 	for _, event := range e {
@@ -66,6 +78,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			Event:    event.Event,
 			ShowDate: x,
 			Column:   event.Selected + 2,
+			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
 		})
 	}
 

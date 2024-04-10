@@ -10,6 +10,7 @@ import (
 
 type EventShow struct {
 	Event    database.Event
+	Json     string
 	Column   int
 	ShowDate bool
 }
@@ -28,8 +29,8 @@ templ QueryHome(columns []string) {
 					hx-disabled-elt="[type='submit'], [class='ext-form']"
 					hx-trigger="onLoadC, submit"
 					hx-include="[name='nerd_mode']"
-					hx-ext="push-url-w-params"
 				>
+					// hx-ext="push-url-w-params"
 					// data-push-url="/query"
 					<div id="queries">
 						<fieldset role="group">
@@ -63,16 +64,6 @@ templ QueryHome(columns []string) {
 			</label>
 		</div>
 		<div id="results" class="eventlist"></div>
-		// <script>
-		// window.onload = (e) => {
-		// 	let params = new URLSearchParams(document.location.search);
-		// 	document.getElementsByName("search")[0].value = params.get("search")
-		// 	document.getElementsByName("column")[0].value = params.get("column")
-		// 	if (params.get("search") && params.get("column")) {
-		// 		htmx.trigger("[role='search']", "onLoadC")
-		// 	}
-		// }
-		// </script>
 		<template id="form-template">
 			<fieldset role="group">
 				<select name="column" required>
@@ -101,13 +92,12 @@ templ ListEvents(events []EventShow, nerd bool) {
 			</p>
 		</div>
 		@templ.Raw(fmt.Sprintf("<div style='grid-column: %d'>", event.Column))
-		@Event(event.Event, nerd)
+		@Event(event.Event, event.Json, nerd)
 		@templ.Raw("</div>")
 	}
 }
 
-templ Event(event database.Event, nerd bool) {
-	// <div class="event">
+templ Event(event database.Event, json string, nerd bool) {
 	<article>
 		<details>
 			<summary>
@@ -137,12 +127,11 @@ templ Event(event database.Event, nerd bool) {
 				// 	{  base64.StdEncoding.EncodeToString(event.EventValue) }
 				// </json-viewer>
 				<div class="json">
-					@templ.Raw(FormatJson(event.EventValue))
+					@templ.Raw(json)
 				</div>
 			</div>
 		</details>
 	</article>
-	// </div>
 }
 
 func prittyName(s string) string {
