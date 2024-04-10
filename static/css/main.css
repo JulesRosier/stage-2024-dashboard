@@ -87,3 +87,13 @@ body {
 .controls * {
   margin-right: 1em;
 }
+
+.config-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.config-group article {
+  flex-grow: 1;
+}

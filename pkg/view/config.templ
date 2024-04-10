@@ -100,20 +100,17 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 	</article>
 }
 
-templ ListEventIndexConfigs(configs []database.EventIndexConfig) {
+templ ListEventIndexConfigs(configs map[string][]database.EventIndexConfig) {
 	// TODO: better with grid?
-	<style>
-			me {
-				display: flex;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}	
-			me article {
-				flex-grow: 1;
-			}
-	</style>
-	for _, config := range(configs) {
-		@EventIndexConfig(config)
+	for t, cs := range(configs) {
+		<div>
+			<h2>{ prittyName(t) }</h2>
+			<div class="config-group">
+				for _, config := range(cs) {
+					@EventIndexConfig(config)
+				}
+			</div>
+		</div>
 	}
 }
 

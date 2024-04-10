@@ -2,8 +2,6 @@ package view
 
 import (
 	"Stage-2024-dashboard/pkg/database"
-	// "encoding/base64"
-	"strings"
 	"strconv"
 	"fmt"
 )
@@ -140,8 +138,4 @@ templ Event(event database.Event, json string, nerd bool) {
 			</div>
 		</details>
 	</article>
-}
-
-func prittyName(s string) string {
-	return strings.Title(strings.ReplaceAll(s, "_", " "))
 }

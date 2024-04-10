@@ -24,7 +24,13 @@ func (h *Handler) EventIndexConfigList(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return render(c, view.ListEventIndexConfigs(configs))
+
+	byTopic := map[string][]database.EventIndexConfig{}
+	for _, config := range configs {
+		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
+	}
+
+	return render(c, view.ListEventIndexConfigs(byTopic))
 }
 
 func (h *Handler) EventIndexConfigCreate(c echo.Context) error {
