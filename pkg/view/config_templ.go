@@ -257,7 +257,7 @@ func EventIndexConfigEditForm(config database.EventIndexConfig) templ.Component 
 	})
 }
 
-func ListEventIndexConfigs(configs map[string][]database.EventIndexConfig) templ.Component {
+func ListEventIndexConfigs(configs map[string][]database.EventIndexConfig, order []string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -270,13 +270,13 @@ func ListEventIndexConfigs(configs map[string][]database.EventIndexConfig) templ
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		for t, cs := range configs {
+		for _, k := range order {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h2>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var16 string
-			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(prittyName(t))
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(prittyName(k))
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 107, Col: 22}
 			}
@@ -288,7 +288,7 @@ func ListEventIndexConfigs(configs map[string][]database.EventIndexConfig) templ
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, config := range cs {
+			for _, config := range configs[k] {
 				templ_7745c5c3_Err = EventIndexConfig(config).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

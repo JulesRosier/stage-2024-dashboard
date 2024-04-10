@@ -100,13 +100,13 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 	</article>
 }
 
-templ ListEventIndexConfigs(configs map[string][]database.EventIndexConfig) {
+templ ListEventIndexConfigs(configs map[string][]database.EventIndexConfig, order []string) {
 	// TODO: better with grid?
-	for t, cs := range(configs) {
+	for _, k := range(order) {
 		<div>
-			<h2>{ prittyName(t) }</h2>
+			<h2>{ prittyName(k) }</h2>
 			<div class="config-group">
-				for _, config := range(cs) {
+				for _, config := range(configs[k]) {
 					@EventIndexConfig(config)
 				}
 			</div>

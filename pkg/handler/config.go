@@ -5,6 +5,7 @@ import (
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/view"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -29,8 +30,13 @@ func (h *Handler) EventIndexConfigList(c echo.Context) error {
 	for _, config := range configs {
 		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
 	}
+	keys := []string{}
+	for k, _ := range byTopic {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
 
-	return render(c, view.ListEventIndexConfigs(byTopic))
+	return render(c, view.ListEventIndexConfigs(byTopic, keys))
 }
 
 func (h *Handler) EventIndexConfigCreate(c echo.Context) error {
