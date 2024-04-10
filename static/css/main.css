@@ -75,3 +75,15 @@ body {
 .tab div {
   white-space: nowrap;
 }
+
+.rm-form {
+  margin-left: -2.5em !important;
+  padding: 0 1em;
+}
+
+.controls {
+  display: flex;
+}
+.controls * {
+  margin-right: 1em;
+}

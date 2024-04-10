@@ -54,10 +54,11 @@ templ QueryHome(columns []string) {
 					</div>
 				</form>
 			</div>
-			<button id="add-form">+</button>
-			<label>
-				<input name="nerd_mode" type="checkbox" role="switch"/>
-				<script>
+			<div class="controls">
+				<button id="add-form">Add query</button>
+				<label>
+					<input name="nerd_mode" type="checkbox" role="switch"/>
+					<script>
 					me('prev').on('change', event => {
 						let e = me(event)
 						localStorage.setItem("nerd_mode", e.checked)
@@ -66,8 +67,9 @@ templ QueryHome(columns []string) {
 						me(event).checked = (localStorage.getItem("nerd_mode") == "true")
 					})
 				</script>
-				Advanced
-			</label>
+					Advanced
+				</label>
+			</div>
 		</div>
 		<div id="results" class="eventlist"></div>
 		<template id="form-template">
@@ -81,7 +83,7 @@ templ QueryHome(columns []string) {
 					}
 				</select>
 				<input name="search" placeholder="Search Key" required/>
-				<button class="rm-form">-</button>
+				<button class="rm-form pico-background-red-500">-</button>
 			</fieldset>
 		</template>
 	}
