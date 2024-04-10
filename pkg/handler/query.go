@@ -60,8 +60,6 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		return err
 	}
 
-	slog.Info("aaa", "start", start, "end", end)
-
 	e, err := h.Q.QuearySearch(c.Request().Context(), ps, start, end)
 	if err != nil {
 		slog.Warn(err.Error())
