@@ -16,7 +16,7 @@ id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, 
 from events
 where %s
 AND event_timestamp BETWEEN '%s' and '%s'
-order by event_timestamp desc
+order by event_timestamp desc, id desc
 LIMIT 100;
 `
 
