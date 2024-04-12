@@ -40,6 +40,7 @@ body {
     ); */
   grid-template-columns: 200px auto;
   gap: 10px;
+  padding-top: 3rem;
 }
 .eventlist article {
   margin: 0;
@@ -96,4 +97,13 @@ body {
 
 .config-group article {
   flex-grow: 1;
+}
+
+.grid-header {
+  background-color: var(--pico-background-color);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-left: 0.2em;
+  border-bottom: 2px solid var(--pico-h1-color);
 }

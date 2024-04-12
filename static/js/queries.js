@@ -6,7 +6,7 @@ window.onload = (e) => {
     queries.appendChild(formTemplate.content.cloneNode(true));
     addL();
   };
-  Sortable.create(queries, { animation: 150 });
+  Sortable.create(queries, { animation: 150, onUpdate: reload });
   addL();
 };
 

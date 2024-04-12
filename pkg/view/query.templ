@@ -106,7 +106,14 @@ templ QueryHome(columns []string) {
 	}
 }
 
-templ ListEvents(events []EventShow, nerd bool) {
+templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool) {
+	<h1 class="grid-header">Time</h1>
+	for _ , qp := range(qps) {
+		<hgroup class="grid-header">
+			<h1>{ qp.Column }</h1>
+			<h2>{ qp.Search }</h2>
+		</hgroup>
+	}
 	for _, event := range(events) {
 		<div class="event-timestamp">
 			if event.ShowDate {

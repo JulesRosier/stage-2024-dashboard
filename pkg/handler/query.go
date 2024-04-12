@@ -92,6 +92,5 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
 		})
 	}
-
-	return render(c, view.ListEvents(events, nerd))
+	return render(c, view.ListEvents(events, ps, nerd))
 }
