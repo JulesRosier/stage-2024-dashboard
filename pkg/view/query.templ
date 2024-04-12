@@ -18,6 +18,7 @@ templ QueryHome(columns []string) {
 	@base(true) {
 		<script src="/static/js/json-viewer.js"></script>
 		<script src="/static/js/queries.js"></script>
+		<script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
 		<div class="container">
 			<h1>Query</h1>
 			<div>
@@ -31,19 +32,22 @@ templ QueryHome(columns []string) {
 				>
 					// hx-ext="push-url-w-params"
 					// data-push-url="/query"
-					<div id="queries">
-						<fieldset role="group">
-							<select name="column" required>
-								<option selected disabled value="">
-									Select a index column
-								</option>
-								for _, column := range(columns) {
-									<option>{ column }</option>
-								}
-							</select>
-							<input name="search" placeholder="Search Key" required/>
-						</fieldset>
-					</div>
+					<ul id="queries">
+						<li>
+							<fieldset role="group">
+								<select name="column" required>
+									<option selected disabled value="">
+										Select a index column
+									</option>
+									for _, column := range(columns) {
+										<option>{ column }</option>
+									}
+								</select>
+								<input name="search" placeholder="Search Key" required/>
+								<button class="rm-form pico-background-red-500">-</button>
+							</fieldset>
+						</li>
+					</ul>
 					<div>
 						<fieldset role="group">
 							<input
@@ -84,18 +88,20 @@ templ QueryHome(columns []string) {
 		</div>
 		<div id="results" class="eventlist"></div>
 		<template id="form-template">
-			<fieldset role="group">
-				<select name="column" required>
-					<option selected disabled value="">
-						Select a index column
-					</option>
-					for _, column := range(columns) {
-						<option>{ column }</option>
-					}
-				</select>
-				<input name="search" placeholder="Search Key" required/>
-				<button class="rm-form pico-background-red-500">-</button>
-			</fieldset>
+			<li>
+				<fieldset role="group">
+					<select name="column" required>
+						<option selected disabled value="">
+							Select a index column
+						</option>
+						for _, column := range(columns) {
+							<option>{ column }</option>
+						}
+					</select>
+					<input name="search" placeholder="Search Key" required/>
+					<button class="rm-form pico-background-red-500">-</button>
+				</fieldset>
+			</li>
 		</template>
 	}
 }

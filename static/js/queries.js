@@ -1,35 +1,43 @@
 window.onload = (e) => {
   const formTemplate = document.getElementById("form-template");
-  const mainForm = document.getElementById("main-form");
+  const queries = document.getElementById("queries");
   const addFormBtn = document.getElementById("add-form");
-  let removeBtns;
   addFormBtn.onclick = () => {
-    mainForm.insertBefore(
-      formTemplate.content.cloneNode(true),
-      mainForm.lastChild
-    );
-    removeBtns = document.getElementsByClassName("rm-form");
-    console.log(removeBtns);
-    for (let b of removeBtns) {
-      b.onclick = (e) => {
-        e.target.parentElement.remove();
-      };
-    }
+    queries.appendChild(formTemplate.content.cloneNode(true));
+    addL();
   };
+  Sortable.create(queries, { animation: 150 });
+  addL();
 };
+
+function addL() {
+  let removeBtns;
+  removeBtns = document.getElementsByClassName("rm-form");
+  for (let b of removeBtns) {
+    b.onclick = (e) => {
+      e.target.parentElement.parentElement.remove();
+      reload();
+    };
+  }
+}
 
 function addQuery(index, query) {
   const formTemplate = document.getElementById("form-template");
-  const mainForm = document.getElementById("main-form");
+  const queries = document.getElementById("queries");
   const q = formTemplate.content.cloneNode(true);
-  const select = q.firstChild.children[0];
-  const input = q.firstChild.children[1];
-  const btn = q.firstChild.children[2];
+  const select = q.firstChild.firstChild.children[0];
+  const input = q.firstChild.firstChild.children[1];
+  const btn = q.firstChild.firstChild.children[2];
   btn.onclick = (e) => {
-    e.target.parentElement.remove();
+    e.target.parentElement.parentElement.remove();
+    reload();
   };
   select.value = index;
   input.value = query;
-  mainForm.insertBefore(q, mainForm.lastChild);
+  queries.appendChild(q);
+  reload();
+}
+
+function reload() {
   htmx.trigger("#main-form", "onLoadC");
 }

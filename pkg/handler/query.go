@@ -30,7 +30,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			ss = p
 		}
 	}
-	if len(cs) != len(ss) {
+	if len(cs) != len(ss) || len(cs) == 0 {
 		c.Response().Writer.WriteHeader(http.StatusBadRequest)
 		return nil
 	}
