@@ -11,15 +11,15 @@ import (
 type Event struct {
 	ID                int32
 	InsertedAt        pgtype.Timestamptz
-	EventhubTimestamp pgtype.Timestamp
-	EventTimestamp    pgtype.Timestamp
+	EventhubTimestamp pgtype.Timestamptz
+	EventTimestamp    pgtype.Timestamptz
 	TopicName         string
 	TopicOffset       int64
 	TopicPartition    int32
 	EventHeaders      []byte
 	EventKey          []byte
 	EventValue        []byte
-	LastIndexedAt     pgtype.Timestamp
+	LastIndexedAt     pgtype.Timestamptz
 }
 
 type EventIndexConfig struct {

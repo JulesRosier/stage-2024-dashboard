@@ -80,7 +80,7 @@ func EventImporter(q *database.Queries) {
 			}
 
 			e, err := q.CreateEvent(ctx, database.CreateEventParams{
-				EventhubTimestamp: pgtype.Timestamp{Time: record.Timestamp, Valid: true},
+				EventhubTimestamp: pgtype.Timestamptz{Time: record.Timestamp, Valid: true},
 				TopicName:         record.Topic,
 				TopicOffset:       record.Offset,
 				TopicPartition:    record.Partition,

@@ -22,7 +22,7 @@ RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topi
 `
 
 type CreateEventParams struct {
-	EventhubTimestamp pgtype.Timestamp
+	EventhubTimestamp pgtype.Timestamptz
 	TopicName         string
 	TopicOffset       int64
 	TopicPartition    int32
