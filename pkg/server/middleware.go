@@ -24,4 +24,7 @@ func (s *Server) ApplyMiddleware() {
 
 		},
 	}))
+	s.e.Use(echoMw.GzipWithConfig(echoMw.GzipConfig{
+		Level: 5,
+	}))
 }
