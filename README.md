@@ -40,7 +40,7 @@ docker compose up -d
 #### Building
 
 ```sh
-docker build . -t  ghcr.io/julesrosier/stage-2024-dashboard:latest
+docker build . -t  ghcr.io/julesrosier/stage-2024-dashboard:latest --build-arg GIT_COMMIT=$(git log -1 --format=%h)
 docker push ghcr.io/julesrosier/stage-2024-dashboard:latest
 ```
 

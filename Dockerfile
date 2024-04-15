@@ -15,6 +15,10 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 
 FROM alpine:3.19.1 AS final
 
+ARG GIT_COMMIT=unspecified
+LABEL org.opencontainers.image.version=$GIT_COMMIT
+LABEL org.opencontainers.image.source=https://github.com/JulesRosier/Stage-2024
+
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
         ca-certificates \
