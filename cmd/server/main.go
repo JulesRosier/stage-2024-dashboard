@@ -5,12 +5,25 @@ import (
 	"Stage-2024-dashboard/pkg/handler"
 	"Stage-2024-dashboard/pkg/kafka"
 	"Stage-2024-dashboard/pkg/server"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
 )
 
+const banner = `
+  ______               _    __      ___                        
+ |  ____|             | |   \ \    / (_)                       
+ | |____   _____ _ __ | |_   \ \  / / _  _____      _____ _ __ 
+ |  __\ \ / / _ \ '_ \| __|   \ \/ / | |/ _ \ \ /\ / / _ \ '__|
+ | |___\ V /  __/ | | | |_     \  /  | |  __/\ V  V /  __/ |   
+ |______\_/ \___|_| |_|\__|     \/   |_|\___| \_/\_/ \___|_|
+ > https://github.com/JulesRosier/Stage-2024
+ =============================================================================
+`
+
 func main() {
+	fmt.Print(banner)
 	slog.SetDefault(slog.New(slog.Default().Handler()))
 
 	q := database.NewQueries()

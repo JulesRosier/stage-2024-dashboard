@@ -18,6 +18,7 @@ type Server struct {
 
 func NewServer() *Server {
 	e := echo.New()
+	e.HideBanner = true
 	NewServer := &Server{
 		// port: port,
 		e: e,
