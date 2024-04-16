@@ -12,7 +12,7 @@ import (
 
 func (h *Handler) FullIndex(c echo.Context) error {
 	start := time.Now()
-	r, err := indexing.FullIndex(c.Request().Context(), h.Q)
+	r, err := indexing.Index(c.Request().Context(), h.Q, true)
 	if err != nil {
 		slog.Warn("Failed to full index", "error", err)
 		return err
@@ -23,22 +23,11 @@ func (h *Handler) FullIndex(c echo.Context) error {
 
 func (h *Handler) IndexNewEvents(c echo.Context) error {
 	start := time.Now()
-	err := indexing.PartialIndex(c.Request().Context(), h.Q)
+	r, err := indexing.Index(c.Request().Context(), h.Q, false)
 	if err != nil {
-		slog.Warn("Failed to partial index", "error", err)
+		slog.Warn("Failed to full index", "error", err)
 		return err
 	}
 	d := time.Since(start)
-	return c.String(http.StatusOK, d.String())
-}
-
-func (h *Handler) IndexTimestamps(c echo.Context) error {
-	start := time.Now()
-	err := indexing.TimestampIndex(c.Request().Context(), h.Q)
-	if err != nil {
-		slog.Warn("Failed to index timestamps", "error", err)
-		return err
-	}
-	d := time.Since(start)
-	return c.String(http.StatusOK, d.String())
+	return c.String(http.StatusOK, fmt.Sprintf("%v (%d rows effected)", d, r))
 }

@@ -8,7 +8,7 @@ import (
 
 const IndexPrefix = "index_"
 
-func FullIndex(ctx context.Context, q *database.Queries) (int64, error) {
+func Index(ctx context.Context, q *database.Queries, full bool) (int64, error) {
 	err := CreateIndexColumns(ctx, q)
 	if err != nil {
 		return 0, err
@@ -35,7 +35,7 @@ func FullIndex(ctx context.Context, q *database.Queries) (int64, error) {
 
 	var count int64
 	for topic, configs := range byTopic {
-		r, err := q.FullIndex(ctx, configs, timestampByTopic[topic])
+		r, err := q.FullIndex(ctx, configs, timestampByTopic[topic], full)
 		if err != nil {
 			slog.Warn("Index failed", "topic", topic, "error", err)
 		}
@@ -43,35 +43,6 @@ func FullIndex(ctx context.Context, q *database.Queries) (int64, error) {
 	}
 
 	return count, nil
-}
-
-func PartialIndex(ctx context.Context, q *database.Queries) error {
-	configs, err := q.ListEventIndexConfigs(ctx)
-	if err != nil {
-		return err
-	}
-	for _, config := range configs {
-		err = q.PartialIndex(ctx, config)
-		if err != nil {
-			return err
-		}
-
-	}
-	return nil
-}
-
-func TimestampIndex(ctx context.Context, q *database.Queries) error {
-	configs, err := q.ListTimestampConfigs(ctx)
-	if err != nil {
-		return err
-	}
-	for _, config := range configs {
-		err := q.TimestampIndex(ctx, config)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func CreateIndexColumns(ctx context.Context, q *database.Queries) error {

@@ -29,7 +29,7 @@ func Home() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><button hx-post=\"/index/full\" hx-disabled-elt=\"this\" hx-target=\"#index_full_duration\">Full Index</button><p>Duration last index: <span id=\"index_full_duration\">N/A</span></p></div>                   ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><button hx-post=\"/index/full\" hx-disabled-elt=\"this\" hx-target=\"#index_full_duration\">Full Index</button><p>Duration last index: <span id=\"index_full_duration\">N/A</span></p></div><div><button hx-post=\"/index/new\" hx-disabled-elt=\"this\" hx-target=\"#index_new_duration\">Index New</button><p>Duration last index: <span id=\"index_new_duration\">N/A</span></p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
