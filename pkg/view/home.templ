@@ -1,5 +1,8 @@
 package view
 
+import "Stage-2024-dashboard/pkg/database"
+import "strconv"
+
 templ Home() {
 	@base(false) {
 		<div>
@@ -22,5 +25,39 @@ templ Home() {
 			</button>
 			<p>Duration last index: <span id="index_new_duration">N/A</span></p>
 		</div>
+		<br/>
+		<div hx-get="/config_stats" hx-trigger="load"></div>
 	}
+}
+
+templ ConfigStats(configs []database.GetConfigStatsRow) {
+	<h3>Config stats</h3>
+	<table class="striped">
+		<thead>
+			<tr>
+				<th scope="col"></th>
+				<th scope="col">Topic</th>
+				<th scope="col">Config count</th>
+				<th scope="col">Has time config</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, c := range(configs) {
+				<tr>
+					<th>
+						if c.HasTimeConfig == 0 || c.ConfigCount == 0 {
+							<span class="pico-color-red-500"><b>!!!</b></span>
+						}
+					</th>
+					<th scope="row">{ c.Topic }</th>
+					<th>{ strconv.FormatInt(c.ConfigCount, 10) }</th>
+					if c.HasTimeConfig == 1 {
+						<th>V</th>
+					} else {
+						<th>X</th>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
 }

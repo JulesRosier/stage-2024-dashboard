@@ -138,6 +138,49 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 	return err
 }
 
+const getConfigStats = `-- name: GetConfigStats :many
+with events as (
+	SELECT DISTINCT ON (e.topic_name) e.topic_name
+FROM events e
+)
+select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
+	case
+		when count(tc.*) > 0 then 1
+		else 0
+	end as has_time_config
+from event_index_configs ec
+right join events e on e.topic_name = ec.topic_name
+left join timestamp_configs tc on tc.topic_name = e.topic_name
+group by ec.topic_name
+order by min(ec.topic_name)
+`
+
+type GetConfigStatsRow struct {
+	Topic         string
+	ConfigCount   int64
+	HasTimeConfig int32
+}
+
+func (q *Queries) GetConfigStats(ctx context.Context) ([]GetConfigStatsRow, error) {
+	rows, err := q.db.Query(ctx, getConfigStats)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetConfigStatsRow
+	for rows.Next() {
+		var i GetConfigStatsRow
+		if err := rows.Scan(&i.Topic, &i.ConfigCount, &i.HasTimeConfig); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getEachEventTypeWithNoTimestampConfig = `-- name: GetEachEventTypeWithNoTimestampConfig :many
 SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM timestamp_configs tc

@@ -95,3 +95,19 @@ where key_selector is null;
 -- name: GetIndexColumnsFromConfigs :many
 select distinct index_column
 from event_index_configs;
+
+-- name: GetConfigStats :many
+with events as (
+	SELECT DISTINCT ON (e.topic_name) e.topic_name
+FROM events e
+)
+select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
+	case
+		when count(tc.*) > 0 then 1
+		else 0
+	end as has_time_config
+from event_index_configs ec
+right join events e on e.topic_name = ec.topic_name
+left join timestamp_configs tc on tc.topic_name = e.topic_name
+group by ec.topic_name
+order by min(ec.topic_name);

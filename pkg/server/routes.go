@@ -12,6 +12,8 @@ func (s *Server) RegisterRoutes(hdlr *handler.Handler) {
 	e.POST("/index/full", hdlr.FullIndex)
 	e.POST("/index/new", hdlr.IndexNewEvents)
 
+	e.GET("/config_stats", hdlr.ConfigStats)
+
 	e.GET("/config", hdlr.EventIndexConfigHome)
 	e.POST("/event_index_config", hdlr.EventIndexConfigCreate)
 	e.GET("/event_index_config/:id", hdlr.EventIndexConfig)
