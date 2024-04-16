@@ -58,6 +58,9 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	if err != nil {
 		limit = 100
 	}
+	if limit > 500 {
+		limit = 500
+	}
 
 	layout := "2006-01-02T15:04"
 	startStr := c.QueryParam("start")
@@ -86,10 +89,15 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	for _, config := range configs {
 		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
 	}
-	q := c.Request().URL.Query()
-	q.Set("offset", strconv.Itoa(offset+limit))
-	q.Set("limit", strconv.Itoa(100))
-	query := q.Encode()
+	var query string
+	if len(e) == 0 {
+		query = ""
+	} else {
+		q := c.Request().URL.Query()
+		q.Set("offset", strconv.Itoa(offset+limit))
+		q.Set("limit", strconv.Itoa(100))
+		query = q.Encode()
+	}
 
 	events := []view.EventShow{}
 	prev := time.Unix(0, 0).Format("2006-01-02")

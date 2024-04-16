@@ -129,11 +129,13 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 		@Event(event.Event, event.Json, nerd)
 		@templ.Raw("</div>")
 	}
-	<div
-		hx-get={ "/query/search?" + query }
-		hx-trigger="revealed"
-		hx-swap="afterend"
-	></div>
+	if query != "" {
+		<div
+			hx-get={ "/query/search?" + query }
+			hx-trigger="revealed"
+			hx-swap="afterend"
+		></div>
+	}
 }
 
 templ Event(event database.Event, json string, nerd bool) {
