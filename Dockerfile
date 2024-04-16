@@ -17,7 +17,7 @@ FROM alpine:3.19.1 AS final
 
 ARG GIT_COMMIT=unspecified
 LABEL org.opencontainers.image.version=$GIT_COMMIT
-LABEL org.opencontainers.image.source=https://github.com/JulesRosier/Stage-2024
+LABEL org.opencontainers.image.source=https://github.com/JulesRosier/stage-2024-dashboard
 
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
