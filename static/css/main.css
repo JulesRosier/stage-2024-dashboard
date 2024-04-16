@@ -77,6 +77,11 @@ body {
   white-space: nowrap;
 }
 
+.tab h6 {
+  width: max-content;
+  margin-bottom: 0;
+}
+
 .rm-form {
   margin-left: -2.5em !important;
   padding: 0 1em;

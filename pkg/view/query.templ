@@ -16,7 +16,7 @@ type EventShow struct {
 
 templ QueryHome(columns []string) {
 	@base(true) {
-		<script src="/static/js/json-viewer.js"></script>
+		// <script src="/static/js/json-viewer.js"></script>
 		<script src="/static/js/queries.js"></script>
 		<script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
 		<div class="container">
@@ -150,23 +150,21 @@ templ Event(event database.Event, json string, nerd bool) {
 			<div>
 				<div class="tab">
 					if nerd {
-						<div>Database timestamp </div>
+						<h6>Database timestamp </h6>
 						<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<div>Eventhub timestamp</div>
+						<h6>Eventhub timestamp</h6>
 						<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<div>Offset</div>
+						<h6>Offset</h6>
 						<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
-						<div>Partition</div>
+						<h6>Partition</h6>
 						<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
 					}
-					<div>headers</div>
+					<h6>headers</h6>
 					<div>{ string(event.EventHeaders) }</div>
-					<div>key</div>
+					<h6>key</h6>
 					<div>{ string(event.EventKey) }</div>
 				</div>
-				// <json-viewer>
-				// 	{  base64.StdEncoding.EncodeToString(event.EventValue) }
-				// </json-viewer>
+				// <h6>Value</h6>
 				<div class="json">
 					@templ.Raw(json)
 				</div>
