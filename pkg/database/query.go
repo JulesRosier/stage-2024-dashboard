@@ -9,10 +9,10 @@ import (
 
 const querySearch = `
 select 
-CASE
+id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at,
+ARRAY [
 	%s
-	END AS selection,
-id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at
+] AS selection
 from events
 where %s
 AND event_timestamp BETWEEN '%s' and '%s'
@@ -22,7 +22,7 @@ LIMIT %d;
 `
 
 const queryCase = `
-WHEN %s = '%s' THEN %d
+CASE WHEN %s = '%s' THEN true ELSE false END
 `
 
 type QueryParams struct {
@@ -31,8 +31,8 @@ type QueryParams struct {
 }
 
 type QueriedEvent struct {
-	Selected int
-	Event    Event
+	Selects []int
+	Event   Event
 }
 
 func (q *Queries) QuearySearch(
@@ -47,7 +47,10 @@ func (q *Queries) QuearySearch(
 	wheres := strings.Builder{}
 	l := len(qps)
 	for i, qp := range qps {
-		cases.WriteString(fmt.Sprintf(queryCase, qp.Column, qp.Search, i))
+		cases.WriteString(fmt.Sprintf(queryCase, qp.Column, qp.Search))
+		if l-1 > i {
+			cases.WriteString(",")
+		}
 		wheres.WriteString(fmt.Sprintf(`%s = '%s'`, qp.Column, qp.Search))
 		if l-1 > i {
 			wheres.WriteString(" or ")
@@ -64,9 +67,8 @@ func (q *Queries) QuearySearch(
 	var items []QueriedEvent
 	for rows.Next() {
 		var i Event
-		var selection int
+		var selections []bool
 		if err := rows.Scan(
-			&selection,
 			&i.ID,
 			&i.InsertedAt,
 			&i.EventhubTimestamp,
@@ -78,16 +80,27 @@ func (q *Queries) QuearySearch(
 			&i.EventKey,
 			&i.EventValue,
 			&i.LastIndexedAt,
+			&selections,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, QueriedEvent{
-			Selected: selection,
-			Event:    i,
+			Selects: boolsToIndices(selections),
+			Event:   i,
 		})
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 	return items, nil
+}
+
+func boolsToIndices(bools []bool) []int {
+	var indices []int
+	for i, v := range bools {
+		if v {
+			indices = append(indices, i)
+		}
+	}
+	return indices
 }

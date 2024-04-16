@@ -111,10 +111,9 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		events = append(events, view.EventShow{
 			Event:    event.Event,
 			ShowDate: x,
-			Column:   event.Selected + 2,
+			Columns:  event.Selects,
 			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
 		})
 	}
-	showHeaders := (offset == 0)
-	return render(c, view.ListEvents(events, ps, nerd, query, showHeaders))
+	return render(c, view.ListEvents(events, ps, nerd, query, offset))
 }

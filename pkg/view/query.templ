@@ -10,7 +10,7 @@ import (
 type EventShow struct {
 	Event    database.Event
 	Json     string
-	Column   int
+	Columns  []int
 	ShowDate bool
 }
 
@@ -106,17 +106,17 @@ templ QueryHome(columns []string) {
 	}
 }
 
-templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query string, showHeaders bool) {
-	if showHeaders {
+templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query string, offset int) {
+	if offset == 0 {
 		<h1 class="grid-header">Time</h1>
 		for i, qp := range(qps) {
-			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d'>", i+2))
+			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d; grid-row: 1'>", i+2))
 			<h1>{ qp.Column }</h1>
 			<h2>{ qp.Search }</h2>
 			@templ.Raw("</hgroup>")
 		}
 	}
-	for _, event := range(events) {
+	for i, event := range(events) {
 		<div class="event-timestamp">
 			if event.ShowDate {
 				<h3>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h3>
@@ -125,9 +125,19 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 				{ event.Event.EventTimestamp.Time.Format("15:04:05.000") }
 			</p>
 		</div>
-		@templ.Raw(fmt.Sprintf("<div style='grid-column: %d'>", event.Column))
+		@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+2, i+2+offset))
 		@Event(event.Event, event.Json, nerd)
 		@templ.Raw("</div>")
+		for j, ind := range(event.Columns[1:]) {
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", ind+2, i+2+offset))
+			<article><p>&nbsp;</p></article>
+			@templ.Raw("</div>")
+			for k := 0; k < ind - event.Columns[j] - 1; k++ {
+				@templ.Raw(fmt.Sprintf("<div class='hr-c' style='grid-column: %d; grid-row: %d'>", ind+2-k-1, i+2+offset))
+				<hr/>
+				@templ.Raw("</div>")
+			}
+		}
 	}
 	if query != "" {
 		<div
