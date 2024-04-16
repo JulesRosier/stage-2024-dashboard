@@ -106,13 +106,15 @@ templ QueryHome(columns []string) {
 	}
 }
 
-templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool) {
-	<h1 class="grid-header">Time</h1>
-	for i, qp := range(qps) {
-		@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d'>", i+2))
-		<h1>{ qp.Column }</h1>
-		<h2>{ qp.Search }</h2>
-		@templ.Raw("</hgroup>")
+templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query string, showHeaders bool) {
+	if showHeaders {
+		<h1 class="grid-header">Time</h1>
+		for i, qp := range(qps) {
+			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d'>", i+2))
+			<h1>{ qp.Column }</h1>
+			<h2>{ qp.Search }</h2>
+			@templ.Raw("</hgroup>")
+		}
 	}
 	for _, event := range(events) {
 		<div class="event-timestamp">
@@ -127,6 +129,11 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool) {
 		@Event(event.Event, event.Json, nerd)
 		@templ.Raw("</div>")
 	}
+	<div
+		hx-get={ "/query/search?" + query }
+		hx-trigger="revealed"
+		hx-swap="afterend"
+	></div>
 }
 
 templ Event(event database.Event, json string, nerd bool) {

@@ -6,6 +6,7 @@ import (
 	"Stage-2024-dashboard/pkg/view"
 	"log/slog"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -47,6 +48,16 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	if nerdStr == "on" {
 		nerd = true
 	}
+	offsetStr := c.QueryParam("offset")
+	offset, err := strconv.Atoi(offsetStr)
+	if err != nil {
+		offset = 0
+	}
+	limitStr := c.QueryParam("limit")
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		limit = 100
+	}
 
 	layout := "2006-01-02T15:04"
 	startStr := c.QueryParam("start")
@@ -60,7 +71,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		return err
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), ps, start, end)
+	e, err := h.Q.QuearySearch(c.Request().Context(), ps, start, end, offset, limit)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err
@@ -75,6 +86,10 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	for _, config := range configs {
 		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
 	}
+	q := c.Request().URL.Query()
+	q.Set("offset", strconv.Itoa(offset+limit))
+	q.Set("limit", strconv.Itoa(100))
+	query := q.Encode()
 
 	events := []view.EventShow{}
 	prev := time.Unix(0, 0).Format("2006-01-02")
@@ -92,5 +107,6 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
 		})
 	}
-	return render(c, view.ListEvents(events, ps, nerd))
+	showHeaders := (offset == 0)
+	return render(c, view.ListEvents(events, ps, nerd, query, showHeaders))
 }

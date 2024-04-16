@@ -17,7 +17,8 @@ from events
 where %s
 AND event_timestamp BETWEEN '%s' and '%s'
 order by event_timestamp desc, id desc
-LIMIT 100;
+OFFSET %d
+LIMIT %d;
 `
 
 const queryCase = `
@@ -39,6 +40,8 @@ func (q *Queries) QuearySearch(
 	qps []QueryParams,
 	start time.Time,
 	end time.Time,
+	offset int,
+	limit int,
 ) ([]QueriedEvent, error) {
 	cases := strings.Builder{}
 	wheres := strings.Builder{}
@@ -52,7 +55,7 @@ func (q *Queries) QuearySearch(
 	}
 
 	format := "2006-01-02 15:04:05"
-	query := fmt.Sprintf(querySearch, cases.String(), wheres.String(), start.Format(format), end.Format(format))
+	query := fmt.Sprintf(querySearch, cases.String(), wheres.String(), start.Format(format), end.Format(format), offset, limit)
 	rows, err := q.db.Query(ctx, query)
 	if err != nil {
 		return nil, err
