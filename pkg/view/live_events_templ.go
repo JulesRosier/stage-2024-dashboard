@@ -29,7 +29,7 @@ func EventsLiveHome() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"https://unpkg.com/htmx.org@1.9.11/dist/ext/sse.js\"></script> <hgroup><h1>Live Events</h1><h2>Drinking from the firehose</h2></hgroup><div hx-ext=\"sse\" sse-connect=\"/events/live/sse\" sse-swap=\"message\" hx-swap=\"afterbegin\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/static/js/sse.js\"></script> <hgroup><h1>Live Events</h1><h2>Drinking from the firehose</h2></hgroup><div hx-ext=\"sse\" sse-connect=\"/events/live/sse\" sse-swap=\"message\" hx-swap=\"afterbegin\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
