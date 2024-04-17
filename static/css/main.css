@@ -1,6 +1,5 @@
 :root {
   --pico-spacing: 0.75rem;
-  /* --pico-font-size: 99%; */
   --pico-form-element-spacing-vertical: 0.4em;
   scrollbar-gutter: stable;
 }
@@ -34,10 +33,6 @@ body {
 
 .eventlist {
   display: grid;
-  /* grid-template-columns: minmax(150px, 400px) repeat(
-      auto-fit,
-      minmax(1fr, 400px)
-    ); */
   grid-template-columns: 200px auto;
   gap: 10px;
   padding-top: 3rem;
@@ -46,10 +41,6 @@ body {
 .eventlist article {
   margin: 0;
   max-width: 600px;
-}
-
-.eventlist div:hover::before {
-  background-color: rgba(255, 255, 0, 0.5);
 }
 
 .eventlist p {
