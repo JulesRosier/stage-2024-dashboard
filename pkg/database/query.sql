@@ -43,12 +43,6 @@ FROM information_schema.columns
 WHERE table_name   = 'events'
 and column_name like 'index_%';
 
--- -- name: tesmpppp :many
--- select id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
--- from events
--- where index_bike = '133'
--- order by event_timestamp desc;
-
 -- name: CreateTimestampConfig :one
 INSERT INTO timestamp_configs (
     topic_name, key_selector 
