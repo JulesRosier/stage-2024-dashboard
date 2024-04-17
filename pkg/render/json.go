@@ -18,11 +18,22 @@ func FormatJson(in []byte, configs []database.EventIndexConfig) string {
 	err := json.Unmarshal(in, &data)
 	if err != nil {
 		slog.Warn("Failed to unmarshal event", "error", err)
-		return "ERROR"
+		return string(in)
 	}
 
 	for _, config := range configs {
 		replaceObjectByKeySelectors(data, config.KeySelector, linkNode{node: getObjectByKeySelectors(data, config.KeySelector), index: "index_" + config.IndexColumn})
+	}
+
+	return renderNode(data)
+}
+
+func RenderJson(in []byte) string {
+	var data map[string]any
+	err := json.Unmarshal(in, &data)
+	if err != nil {
+		slog.Warn("Failed to unmarshal event", "error", err)
+		return string(in)
 	}
 
 	return renderNode(data)

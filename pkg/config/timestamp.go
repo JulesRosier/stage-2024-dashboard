@@ -21,7 +21,7 @@ func AutoTimestampConfig(ctx context.Context, q *database.Queries) error {
 		err := json.Unmarshal(event.EventValue, &data)
 		if err != nil {
 			slog.Warn("Failed to unmarshal event", "error", err)
-			return err
+			continue
 		}
 		path := checkTimestamps(data, []string{})
 		if path == nil {

@@ -12,7 +12,7 @@ import (
 	"github.com/redpanda-data/console/backend/pkg/serde"
 )
 
-func EventImporter(q *database.Queries) {
+func EventImporter(q *database.Queries, eventStream chan database.Event) {
 	cl := GetClient()
 	s := CreateSerde()
 
@@ -88,6 +88,7 @@ func EventImporter(q *database.Queries) {
 				EventKey:          kb,
 				EventValue:        vb,
 			})
+			eventStream <- e
 			if err != nil {
 				slog.Warn("Failed to write event to database", "err", err, "topic", record.Topic)
 				continue
