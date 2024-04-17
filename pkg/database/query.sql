@@ -110,4 +110,4 @@ from event_index_configs ec
 right join events e on e.topic_name = ec.topic_name
 left join timestamp_configs tc on tc.topic_name = e.topic_name
 group by ec.topic_name
-order by min(ec.topic_name);
+order by min(e.topic_name);
