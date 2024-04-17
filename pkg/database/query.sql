@@ -103,5 +103,5 @@ select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
 from event_index_configs ec
 right join events e on e.topic_name = ec.topic_name
 left join timestamp_configs tc on tc.topic_name = e.topic_name
-group by ec.topic_name
+group by e.topic_name
 order by min(e.topic_name);

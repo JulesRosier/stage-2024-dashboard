@@ -87,7 +87,6 @@ func (q *Queries) CreateEventIndexConfig(ctx context.Context, arg CreateEventInd
 }
 
 const createTimestampConfig = `-- name: CreateTimestampConfig :one
-
 INSERT INTO timestamp_configs (
     topic_name, key_selector 
 ) VALUES (
@@ -101,11 +100,6 @@ type CreateTimestampConfigParams struct {
 	KeySelector []string
 }
 
-// -- name: tesmpppp :many
-// select id, inserted_at, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value
-// from events
-// where index_bike = '133'
-// order by event_timestamp desc;
 func (q *Queries) CreateTimestampConfig(ctx context.Context, arg CreateTimestampConfigParams) (TimestampConfig, error) {
 	row := q.db.QueryRow(ctx, createTimestampConfig, arg.TopicName, arg.KeySelector)
 	var i TimestampConfig
@@ -151,7 +145,7 @@ select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
 from event_index_configs ec
 right join events e on e.topic_name = ec.topic_name
 left join timestamp_configs tc on tc.topic_name = e.topic_name
-group by ec.topic_name
+group by e.topic_name
 order by min(e.topic_name)
 `
 
