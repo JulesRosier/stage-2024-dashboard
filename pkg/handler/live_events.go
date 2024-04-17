@@ -1,7 +1,6 @@
 package handler
 
 import (
-	renderer "Stage-2024-dashboard/pkg/render"
 	"Stage-2024-dashboard/pkg/view"
 	"bytes"
 	"fmt"
@@ -25,7 +24,7 @@ func (h *Handler) EventsLiveSSE(c echo.Context) error {
 		select {
 		case result := <-ch:
 			buf := bytes.NewBufferString("")
-			view.Event(result, renderer.RenderJson(result.EventValue), false).Render(ctx, buf)
+			view.LiveEvent(result).Render(ctx, buf)
 			fmt.Fprint(c.Response(), buildSSE("message", buf.String()))
 			c.Response().Flush()
 		case <-ctx.Done():

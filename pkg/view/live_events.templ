@@ -1,5 +1,10 @@
 package view
 
+import (
+	"Stage-2024-dashboard/pkg/render"
+	"Stage-2024-dashboard/pkg/database"
+)
+
 templ EventsLiveHome() {
 	@base(false) {
 		<script src="/static/js/sse.js"></script>
@@ -9,4 +14,8 @@ templ EventsLiveHome() {
 		</hgroup>
 		<div hx-ext="sse" sse-connect="/events/live/sse" sse-swap="message" hx-swap="afterbegin"></div>
 	}
+}
+
+templ LiveEvent(event database.Event) {
+	@Event(event, renderer.RenderJson(event.EventValue), false)
 }
