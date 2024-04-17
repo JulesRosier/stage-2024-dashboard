@@ -16,9 +16,8 @@ type EventShow struct {
 
 templ QueryHome(columns []string) {
 	@base(true) {
-		// <script src="/static/js/json-viewer.js"></script>
 		<script src="/static/js/queries.js"></script>
-		<script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
+		<script src="/static/js/Sortable.min.js"></script>
 		<div class="container">
 			<h1>Query</h1>
 			<div>
@@ -30,8 +29,6 @@ templ QueryHome(columns []string) {
 					hx-trigger="onLoadC, submit"
 					hx-include="[name='nerd_mode']"
 				>
-					// hx-ext="push-url-w-params"
-					// data-push-url="/query"
 					<ul id="queries">
 						<li>
 							<fieldset role="group">
@@ -174,7 +171,6 @@ templ Event(event database.Event, json string, nerd bool) {
 					<h6>key</h6>
 					<div>{ string(event.EventKey) }</div>
 				</div>
-				// <h6>Value</h6>
 				<div class="json">
 					@templ.Raw(json)
 				</div>
