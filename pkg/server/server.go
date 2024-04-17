@@ -19,27 +19,29 @@ type Server struct {
 func NewServer() *Server {
 	e := echo.New()
 	e.HideBanner = true
+	e.HidePort = true
 	NewServer := &Server{
 		// port: port,
 		e: e,
 	}
-	e.HideBanner = true
 
 	return NewServer
 }
 
 // Starts the server in a new routine
 func (s *Server) Start() {
+	port := ":3000"
 	slog.Info("Starting server")
 	bind := os.Getenv("HOST")
 	if bind == "" {
 		bind = "127.0.0.1"
 	}
 	go func() {
-		if err := s.e.Start(bind + ":3000"); err != nil && err != http.ErrServerClosed {
+		if err := s.e.Start(bind + port); err != nil && err != http.ErrServerClosed {
 			slog.Error("Shutting down the server", "error", err.Error())
 		}
 	}()
+	slog.Info("Server started", "bind", bind, "port", port)
 }
 
 // Tries to the stops the server gracefully
