@@ -54,7 +54,7 @@ body {
   line-height: 1rem;
 }
 hr {
-  border: 3px var(--pico-h1-color) solid;
+  border: 2px var(--pico-h1-color) solid;
   width: 100%;
 }
 .hr-c {
