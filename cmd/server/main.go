@@ -29,7 +29,9 @@ func main() {
 	slog.SetDefault(slog.New(slog.Default().Handler()))
 
 	eventStream := make(chan database.Event, 10)
-	eventBr := broadcast.NewBroadcastServer(context.Background(), eventStream)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	eventBr := broadcast.NewBroadcastServer(ctx, eventStream)
 
 	q := database.NewQueries()
 	h := handler.NewHandler(q, &eventBr)
@@ -46,5 +48,6 @@ func main() {
 	<-quit
 	slog.Info("Received an interrupt signal, exiting...")
 
+	cancel()
 	server.Stop()
 }

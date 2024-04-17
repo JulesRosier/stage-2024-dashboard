@@ -22,7 +22,10 @@ func (h *Handler) EventsLiveSSE(c echo.Context) error {
 	ctx := c.Request().Context()
 	for {
 		select {
-		case result := <-ch:
+		case result, ok := <-ch:
+			if !ok {
+				return nil
+			}
 			buf := bytes.NewBufferString("")
 			view.LiveEvent(result).Render(ctx, buf)
 			fmt.Fprint(c.Response(), buildSSE("message", buf.String()))

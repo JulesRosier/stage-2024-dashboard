@@ -1,6 +1,9 @@
 package broadcast
 
-import "context"
+import (
+	"context"
+	"log/slog"
+)
 
 type BroadcastServer[T any] interface {
 	Subscribe() <-chan T
@@ -36,6 +39,7 @@ func (s *broadcastServer[T]) serve(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
+			slog.Info("Stopping broadcaster server")
 			return
 		case newListener := <-s.addListener:
 			s.listeners = append(s.listeners, newListener)
