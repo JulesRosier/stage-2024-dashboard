@@ -122,9 +122,12 @@ templ EventIndexConfig(config database.EventIndexConfig) {
 				<p>{ config.InsertedAt.Time.String() }</p>
 			</hgroup>
 		</header>
-		<div>
+		<div class="config-data">
+			<h6>Topic</h6>
 			<p>{ config.TopicName }</p>
+			<h6>Index column</h6>
 			<p>{ config.IndexColumn }</p>
+			<h6>Key selector</h6>
 			<p>{ strings.Join(config.KeySelector, ",") }</p>
 		</div>
 		<footer>

@@ -345,40 +345,40 @@ func EventIndexConfig(config database.EventIndexConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup></header><div><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup></header><div class=\"config-data\"><h6>Topic</h6><p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 126, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 127, Col: 24}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><h6>Index column</h6><p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(config.IndexColumn)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 127, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 129, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><h6>Key selector</h6><p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Join(config.KeySelector, ","))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 128, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 131, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -391,7 +391,7 @@ func EventIndexConfig(config database.EventIndexConfig) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs("/event_index_config/" + strconv.FormatInt(int64(config.ID), 10) + "/edit")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 132, Col: 87}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 135, Col: 87}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -404,7 +404,7 @@ func EventIndexConfig(config database.EventIndexConfig) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs("/event_index_config/" + strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 140, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 143, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -468,7 +468,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var27 string
 		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 171, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 174, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
@@ -481,7 +481,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var28 string
 		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(config.InsertedAt.Time.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 172, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 175, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
@@ -494,7 +494,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs("/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 176, Col: 74}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 179, Col: 74}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
@@ -507,7 +507,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(config.ID), 10) + "timestamp")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 179, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 182, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -520,7 +520,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 183, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 186, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
@@ -533,7 +533,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Join(config.KeySelector, ","))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 187, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 190, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
@@ -546,7 +546,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(config.ID), 10) + "timestamp")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 193, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 196, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -559,7 +559,7 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var34 string
 		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs("/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 196, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 199, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
@@ -626,7 +626,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var37 string
 		templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 228, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 231, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 		if templ_7745c5c3_Err != nil {
@@ -639,7 +639,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(config.InsertedAt.Time.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 229, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 232, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -652,7 +652,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var39 string
 		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 233, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 236, Col: 24}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 		if templ_7745c5c3_Err != nil {
@@ -665,7 +665,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var40 string
 		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(strings.Join(config.KeySelector, ","))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 234, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 237, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
@@ -678,7 +678,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var41 string
 		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs("/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10) + "/edit")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 238, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 241, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {
@@ -691,7 +691,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 		var templ_7745c5c3_Var42 string
 		templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs("/timestamp_config/" + strconv.FormatInt(int64(config.ID), 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 246, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 249, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 		if templ_7745c5c3_Err != nil {

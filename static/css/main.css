@@ -42,21 +42,26 @@ body {
   gap: 10px;
   padding-top: 3rem;
 }
+
 .eventlist article {
   margin: 0;
   max-width: 600px;
 }
+
 .eventlist div:hover::before {
   background-color: rgba(255, 255, 0, 0.5);
 }
+
 .eventlist p {
   margin: 1em;
   line-height: 1rem;
 }
-hr {
+
+.hr-c hr {
   border: 2px var(--pico-h1-color) solid;
   width: 100%;
 }
+
 .hr-c {
   display: flex;
   align-items: center;
@@ -64,6 +69,7 @@ hr {
 .eventlist article details {
   margin: 1em;
 }
+
 .eventlist article details summary {
   font-size: 1.3rem;
 }
@@ -118,6 +124,17 @@ hr {
 
 .config-group article {
   flex-grow: 1;
+}
+
+.config-data {
+  display: grid;
+  grid-template-columns: min-content auto;
+  gap: 0 1em;
+}
+
+.config-data h6 {
+  width: max-content;
+  margin: 0;
 }
 
 .grid-header {
