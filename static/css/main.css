@@ -58,7 +58,7 @@ body {
 }
 
 .hr-c hr {
-  border: 2px var(--pico-h1-color) solid;
+  border: 2px var(--pico-muted-color) solid;
   width: 100%;
 }
 
@@ -82,10 +82,7 @@ body {
   margin: 0;
   margin-bottom: -0.5em;
 }
-/* .eventlist .event {
-  display: flex;
-  justify-content: center;
-} */
+
 .eventlist .event p {
   padding: 1em;
 }
@@ -145,5 +142,3 @@ body {
   padding-left: 0.2em;
   border-bottom: 2px solid var(--pico-h1-color);
 }
-
-/* 31780de6-23d4-4c6a-bf77-ab99a3084ddf */
