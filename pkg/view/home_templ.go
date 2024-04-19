@@ -32,7 +32,7 @@ func Home() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><button hx-post=\"/index/full\" hx-disabled-elt=\"this\" hx-target=\"#index_full_duration\">Full Index</button><p>Duration last index: <span id=\"index_full_duration\">N/A</span></p></div><div><button hx-post=\"/index/new\" hx-disabled-elt=\"this\" hx-target=\"#index_new_duration\">Index New</button><p>Duration last index: <span id=\"index_new_duration\">N/A</span></p></div><br><div hx-get=\"/config_stats\" hx-trigger=\"load\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><button hx-post=\"/index/full\" hx-disabled-elt=\"this\" hx-target=\"#index_full_duration\">Full Index</button><p>Duration last index: <span id=\"index_full_duration\">N/A</span></p></div><div><button hx-post=\"/index/new\" hx-disabled-elt=\"this\" hx-target=\"#index_new_duration\">Index New</button><p>Duration last index: <span id=\"index_new_duration\">N/A</span></p></div><br><div id=\"stats\" hx-get=\"/config_stats\" hx-trigger=\"load, re\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -65,7 +65,7 @@ func ConfigStats(configs []database.GetConfigStatsRow) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h3>Config stats</h3><table class=\"striped\"><thead><tr><th scope=\"col\"></th><th scope=\"col\">Topic</th><th scope=\"col\">Config count</th><th scope=\"col\">Has time config</th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h3>Config stats</h3><button hx-post=\"/event_index_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto config</button> <button hx-post=\"/timestamp_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto time</button><table class=\"striped\"><thead><tr><th scope=\"col\"></th><th scope=\"col\">Topic</th><th scope=\"col\">Config count</th><th scope=\"col\">Has time config</th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -87,7 +87,7 @@ func ConfigStats(configs []database.GetConfigStatsRow) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(c.Topic)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\home.templ`, Line: 52, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\home.templ`, Line: 63, Col: 31}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -100,7 +100,7 @@ func ConfigStats(configs []database.GetConfigStatsRow) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(c.ConfigCount, 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\home.templ`, Line: 53, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\home.templ`, Line: 64, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -126,7 +126,7 @@ func ConfigStats(configs []database.GetConfigStatsRow) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody></table>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody></table></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
