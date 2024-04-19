@@ -37,4 +37,11 @@ func (s *Server) RegisterRoutes(hdlr *handler.Handler) {
 
 	e.GET("/events/live", hdlr.EventsLiveHome)
 	e.GET("/events/live/sse", hdlr.EventsLiveSSE)
+
+	d := e.Group("/demo")
+	d.GET("/home", hdlr.DemoHome)
+	d.GET("/step/1", hdlr.DemoStep1)
+	d.POST("/step/1", hdlr.DemoStep1Post)
+	d.POST("/step/2", hdlr.DemoStep2Post)
+	d.POST("/step/3", hdlr.DemoStep3Post)
 }

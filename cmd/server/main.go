@@ -3,6 +3,7 @@ package main
 import (
 	"Stage-2024-dashboard/pkg/broadcast"
 	"Stage-2024-dashboard/pkg/database"
+	"Stage-2024-dashboard/pkg/demo"
 	"Stage-2024-dashboard/pkg/handler"
 	"Stage-2024-dashboard/pkg/kafka"
 	"Stage-2024-dashboard/pkg/server"
@@ -39,6 +40,8 @@ func main() {
 	server := server.NewServer()
 	server.RegisterRoutes(h)
 	server.ApplyMiddleware()
+
+	demo.Init()
 
 	server.Start()
 	go kafka.EventImporter(q, eventStream)

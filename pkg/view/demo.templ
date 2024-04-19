@@ -1,0 +1,45 @@
+package view
+
+templ DemoHome() {
+	@base(false) {
+		<h1>Demo</h1>
+		<div hx-get="/demo/step/1" hx-trigger="load"></div>
+	}
+}
+
+templ DemoStep1() {
+	<form hx-post="/demo/step/1">
+		<h2>Register User</h2>
+		<label>
+			Name:
+			<input type="text" name="name" required/>
+		</label>
+		<button>Submit</button>
+	</form>
+}
+
+templ DemoStep2() {
+	<form hx-post="/demo/step/2">
+		<h2>Choose Bike</h2>
+		<label>
+			Donkey
+			<input type="radio" name="bike" value="donkey" required/>
+		</label>
+		<label>
+			BlueBike
+			<input type="radio" name="bike" value="blue-bike" required/>
+		</label>
+		<label>
+			Bolt
+			<input type="radio" name="bike" value="bolt" required/>
+		</label>
+		<button>Submit</button>
+	</form>
+}
+
+templ DemoStep3() {
+	<form hx-post="/demo/step/3">
+		<h2>Return Bike</h2>
+		<button>Submit</button>
+	</form>
+}

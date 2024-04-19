@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	github.com/a-h/templ v0.2.663
+	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.4
