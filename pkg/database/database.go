@@ -30,7 +30,7 @@ func NewQueries() *Queries {
 	DbPort := os.Getenv("DB_PORT")
 
 	slog.Info("Starting database", "host", DbHost)
-	connStr := fmt.Sprintf("user=%s password=%s host=%s port=%s sslmode=disable",
+	connStr := fmt.Sprintf("user=%s password=%s host=%s port=%s database=postgres sslmode=disable",
 		DbUser, DbPassword, DbHost, DbPort)
 
 	dbTemp, err := pgxpool.New(ctx, connStr)
