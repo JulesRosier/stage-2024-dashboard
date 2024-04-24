@@ -1,22 +1,47 @@
 # Project Stage-2024-dashboard
 
-## TODO
+## Config
 
-- [ ] Red buttons stil have a blue border
+```yml
+# config/config.yaml
+server:
+  port: 3000
+database:
+  user: ps_user
+  password: SecurePassword
+  database: dashboard
+  host: postgres
+  port: 5432
+kafka:
+  consumeGroup: eventviewer
+  brokers:
+    - redpanda-0.redpanda.redpanda.svc.cluster.local:9093
+    - redpanda-1.redpanda.redpanda.svc.cluster.local:9093
+    - redpanda-2.redpanda.redpanda.svc.cluster.local:9093
+  schemaRegistry:
+    urls:
+      - redpanda-0.redpanda.redpanda.svc.cluster.local:8081
+      - redpanda-1.redpanda.redpanda.svc.cluster.local:8081
+      - redpanda-2.redpanda.redpanda.svc.cluster.local:8081
+  auth:
+    user: superuser
+    password: secretpassword
+```
 
-## Env vars
-
-example
-
-```env
-DB_USER=postgres
-DB_PASSWORD=password
-DB_DATABASE=testing
-DB_HOST=localhost
-DB_PORT=5432
-
-SEED_BROKER=localhost:19092
-REGISTRY=localhost:18081
+```yml
+server:
+  port: 4000
+database:
+  user: postgres
+  password: password
+  database: demo
+kafka:
+  consumeGroup: testing
+  brokers:
+    - localhost:19092
+  schemaRegistry:
+    urls:
+      - localhost:18081
 ```
 
 ## Dev Setup
@@ -40,8 +65,7 @@ docker compose up -d
 #### Building
 
 ```sh
-docker build . -t  ghcr.io/julesrosier/stage-2024-dashboard:latest --build-arg GIT_COMMIT=$(git log -1 --format=%h)
-docker push ghcr.io/julesrosier/stage-2024-dashboard:latest
+make docker-build
 ```
 
 ### Dependencies
@@ -65,17 +89,5 @@ go install github.com/cosmtrek/air@latest
 ### Code gen
 
 ```sh
-sqlc generate
-templ generate
-```
-
-## Queries
-
-```sql
-UPDATE events
-SET index_bikestation = (e.event_value->>'stationId')::VARCHAR
-FROM events e
-WHERE
-    events.id = 441304
-    AND events.topic_name = 'donkey-locations';
+make codegen
 ```
