@@ -14,7 +14,7 @@ data:
       host: postgres
       port: 5432
     kafka:
-      consumeGroup: testing
+      consumeGroup: eventviewer
       brokers:
         - redpanda-0.redpanda.redpanda.svc.cluster.local:9093
         - redpanda-1.redpanda.redpanda.svc.cluster.local:9093
