@@ -7,7 +7,9 @@ require (
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/joho/godotenv v1.5.1
+	github.com/knadh/koanf v1.5.0
 	github.com/labstack/echo/v4 v4.11.4
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/redpanda-data/console/backend v0.0.0-20240318113208-2697fb646178
 	github.com/twmb/franz-go v1.16.1
 	github.com/twmb/franz-go/pkg/sr v0.0.0-20240307025822-351e7fae879c
@@ -46,13 +48,11 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
-	github.com/knadh/koanf v1.5.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/linkedin/goavro v2.1.0+incompatible // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect

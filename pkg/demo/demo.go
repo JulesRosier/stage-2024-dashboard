@@ -1,13 +1,12 @@
 package demo
 
 import (
+	"Stage-2024-dashboard/pkg/settings"
 	"context"
 	"encoding/json"
 	"log/slog"
-	"os"
 	"time"
 
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/twmb/franz-go/pkg/kgo"
 )
 
@@ -40,13 +39,11 @@ type BikeReturned struct {
 
 var client *kgo.Client
 
-func Init() {
-	seed := os.Getenv("SEED_BROKER")
-
-	slog.Info("Starting kafka client", "seedbrokers", seed)
+func Init(set settings.Kafka) {
+	slog.Info("Starting kafka client", "seedbrokers", set.Brokers)
 
 	cl, err := kgo.NewClient(
-		kgo.SeedBrokers(seed),
+		kgo.SeedBrokers(set.Brokers...),
 		kgo.AllowAutoTopicCreation(),
 	)
 	if err != nil {

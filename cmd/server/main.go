@@ -5,8 +5,10 @@ import (
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/demo"
 	"Stage-2024-dashboard/pkg/handler"
+	"Stage-2024-dashboard/pkg/helper"
 	"Stage-2024-dashboard/pkg/kafka"
 	"Stage-2024-dashboard/pkg/server"
+	"Stage-2024-dashboard/pkg/settings"
 	"context"
 	"fmt"
 	"log/slog"
@@ -29,22 +31,25 @@ func main() {
 	fmt.Print(banner)
 	slog.SetDefault(slog.New(slog.Default().Handler()))
 
+	set, err := settings.Load()
+	helper.MaybeDie(err, "Failed to load configs")
+
 	eventStream := make(chan database.Event, 10)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	eventBr := broadcast.NewBroadcastServer(ctx, eventStream)
 
-	q := database.NewQueries()
+	q := database.NewQueries(set.Database)
 	h := handler.NewHandler(q, &eventBr)
 
-	server := server.NewServer()
+	server := server.NewServer(set.Server)
 	server.RegisterRoutes(h)
 	server.ApplyMiddleware()
 
-	demo.Init()
+	demo.Init(set.Kafka)
 
 	server.Start()
-	go kafka.EventImporter(q, eventStream)
+	go kafka.EventImporter(q, eventStream, set.Kafka)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

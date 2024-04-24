@@ -2,24 +2,23 @@ package kafka
 
 import (
 	"Stage-2024-dashboard/pkg/helper"
+	"Stage-2024-dashboard/pkg/settings"
 	"log/slog"
-	"os"
 
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/twmb/franz-go/pkg/kgo"
 	"github.com/twmb/franz-go/pkg/kversion"
 	"github.com/twmb/franz-go/pkg/sasl/scram"
 	"github.com/twmb/franz-go/pkg/sr"
 )
 
-func GetClient() *kgo.Client {
-	seed := os.Getenv("SEED_BROKER")
-	group := os.Getenv("CONSUMER_GROUP")
-	user := os.Getenv("EH_AUTH_USER")
-	pw := os.Getenv("EH_AUTH_PASSWORD")
+func GetClient(set settings.Kafka) *kgo.Client {
+	seed := set.Brokers
+	group := set.ConsumeGroup
+	user := set.Auth.User
+	pw := set.Auth.Password
 
 	opts := []kgo.Opt{
-		kgo.SeedBrokers(seed),
+		kgo.SeedBrokers(seed...),
 		kgo.ConsumeTopics("^[A-Za-z].*$"),
 		kgo.ConsumeRegex(),
 		kgo.MaxConcurrentFetches(12),
@@ -47,14 +46,14 @@ func GetClient() *kgo.Client {
 	return cl
 }
 
-func GetRepoClient() *sr.Client {
-	registry := os.Getenv("REGISTRY")
-	user := os.Getenv("EH_AUTH_USER")
-	pw := os.Getenv("EH_AUTH_PASSWORD")
+func GetRepoClient(set settings.Kafka) *sr.Client {
+	registry := set.SchemaRgistry.Urls
+	user := set.Auth.User
+	pw := set.Auth.Password
 
 	slog.Info("starting schema registry client", "host", registry)
 	opts := []sr.Opt{
-		sr.URLs(registry),
+		sr.URLs(registry...),
 	}
 	if user != "" && pw != "" {
 		opts = append(opts, sr.BasicAuth(user, pw))

@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"Stage-2024-dashboard/pkg/database"
+	"Stage-2024-dashboard/pkg/settings"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -12,9 +13,9 @@ import (
 	"github.com/redpanda-data/console/backend/pkg/serde"
 )
 
-func EventImporter(q *database.Queries, eventStream chan database.Event) {
-	cl := GetClient()
-	s := CreateSerde()
+func EventImporter(q *database.Queries, eventStream chan database.Event, set settings.Kafka) {
+	cl := GetClient(set)
+	s := CreateSerde(set)
 
 	ctx := context.Background()
 

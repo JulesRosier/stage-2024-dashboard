@@ -1,28 +1,28 @@
 package server
 
 import (
+	"Stage-2024-dashboard/pkg/settings"
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
-	"os"
 	"time"
 
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
 )
 
 type Server struct {
-	// port int
-	e *echo.Echo
+	e        *echo.Echo
+	settings settings.Server
 }
 
-func NewServer() *Server {
+func NewServer(set settings.Server) *Server {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
 	NewServer := &Server{
-		// port: port,
-		e: e,
+		e:        e,
+		settings: set,
 	}
 
 	return NewServer
@@ -30,18 +30,14 @@ func NewServer() *Server {
 
 // Starts the server in a new routine
 func (s *Server) Start() {
-	port := ":3000"
 	slog.Info("Starting server")
-	bind := os.Getenv("HOST")
-	if bind == "" {
-		bind = "127.0.0.1"
-	}
+	address := fmt.Sprintf("%s:%d", s.settings.Bind, s.settings.Port)
 	go func() {
-		if err := s.e.Start(bind + port); err != nil && err != http.ErrServerClosed {
+		if err := s.e.Start(address); err != nil && err != http.ErrServerClosed {
 			slog.Error("Shutting down the server", "error", err.Error())
 		}
 	}()
-	slog.Info("Server started", "bind", bind, "port", port)
+	slog.Info("Server started", "address", address)
 }
 
 // Tries to the stops the server gracefully

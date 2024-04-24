@@ -2,11 +2,9 @@ package kafka
 
 import (
 	"Stage-2024-dashboard/pkg/helper"
+	"Stage-2024-dashboard/pkg/settings"
 	"log/slog"
-	"os"
 	"time"
-
-	_ "github.com/joho/godotenv/autoload"
 
 	"github.com/redpanda-data/console/backend/pkg/config"
 	"github.com/redpanda-data/console/backend/pkg/msgpack"
@@ -17,21 +15,21 @@ import (
 )
 
 // Creates  serde.Service and all other services that are need to start it.
-func CreateSerde() *serde.Service {
-	registry := "http://" + os.Getenv("REGISTRY")
-	user := os.Getenv("EH_AUTH_USER")
-	pw := os.Getenv("EH_AUTH_PASSWORD")
-
-	slog.Info("Creating serde service", "registry", registry)
+func CreateSerde(set settings.Kafka) *serde.Service {
+	slog.Info("Creating serde service", "registry", set.SchemaRgistry.Urls)
 
 	logger := zap.L()
 
+	urls := []string{}
+	for _, url := range set.SchemaRgistry.Urls {
+		urls = append(urls, "http://"+url)
+	}
 	schemaService, err := schema.NewService(
 		config.Schema{
 			Enabled:  true,
-			URLs:     []string{registry},
-			Username: user,
-			Password: pw,
+			URLs:     urls,
+			Username: set.Auth.User,
+			Password: set.Auth.Password,
 		},
 		logger,
 	)

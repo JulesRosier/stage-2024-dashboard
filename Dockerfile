@@ -49,6 +49,6 @@ COPY ./static ./static
 
 EXPOSE 3000
 
-ENV HOST=0.0.0.0
+ENV SERVER_BIND=0.0.0.0
 
 ENTRYPOINT [ "/app/server" ]

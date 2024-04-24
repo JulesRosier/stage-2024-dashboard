@@ -1,4 +1,33 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard
+data:
+  config.yaml: |
+    server:
+      port: 3000
+    database:
+      user: ps_user
+      password: SecurePassword
+      database: dashboard
+      host: postgres
+      port: 5432
+    kafka:
+      consumeGroup: testing
+      brokers:
+        - redpanda-0.redpanda.redpanda.svc.cluster.local:9093
+        - redpanda-1.redpanda.redpanda.svc.cluster.local:9093
+        - redpanda-2.redpanda.redpanda.svc.cluster.local:9093
+      schemaRegistry:
+        urls:
+          - redpanda-0.redpanda.redpanda.svc.cluster.local:8081
+          - redpanda-1.redpanda.redpanda.svc.cluster.local:8081
+          - redpanda-2.redpanda.redpanda.svc.cluster.local:8081
+      auth:
+        user: superuser
+        password: secretpassword
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,27 +46,15 @@ spec:
         - name: dashboard
           image: "ghcr.io/julesrosier/stage-2024-dashboard:latest"
           imagePullPolicy: Always
-          env:
-            - name: DB_DATABASE
-              value: dashboard
-            - name: DB_HOST
-              value: "10.51.75.38"
-            - name: DB_PASSWORD
-              value: SecurePassword
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_USER
-              value: ps_user
-            - name: LOG_LEVEL
-              value: DEBUG
-            - name: REGISTRY
-              value: redpanda-0.redpanda.redpanda.svc.cluster.local:8081
-            - name: SEED_BROKER
-              value: redpanda-0.redpanda.redpanda.svc.cluster.local:9093
-            - name: EH_AUTH_USER
-              value: superuser
-            - name: EH_AUTH_PASSWORD
-              value: secretpassword
+          volumeMounts:
+            - mountPath: /app/config
+              name: configs
+              readOnly: true
+      volumes:
+        - name: configs
+          configMap:
+            defaultMode: 420
+            name: dashboard
 ---
 apiVersion: v1
 kind: Service
