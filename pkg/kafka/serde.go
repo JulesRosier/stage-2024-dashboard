@@ -18,7 +18,7 @@ import (
 func CreateSerde(set settings.Kafka) *serde.Service {
 	slog.Info("Creating serde service", "registry", set.SchemaRgistry.Urls)
 
-	logger := zap.L()
+	logger := zap.NewNop()
 
 	urls := []string{}
 	for _, url := range set.SchemaRgistry.Urls {
