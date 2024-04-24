@@ -42,7 +42,7 @@ func GetClient() *kgo.Client {
 	cl, err := kgo.NewClient(
 		opts...,
 	)
-	helper.DieMsg("Failed to create client", err)
+	helper.MaybeDie(err, "Failed to create client")
 
 	return cl
 }

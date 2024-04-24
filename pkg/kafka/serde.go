@@ -19,6 +19,8 @@ import (
 // Creates  serde.Service and all other services that are need to start it.
 func CreateSerde() *serde.Service {
 	registry := "http://" + os.Getenv("REGISTRY")
+	user := os.Getenv("EH_AUTH_USER")
+	pw := os.Getenv("EH_AUTH_PASSWORD")
 
 	slog.Info("Creating serde service", "registry", registry)
 
@@ -26,8 +28,10 @@ func CreateSerde() *serde.Service {
 
 	schemaService, err := schema.NewService(
 		config.Schema{
-			Enabled: true,
-			URLs:    []string{registry},
+			Enabled:  true,
+			URLs:     []string{registry},
+			Username: user,
+			Password: pw,
 		},
 		logger,
 	)
