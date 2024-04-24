@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"fmt"
 	"log/slog"
 	"strings"
 
@@ -90,6 +89,5 @@ func Load() (Settings, error) {
 		return Settings{}, err
 	}
 
-	fmt.Printf("%+v\n", set)
 	return set, nil
 }
