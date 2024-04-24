@@ -18,12 +18,14 @@ type Settings struct {
 	Server   Server   `yaml:"server"`
 	Database Database `yaml:"database"`
 	Kafka    Kafka    `yaml:"kafka"`
+	Logger   Logger   `yaml:"logger"`
 }
 
 func (s *Settings) SetDefault() {
 	s.Server.SetDefault()
 	s.Database.SetDefault()
 	s.Kafka.SetDefault()
+	s.Logger.SetDefault()
 }
 
 func Load() (Settings, error) {

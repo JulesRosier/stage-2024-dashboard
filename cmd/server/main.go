@@ -7,6 +7,7 @@ import (
 	"Stage-2024-dashboard/pkg/handler"
 	"Stage-2024-dashboard/pkg/helper"
 	"Stage-2024-dashboard/pkg/kafka"
+	"Stage-2024-dashboard/pkg/logger"
 	"Stage-2024-dashboard/pkg/server"
 	"Stage-2024-dashboard/pkg/settings"
 	"context"
@@ -29,10 +30,11 @@ const banner = `
 
 func main() {
 	fmt.Print(banner)
-	slog.SetDefault(slog.New(slog.Default().Handler()))
 
 	set, err := settings.Load()
 	helper.MaybeDie(err, "Failed to load configs")
+
+	slog.SetDefault(logger.NewLogger(set.Logger))
 
 	eventStream := make(chan database.Event, 10)
 
