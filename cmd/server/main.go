@@ -17,7 +17,6 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
-	"time"
 )
 
 const banner = `
@@ -57,7 +56,7 @@ func main() {
 	go kafka.EventImporter(q, eventStream, set.Kafka)
 
 	s := scheduler.NewScheduler()
-	s.Schedule(time.Hour, func() {
+	s.Schedule(set.Indexing.Interval, func() {
 		_, err := indexing.Index(context.Background(), q, false)
 		if err != nil {
 			slog.Warn("Failed to complete scheduled index")

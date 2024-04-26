@@ -27,6 +27,8 @@ data:
       auth:
         user: superuser
         password: secretpassword
+    indexing:
+      interval: 15m
 ---
 apiVersion: apps/v1
 kind: Deployment

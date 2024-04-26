@@ -19,6 +19,7 @@ type Settings struct {
 	Database Database `yaml:"database"`
 	Kafka    Kafka    `yaml:"kafka"`
 	Logger   Logger   `yaml:"logger"`
+	Indexing Indexing `yaml:"indexing"`
 }
 
 func (s *Settings) SetDefault() {
@@ -26,6 +27,7 @@ func (s *Settings) SetDefault() {
 	s.Database.SetDefault()
 	s.Kafka.SetDefault()
 	s.Logger.SetDefault()
+	s.Indexing.SetDefault()
 }
 
 func Load() (Settings, error) {
