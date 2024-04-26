@@ -14,7 +14,16 @@ templ ConfigHome(topics []string) {
 				hx-post="/event_index_config/auto"
 				hx-disabled-elt="this"
 			>Auto config</button>
-			@EventIndexConfigCreateForm()
+			<div class="grid">
+				@EventIndexConfigCreateForm()
+				<div
+					hx-get="/config/event-exampl"
+					hx-trigger="change from:#config-topic"
+					hx-include="#config-topic"
+					class="json"
+					style="padding: 1em"
+				></div>
+			</div>
 		</details>
 		<hr/>
 		<div hx-trigger="load, newConfig from:body" hx-get="/h/event_index_config/list"></div>
@@ -26,7 +35,16 @@ templ ConfigHome(topics []string) {
 				hx-post="/timestamp_config/auto"
 				hx-disabled-elt="this"
 			>Auto config</button>
-			@TimestampConfigCreateForm()
+			<div class="grid">
+				@TimestampConfigCreateForm()
+				<div
+					hx-get="/config/event-exampl"
+					hx-trigger="change from:#time-topic"
+					hx-include="#time-topic"
+					class="json"
+					style="padding: 1em"
+				></div>
+			</div>
 		</details>
 		<hr/>
 		<div hx-trigger="load, newTimestampConfig from:body" hx-get="/h/timestamp_config/list"></div>
@@ -42,7 +60,7 @@ templ EventIndexConfigCreateForm() {
 	<form hx-post="/event_index_config" hx-target="this">
 		<label>
 			Topic name
-			<input type="text" name="topic" list="topics" required/>
+			<input type="text" name="topic" list="topics" id="config-topic" required/>
 		</label>
 		<label>
 			Index column	
@@ -157,7 +175,7 @@ templ TimestampConfigCreateForm() {
 	<form hx-post="/timestamp_config" hx-target="this">
 		<label>
 			Topic name
-			<input type="text" name="topic" list="topics" required/>
+			<input type="text" name="topic" list="topics" id="time-topic" required/>
 		</label>
 		<label>
 			Keys

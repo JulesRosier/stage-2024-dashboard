@@ -285,6 +285,31 @@ func (q *Queries) GetIndexColumnsFromConfigs(ctx context.Context) ([]string, err
 	return items, nil
 }
 
+const getRandomEvent = `-- name: GetRandomEvent :one
+SELECT id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at FROM events
+WHERE topic_name = $1
+ORDER BY random() ASC LIMIT 1
+`
+
+func (q *Queries) GetRandomEvent(ctx context.Context, topicName string) (Event, error) {
+	row := q.db.QueryRow(ctx, getRandomEvent, topicName)
+	var i Event
+	err := row.Scan(
+		&i.ID,
+		&i.InsertedAt,
+		&i.EventhubTimestamp,
+		&i.EventTimestamp,
+		&i.TopicName,
+		&i.TopicOffset,
+		&i.TopicPartition,
+		&i.EventHeaders,
+		&i.EventKey,
+		&i.EventValue,
+		&i.LastIndexedAt,
+	)
+	return i, err
+}
+
 const getTimestampConfig = `-- name: GetTimestampConfig :one
 SELECT id, inserted_at, topic_name, key_selector
 FROM timestamp_configs

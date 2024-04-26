@@ -3,6 +3,7 @@ package handler
 import (
 	"Stage-2024-dashboard/pkg/config"
 	"Stage-2024-dashboard/pkg/database"
+	renderer "Stage-2024-dashboard/pkg/render"
 	"Stage-2024-dashboard/pkg/view"
 	"net/http"
 	"sort"
@@ -240,4 +241,18 @@ func (h *Handler) EventIndexConfigAuto(c echo.Context) error {
 	}
 	c.Response().Header().Add("HX-Trigger", "newConfig")
 	return c.NoContent(http.StatusNoContent)
+}
+
+func (h *Handler) EventExample(c echo.Context) error {
+	topic := c.QueryParam("topic")
+	if topic == "" {
+		c.Response().Writer.WriteHeader(http.StatusBadRequest)
+		return nil
+	}
+	event, err := h.Q.GetRandomEvent(c.Request().Context(), topic)
+	if err != nil {
+		return err
+	}
+
+	return c.String(200, renderer.RenderJson(event.EventValue))
 }

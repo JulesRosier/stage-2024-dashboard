@@ -105,3 +105,8 @@ right join events e on e.topic_name = ec.topic_name
 left join timestamp_configs tc on tc.topic_name = e.topic_name
 group by e.topic_name
 order by min(e.topic_name);
+
+-- name: GetRandomEvent :one
+SELECT * FROM events
+WHERE topic_name = $1
+ORDER BY random() ASC LIMIT 1;

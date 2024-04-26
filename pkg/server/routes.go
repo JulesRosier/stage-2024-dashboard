@@ -22,6 +22,8 @@ func (s *Server) RegisterRoutes(hdlr *handler.Handler) {
 	e.GET("/event_index_config/:id/edit", hdlr.EventIndexConfigEditForm)
 	e.GET("/h/event_index_config/list", hdlr.EventIndexConfigList)
 
+	e.GET("config/event-exampl", hdlr.EventExample)
+
 	e.POST("/timestamp_config", hdlr.TimestampConfigCreate)
 	e.GET("/timestamp_config/:id", hdlr.TimestampConfig)
 	e.DELETE("/timestamp_config/:id", hdlr.TimestampConfigDelete)
