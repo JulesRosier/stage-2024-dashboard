@@ -6,8 +6,10 @@ import (
 	"Stage-2024-dashboard/pkg/demo"
 	"Stage-2024-dashboard/pkg/handler"
 	"Stage-2024-dashboard/pkg/helper"
+	"Stage-2024-dashboard/pkg/indexing"
 	"Stage-2024-dashboard/pkg/kafka"
 	"Stage-2024-dashboard/pkg/logger"
+	"Stage-2024-dashboard/pkg/scheduler"
 	"Stage-2024-dashboard/pkg/server"
 	"Stage-2024-dashboard/pkg/settings"
 	"context"
@@ -15,6 +17,7 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"time"
 )
 
 const banner = `
@@ -53,11 +56,20 @@ func main() {
 	server.Start()
 	go kafka.EventImporter(q, eventStream, set.Kafka)
 
+	s := scheduler.NewScheduler()
+	s.Schedule(time.Hour, func() {
+		_, err := indexing.Index(context.Background(), q, false)
+		if err != nil {
+			slog.Warn("Failed to complete scheduled index")
+		}
+	})
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 	slog.Info("Received an interrupt signal, exiting...")
 
+	s.Stop()
 	cancel()
 	server.Stop()
 }
