@@ -137,11 +137,11 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 		}
 	}
 	if query != "" {
-		<div
-			hx-get={ "/query/search?" + query }
-			hx-trigger="revealed"
-			hx-swap="afterend"
-		></div>
+		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d'
+				hx-get='/query/search?%s'
+					hx-trigger='revealed'
+					hx-swap='afterend'
+				></div>`, offset+len(events)+1, query))
 	}
 }
 
