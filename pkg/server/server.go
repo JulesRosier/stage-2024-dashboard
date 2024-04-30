@@ -20,6 +20,7 @@ func NewServer(set settings.Server) *Server {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
+	e.Debug = set.Debug
 	NewServer := &Server{
 		e:        e,
 		settings: set,
