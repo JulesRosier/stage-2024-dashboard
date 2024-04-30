@@ -135,3 +135,20 @@ body {
   padding-left: 0.2em;
   border-bottom: 2px solid var(--pico-h1-color);
 }
+
+.scroll-top {
+  position: absolute; /* relative to its positioned <main> parent */
+  top: 120vh; /* starts below the bottom of the screen */
+  bottom: 3rem; /* stops scrolling before the end */
+  right: 2rem; /* offset from right hand side */
+}
+
+.scroll-top__link {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky; /* 'relative' until element reaches... */
+  top: 90vh; /* 90% viewport height from the top, when it becomes 'fixed' - until its container toggles it back to 'relative' */
+}
+
+main {
+  position: relative;
+}

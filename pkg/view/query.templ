@@ -83,6 +83,9 @@ templ QueryHome(columns []string) {
 				</label>
 			</div>
 		</div>
+		<div class="scroll-top">
+			<a class="scroll-top__link" href="#">Back to top</a>
+		</div>
 		<div id="results" class="eventlist"></div>
 		<template id="form-template">
 			<li>
@@ -108,7 +111,7 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 		<h1 class="grid-header">Time</h1>
 		for i, qp := range(qps) {
 			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d; grid-row: 1'>", i+2))
-			<h1>{ qp.Column }</h1>
+			<h1>{ formatIndexName(qp.Column) }</h1>
 			<h2>{ qp.Search }</h2>
 			@templ.Raw("</hgroup>")
 		}
@@ -138,10 +141,10 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 	}
 	if query != "" {
 		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d'
-				hx-get='/query/search?%s'
-					hx-trigger='revealed'
-					hx-swap='afterend'
-				></div>`, offset+len(events)+1, query))
+										hx-get='/query/search?%s'
+											hx-trigger='revealed'
+											hx-swap='afterend'
+										></div>`, offset+len(events)+1, query))
 	}
 }
 
