@@ -7,12 +7,15 @@
 .json-key {
   color: #0074d9;
 }
+
 .json-string {
   color: #2ecc40;
 }
+
 .json-number {
   color: #ff4136;
 }
+
 .json-boolean {
   color: #b10dc9;
 }
@@ -22,7 +25,7 @@
   list-style: none;
 }
 
-.json > ul {
+.json>ul {
   margin: 0;
   padding: 0;
 }
@@ -59,6 +62,7 @@ body {
   display: flex;
   align-items: center;
 }
+
 .eventlist article details {
   margin: 1em;
 }
@@ -85,6 +89,7 @@ body {
   grid-template-columns: min-content auto;
   gap: 0 1em;
 }
+
 .tab div {
   white-space: nowrap;
 }
@@ -102,6 +107,7 @@ body {
 .controls {
   display: flex;
 }
+
 .controls * {
   margin-right: 1em;
 }
@@ -137,16 +143,21 @@ body {
 }
 
 .scroll-top {
-  position: absolute; /* relative to its positioned <main> parent */
-  top: 120vh; /* starts below the bottom of the screen */
-  bottom: 3rem; /* stops scrolling before the end */
-  right: 2rem; /* offset from right hand side */
+  position: fixed;
+  /* relative to its positioned <main> parent */
+  bottom: 2rem;
+  /* stops scrolling before the end */
+  right: 2rem;
+  /* offset from right hand side */
 }
 
 .scroll-top__link {
-  position: -webkit-sticky; /* for Safari */
-  position: sticky; /* 'relative' until element reaches... */
-  top: 90vh; /* 90% viewport height from the top, when it becomes 'fixed' - until its container toggles it back to 'relative' */
+  position: -webkit-sticky;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  /* for Safari */
+  position: sticky;
 }
 
 main {

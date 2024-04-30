@@ -38,7 +38,7 @@ templ QueryHome(columns []string) {
 										Select a index column
 									</option>
 									for _, column := range(columns) {
-										<option>{ column }</option>
+										<option value={ column }>{ formatIndexName(column) }</option>
 									}
 								</select>
 								<input name="search" placeholder="Search Key" required/>
@@ -86,7 +86,11 @@ templ QueryHome(columns []string) {
 			<hr/>
 		</details>
 		<div class="scroll-top">
-			<a class="scroll-top__link" href="#">Back to top</a>
+			<a class="scroll-top__link" href="#">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="m15 11.25-3-3m0 0-3 3m3-3v7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+				</svg>
+			</a>
 		</div>
 		<div id="results" class="eventlist"></div>
 		<template id="form-template">
@@ -97,7 +101,7 @@ templ QueryHome(columns []string) {
 							Select a index column
 						</option>
 						for _, column := range(columns) {
-							<option>{ column }</option>
+							<option value={ column }>{ formatIndexName(column) }</option>
 						}
 					</select>
 					<input name="search" placeholder="Search Key" required/>
@@ -147,11 +151,7 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 		}
 	}
 	if query != "" {
-		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d'
-																																												hx-get='/query/search?%s'
-																																													hx-trigger='revealed'
-																																													hx-swap='afterend'
-																																												></div>`, offset+len(events)+1, query))
+		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query))
 	}
 }
 
