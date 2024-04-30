@@ -15,6 +15,7 @@ require (
 	github.com/twmb/franz-go/pkg/sr v0.0.0-20240307025822-351e7fae879c
 	go.uber.org/zap v1.27.0
 	golang.org/x/text v0.14.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -83,5 +84,4 @@ require (
 	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
