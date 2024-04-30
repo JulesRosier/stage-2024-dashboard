@@ -130,7 +130,7 @@ body {
 .grid-header {
   background-color: var(--pico-background-color);
   position: sticky;
-  top: 0;
+  top: 60px;
   z-index: 1;
   padding-left: 0.2em;
   border-bottom: 2px solid var(--pico-h1-color);
@@ -151,4 +151,20 @@ body {
 
 main {
   position: relative;
+}
+
+details.query {
+  background-color: var(--pico-background-color);
+  position: sticky;
+  z-index: 5;
+  top: 0;
+  padding: 1em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding-left: 0.2em;
+}
+
+details.query summary {
+  font-size: larger;
+  padding-bottom: 20px;
 }
