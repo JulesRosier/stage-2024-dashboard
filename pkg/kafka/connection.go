@@ -34,6 +34,7 @@ func GetClient(set settings.Kafka) *kgo.Client {
 
 	if group != "" {
 		opts = append(opts, kgo.ConsumerGroup(group))
+		slog.Info("Using consume group", "group", group)
 	}
 
 	slog.Info("Starting kafka client", "seedbrokers", seed)

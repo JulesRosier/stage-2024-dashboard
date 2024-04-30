@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"fmt"
 	"time"
+	"strings"
 )
 
 type EventShow struct {
@@ -18,10 +19,8 @@ templ QueryHome(columns []string) {
 	@base(true) {
 		<script src="/static/js/queries.js"></script>
 		<script src="/static/js/Sortable.min.js"></script>
-		// <div class="container">
 		<details class="query" open>
 			<summary>Query</summary>
-			// <h1>Query</h1>
 			<div>
 				<form
 					id="main-form"
@@ -110,6 +109,7 @@ templ QueryHome(columns []string) {
 }
 
 templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query string, offset int) {
+	<script>hover()</script>
 	if offset == 0 {
 		<h1 class="grid-header">Time</h1>
 		for i, qp := range(qps) {
@@ -128,11 +128,15 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 				{ event.Event.EventTimestamp.Time.Format("15:04:05.000") }
 			</p>
 		</div>
-		@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+2, i+2+offset))
+		if len(event.Columns)>1 {
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", event.Columns[0]+2, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
+		} else {
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+2, i+2+offset))
+		}
 		@Event(event.Event, event.Json, nerd)
 		@templ.Raw("</div>")
 		for j, ind := range(event.Columns[1:]) {
-			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", ind+2, i+2+offset))
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+2, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
 			<article><p>&nbsp;</p></article>
 			@templ.Raw("</div>")
 			for k := 0; k < ind - event.Columns[j] - 1; k++ {
@@ -144,10 +148,10 @@ templ ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, quer
 	}
 	if query != "" {
 		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d'
-																				hx-get='/query/search?%s'
-																					hx-trigger='revealed'
-																					hx-swap='afterend'
-																				></div>`, offset+len(events)+1, query))
+																																												hx-get='/query/search?%s'
+																																													hx-trigger='revealed'
+																																													hx-swap='afterend'
+																																												></div>`, offset+len(events)+1, query))
 	}
 }
 

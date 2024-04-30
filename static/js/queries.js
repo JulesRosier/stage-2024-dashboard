@@ -41,3 +41,21 @@ function addQuery(index, query) {
 function reload() {
   htmx.trigger("#main-form", "onLoadC");
 }
+
+function hover() {
+  const hoverElements = document.querySelectorAll('[class^="hhh-"]');
+  hoverElements.forEach((element) => {
+    element.addEventListener("mouseover", () => {
+      const subclass = element.classList[0]; // Get the class of the hovered element
+      const elementsInSubclass = document.querySelectorAll(`.${subclass}`);
+      elementsInSubclass.forEach((el) => {
+        el.classList.add("hover-color");
+      });
+    });
+    element.addEventListener("mouseout", () => {
+      hoverElements.forEach((el) => {
+        el.classList.remove("hover-color");
+      });
+    });
+  });
+}
