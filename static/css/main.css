@@ -51,6 +51,19 @@ body {
   line-height: 1rem;
 }
 
+.hr-c-s hr {
+  border: 2px var(--pico-muted-color) solid;
+  margin: 0 -80%;
+  width: 100%;
+  z-index: -1;
+}
+
+.hr-c-s {
+  display: flex;
+  align-items: center;
+  z-index: -99;
+}
+
 .hr-c hr {
   border: 2px var(--pico-muted-color) solid;
   margin: 0 -95%;
@@ -61,6 +74,7 @@ body {
 .hr-c {
   display: flex;
   align-items: center;
+  z-index: -99;
 }
 
 .eventlist article details {

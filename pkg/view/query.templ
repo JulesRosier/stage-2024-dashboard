@@ -152,6 +152,11 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+3, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
 			<article><p>&nbsp;</p></article>
 			@templ.Raw("</div>")
+			if  0 < ind - event.Columns[j] {
+				@templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d'>", ind+3, i+2+offset))
+				<hr/>
+				@templ.Raw("</div>")
+			}
 			for k := 0; k < ind - event.Columns[j] - 1; k++ {
 				@templ.Raw(fmt.Sprintf("<div class='hr-c' style='grid-column: %d; grid-row: %d'>", ind+3-k-1, i+2+offset))
 				<hr/>
