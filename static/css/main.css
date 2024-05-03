@@ -150,7 +150,7 @@ body {
 .grid-header {
   background-color: var(--pico-background-color);
   position: sticky;
-  top: 60px;
+  top: 85px;
   z-index: 1;
   padding-left: 0.2em;
   border-bottom: 2px solid var(--pico-h1-color);
@@ -219,7 +219,7 @@ details.query summary {
 
 .sticky-date {
   position: sticky;
-  top: 150px;
+  top: 160px;
   transform: rotate(200deg);
   writing-mode: vertical-lr;
 }
