@@ -37,12 +37,19 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	}
 	headers := []view.EventHeaders{}
 	for i, c := range cs {
+		var color string
+		if i > len(colorClasses)-1 {
+			color = ""
+		} else {
+			color = colorClasses[i]
+		}
+
 		headers = append(headers, view.EventHeaders{
 			Qp: database.QueryParams{
 				Column: c,
 				Search: ss[i],
 			},
-			Color: colorClasses[i],
+			Color: color,
 		})
 	}
 	qp := []database.QueryParams{}
@@ -139,4 +146,9 @@ var colorClasses = []string{
 	"pico-background-violet-450",
 	"pico-background-lime-200",
 	"pico-background-slate-450",
+	"pico-background-yellow-100",
+	"pico-background-blue-500",
+	"pico-background-pumpkin-300",
+	"pico-background-green-550",
+	"pico-background-jade-950",
 }
