@@ -35,9 +35,19 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		c.Response().Writer.WriteHeader(http.StatusBadRequest)
 		return nil
 	}
-	ps := []database.QueryParams{}
+	headers := []view.EventHeaders{}
 	for i, c := range cs {
-		ps = append(ps, database.QueryParams{
+		headers = append(headers, view.EventHeaders{
+			Qp: database.QueryParams{
+				Column: c,
+				Search: ss[i],
+			},
+			Color: colorClasses[i],
+		})
+	}
+	qp := []database.QueryParams{}
+	for i, c := range cs {
+		qp = append(qp, database.QueryParams{
 			Column: c,
 			Search: ss[i],
 		})
@@ -74,7 +84,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		return err
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), ps, start, end, offset, limit)
+	e, err := h.Q.QuearySearch(c.Request().Context(), qp, start, end, offset, limit)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err
@@ -108,12 +118,25 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			x = true
 			prev = d
 		}
+		cs := []string{}
+		for _, c := range event.Selects[1:] {
+			cs = append(cs, headers[c].Color)
+		}
 		events = append(events, view.EventShow{
 			Event:    event.Event,
 			ShowDate: x,
 			Columns:  event.Selects,
 			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
+			Colors:   cs,
 		})
 	}
-	return render(c, view.ListEvents(events, ps, nerd, query, offset))
+	return render(c, view.ListEvents(events, headers, nerd, query, offset))
+}
+
+var colorClasses = []string{
+	"pico-background-pink-450",
+	"pico-background-cyan-300",
+	"pico-background-violet-450",
+	"pico-background-lime-200",
+	"pico-background-slate-450",
 }

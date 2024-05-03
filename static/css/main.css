@@ -25,7 +25,7 @@
   list-style: none;
 }
 
-.json>ul {
+.json > ul {
   margin: 0;
   padding: 0;
 }
@@ -182,4 +182,12 @@ details.query summary {
 
 .hover-color article {
   box-shadow: 0px 10px 20px 23px rgba(1, 114, 173, 0.1);
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
 }

@@ -23,6 +23,12 @@ type EventShow struct {
 	Json     string
 	Columns  []int
 	ShowDate bool
+	Colors   []string
+}
+
+type EventHeaders struct {
+	Qp    database.QueryParams
+	Color string
 }
 
 func QueryHome(columns []string) templ.Component {
@@ -56,7 +62,7 @@ func QueryHome(columns []string) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(column)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 41, Col: 32}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 47, Col: 32}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -69,7 +75,7 @@ func QueryHome(columns []string) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(column))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 41, Col: 60}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 47, Col: 60}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -87,7 +93,7 @@ func QueryHome(columns []string) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(time.Now().Add(-7 * 24 * time.Hour).Format("2006-01-02T15:04"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 55, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 61, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -100,7 +106,7 @@ func QueryHome(columns []string) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(time.Now().Format("2006-01-02T15:04"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 62, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 68, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -118,7 +124,7 @@ func QueryHome(columns []string) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(column)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 104, Col: 29}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 110, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -131,7 +137,7 @@ func QueryHome(columns []string) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(column))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 104, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 110, Col: 57}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -162,7 +168,7 @@ func QueryHome(columns []string) templ.Component {
 	})
 }
 
-func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query string, offset int) templ.Component {
+func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query string, offset int) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -184,7 +190,7 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for i, qp := range qps {
+			for i, h := range headers {
 				templ_7745c5c3_Err = templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d; grid-row: 1'>", i+2)).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -194,24 +200,46 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(qp.Column))
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(h.Qp.Column))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 117, Col: 35}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 127, Col: 37}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><h2>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(qp.Search)
+				var templ_7745c5c3_Var11 = []any{"dot " + h.Color}
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var11...)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 118, Col: 18}
+					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var12 string
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var11).String())
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 1, Col: 0}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></span></h1><h2>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var13 string
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(h.Qp.Search)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 128, Col: 20}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -235,12 +263,12 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(event.Event.EventTimestamp.Time.Format("2 Jan 2006"))
+				var templ_7745c5c3_Var14 string
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(event.Event.EventTimestamp.Time.Format("2 Jan 2006"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 125, Col: 62}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 135, Col: 62}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -253,12 +281,12 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var13 string
-			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(event.Event.EventTimestamp.Time.Format("15:04:05.000"))
+			var templ_7745c5c3_Var15 string
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(event.Event.EventTimestamp.Time.Format("15:04:05.000"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 128, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 138, Col: 60}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -281,7 +309,7 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = Event(event.Event, event.Json, nerd).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Event(event.Event, event.Json, nerd, event.Colors).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -335,7 +363,7 @@ func ListEvents(events []EventShow, qps []database.QueryParams, nerd bool, query
 	})
 }
 
-func Event(event database.Event, json string, nerd bool) templ.Component {
+func Event(event database.Event, json string, nerd bool, colors []string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -343,22 +371,21 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var14 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var14 == nil {
-			templ_7745c5c3_Var14 = templ.NopComponent
+		templ_7745c5c3_Var16 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var16 == nil {
+			templ_7745c5c3_Var16 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<article><details><summary>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var15 string
-		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(prittyName(event.TopicName))
+		var templ_7745c5c3_Var17 string
+		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(prittyName(event.TopicName))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 162, Col: 33}
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 162, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 168, Col: 33}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -371,15 +398,44 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var16 string
-			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(event.ID), 10))
+			var templ_7745c5c3_Var18 string
+			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(event.ID), 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 164, Col: 47}
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 164, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 170, Col: 47}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if len(colors) > 0 {
+			for _, c := range colors {
+				var templ_7745c5c3_Var19 = []any{"dot " + c}
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var19...)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var20 string
+				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var19).String())
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 1, Col: 0}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</summary><div><div class=\"tab\">")
@@ -391,13 +447,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var17 string
-			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(event.InsertedAt.Time.Format("2006-01-02 15:04:05.00"))
+			var templ_7745c5c3_Var21 string
+			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(event.InsertedAt.Time.Format("2006-01-02 15:04:05.00"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 171, Col: 67}
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 171, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 182, Col: 67}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -405,13 +460,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var18 string
-			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00"))
+			var templ_7745c5c3_Var22 string
+			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 173, Col: 74}
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 173, Col: 74}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 184, Col: 74}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -419,13 +473,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var19 string
-			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(event.TopicOffset, 10))
+			var templ_7745c5c3_Var23 string
+			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(event.TopicOffset, 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 175, Col: 53}
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 175, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 186, Col: 53}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -433,13 +486,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var20 string
-			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(event.TopicPartition), 10))
+			var templ_7745c5c3_Var24 string
+			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(int64(event.TopicPartition), 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 177, Col: 63}
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 177, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 188, Col: 63}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -452,13 +504,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(string(event.EventHeaders))
+		var templ_7745c5c3_Var25 string
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(string(event.EventHeaders))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 180, Col: 38}
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 180, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 191, Col: 38}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -466,13 +517,12 @@ func Event(event database.Event, json string, nerd bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(string(event.EventKey))
+		var templ_7745c5c3_Var26 string
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(string(event.EventKey))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 182, Col: 34}
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 182, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 193, Col: 34}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
