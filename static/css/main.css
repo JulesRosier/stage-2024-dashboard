@@ -25,7 +25,7 @@
   list-style: none;
 }
 
-.json > ul {
+.json>ul {
   margin: 0;
   padding: 0;
 }
@@ -197,7 +197,7 @@ details.query summary {
   justify-content: space-between;
 }
 
-.colored > span {
+.colored>span {
   display: flex;
   justify-content: space-between;
   flex-grow: 2;

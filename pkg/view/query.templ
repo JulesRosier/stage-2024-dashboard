@@ -143,11 +143,11 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 		} else {
 			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+2, i+2+offset))
 		}
-		@Event(event.Event, event.Json, nerd, event.Colors)
+		@Event(event.Event, event.Json, nerd, event.Colors, fmt.Sprint(i+2+offset))
 		@templ.Raw("</div>")
 		for j, ind := range(event.Columns[1:]) {
 			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+2, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
-			<article><p>&nbsp;</p></article>
+			@ShadowEvent(event.Event, event.Json, nerd, event.Colors, fmt.Sprint(i+2+offset))
 			@templ.Raw("</div>")
 			for k := 0; k < ind - event.Columns[j] - 1; k++ {
 				@templ.Raw(fmt.Sprintf("<div class='hr-c' style='grid-column: %d; grid-row: %d'>", ind+2-k-1, i+2+offset))
@@ -161,9 +161,9 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 	}
 }
 
-templ Event(event database.Event, json string, nerd bool, colors []string) {
+templ Event(event database.Event, json string, nerd bool, colors []string, detailId string) {
 	<article>
-		<details>
+		<details id={ detailId }>
 			<summary class="colored">
 				<span>
 					{ prittyName(event.TopicName) }
@@ -179,27 +179,59 @@ templ Event(event database.Event, json string, nerd bool, colors []string) {
 					</span>
 				</span>
 			</summary>
-			<div>
-				<div class="tab">
-					if nerd {
-						<h6>Database timestamp </h6>
-						<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<h6>Eventhub timestamp</h6>
-						<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
-						<h6>Offset</h6>
-						<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
-						<h6>Partition</h6>
-						<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
-					}
-					<h6>headers</h6>
-					<div>{ string(event.EventHeaders) }</div>
-					<h6>key</h6>
-					<div>{ string(event.EventKey) }</div>
-				</div>
-				<div class="json">
-					@templ.Raw(json)
-				</div>
-			</div>
+			@Payload(event, json, nerd)
 		</details>
 	</article>
+}
+
+templ ShadowEvent(event database.Event, json string, nerd bool, colors []string, detailId string) {
+	<article>
+		<details>
+			<summary class="colored" onclick={ toggleDetails(detailId) }>
+				<span class="pico-color-grey-150">
+					{ shortenedName(prittyName(event.TopicName)) }
+					<span>
+						if len(colors) > 0 {
+							for _, c := range(colors) {
+								<span class={ "dot " + c }></span>
+							}
+						}
+					</span>
+				</span>
+			</summary>
+		</details>
+	</article>
+}
+
+script toggleDetails(id string) {
+	let details = document.getElementById(id)
+	if (details.hasAttribute("open")) {
+		details.removeAttribute("open")
+	} else {
+		details.setAttribute("open", "")
+	}
+}
+
+templ Payload(event database.Event, json string, nerd bool) {
+	<div>
+		<div class="tab">
+			if nerd {
+				<h6>Database timestamp </h6>
+				<div>{ event.InsertedAt.Time.Format("2006-01-02 15:04:05.00") }</div>
+				<h6>Eventhub timestamp</h6>
+				<div>{ event.EventhubTimestamp.Time.Format("2006-01-02 15:04:05.00") }</div>
+				<h6>Offset</h6>
+				<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
+				<h6>Partition</h6>
+				<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
+			}
+			<h6>headers</h6>
+			<div>{ string(event.EventHeaders) }</div>
+			<h6>key</h6>
+			<div>{ string(event.EventKey) }</div>
+		</div>
+		<div class="json">
+			@templ.Raw(json)
+		</div>
+	</div>
 }
