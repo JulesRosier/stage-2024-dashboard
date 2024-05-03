@@ -53,8 +53,8 @@ body {
 
 .hr-c hr {
   border: 2px var(--pico-muted-color) solid;
-  margin: 0 -1rem;
-  width: 110%;
+  margin: 0 -95%;
+  width: 200%;
   z-index: -1;
 }
 
