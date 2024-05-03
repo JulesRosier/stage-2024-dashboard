@@ -118,7 +118,7 @@ templ QueryHome(columns []string) {
 	}
 }
 
-templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query string, offset int) {
+templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query string, offset int, tz *time.Location) {
 	<script>hover()</script>
 	if offset == 0 {
 		<h1 class="grid-header">Time</h1>
@@ -132,10 +132,10 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 	for i, event := range(events) {
 		<div class="event-timestamp">
 			if event.ShowDate {
-				<h3>{ event.Event.EventTimestamp.Time.Format("2 Jan 2006") }</h3>
+				<h3>{ event.Event.EventTimestamp.Time.In(tz).Format("2 Jan 2006") }</h3>
 			}
 			<p>
-				{ event.Event.EventTimestamp.Time.Format("15:04:05.000") }
+				{ event.Event.EventTimestamp.Time.In(tz).Format("15:04:05.000") }
 			</p>
 		</div>
 		if len(event.Columns)>1 {

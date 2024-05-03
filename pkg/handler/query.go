@@ -21,6 +21,18 @@ func (h *Handler) QueryHome(c echo.Context) error {
 }
 
 func (h *Handler) QuerySearch(c echo.Context) error {
+	timeOffsetC, err := c.Cookie("timezone")
+	var tz *time.Location
+	if err != nil {
+		tz = time.UTC
+	} else {
+		tz, err = time.LoadLocation(timeOffsetC.Value)
+		if err != nil {
+			tz = time.UTC
+		}
+	}
+	slog.Info("timezone", "offset", tz.String())
+
 	var cs []string
 	var ss []string
 	for name, p := range c.QueryParams() {
@@ -81,17 +93,17 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 
 	layout := "2006-01-02T15:04"
 	startStr := c.QueryParam("start")
-	start, err := time.Parse(layout, startStr)
+	start, err := time.ParseInLocation(layout, startStr, tz)
 	if err != nil {
 		return err
 	}
 	endStr := c.QueryParam("end")
-	end, err := time.Parse(layout, endStr)
+	end, err := time.ParseInLocation(layout, endStr, tz)
 	if err != nil {
 		return err
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), qp, start, end, offset, limit)
+	e, err := h.Q.QuearySearch(c.Request().Context(), qp, start.In(tz), end.In(tz), offset, limit)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err
@@ -137,7 +149,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			Colors:   cs,
 		})
 	}
-	return render(c, view.ListEvents(events, headers, nerd, query, offset))
+	return render(c, view.ListEvents(events, headers, nerd, query, offset, tz))
 }
 
 var colorClasses = []string{

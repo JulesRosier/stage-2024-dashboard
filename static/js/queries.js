@@ -8,6 +8,8 @@ window.onload = (e) => {
   };
   Sortable.create(queries, { animation: 150, onUpdate: reload });
   addL();
+  document.cookie =
+    "timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
 function addL() {

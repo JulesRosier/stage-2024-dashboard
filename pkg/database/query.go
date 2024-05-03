@@ -57,7 +57,7 @@ func (q *Queries) QuearySearch(
 		}
 	}
 
-	format := "2006-01-02 15:04:05"
+	format := "2006-01-02 15:04:05 -0700"
 	query := fmt.Sprintf(querySearch, cases.String(), wheres.String(), start.Format(format), end.Format(format), offset, limit)
 	rows, err := q.db.Query(ctx, query)
 	if err != nil {
