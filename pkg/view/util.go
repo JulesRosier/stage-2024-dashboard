@@ -23,3 +23,17 @@ func formatIndexName(n string) string {
 	r := caser.String(strings.ReplaceAll(n, "_", " "))
 	return r
 }
+
+func shortenedName(in string) string {
+	if len(in) == 0 {
+		return ""
+	}
+	words := strings.Fields(in)
+	var firstLetters strings.Builder
+	for _, word := range words {
+		if len(word) > 0 {
+			firstLetters.WriteByte(word[0]) // Append the first letter of the word
+		}
+	}
+	return firstLetters.String()
+}

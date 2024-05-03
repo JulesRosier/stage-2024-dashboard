@@ -17,5 +17,5 @@ templ EventsLiveHome() {
 }
 
 templ LiveEvent(event database.Event) {
-	@Event(event, renderer.RenderJson(event.EventValue), false, []string{})
+	@Event(event, renderer.RenderJson(event.EventValue), false, []string{}, "")
 }
