@@ -191,3 +191,14 @@ details.query summary {
   display: inline-block;
   margin-right: 5px;
 }
+
+.colored {
+  display: flex;
+  justify-content: space-between;
+}
+
+.colored > span {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 2;
+}

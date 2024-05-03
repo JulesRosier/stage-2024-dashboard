@@ -138,8 +138,10 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			prev = d
 		}
 		cs := []string{}
-		for _, c := range event.Selects[1:] {
-			cs = append(cs, headers[c].Color)
+		if len(event.Selects) > 1 {
+			for _, c := range event.Selects {
+				cs = append(cs, headers[c].Color)
+			}
 		}
 		events = append(events, view.EventShow{
 			Event:    event.Event,

@@ -164,16 +164,20 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 templ Event(event database.Event, json string, nerd bool, colors []string) {
 	<article>
 		<details>
-			<summary>
-				{ prittyName(event.TopicName) }
-				if nerd {
-					- { strconv.FormatInt(int64(event.ID), 10) }
-				}
-				if len(colors) > 0 {
-					for _, c := range(colors) {
-						<span class={ "dot " + c }></span>
+			<summary class="colored">
+				<span>
+					{ prittyName(event.TopicName) }
+					if nerd {
+						- { strconv.FormatInt(int64(event.ID), 10) }
 					}
-				}
+					<span>
+						if len(colors) > 0 {
+							for _, c := range(colors) {
+								<span class={ "dot " + c }></span>
+							}
+						}
+					</span>
+				</span>
 			</summary>
 			<div>
 				<div class="tab">
