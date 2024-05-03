@@ -129,13 +129,14 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	}
 
 	events := []view.EventShow{}
-	prev := time.Unix(0, 0).Format("2006-01-02")
-	for _, event := range e {
-		x := false
+	count := 0
+	for i, event := range e {
+		count += 1
+		x := 0
 		d := event.Event.EventTimestamp.Time.Format("2006-01-02")
-		if prev != d {
-			x = true
-			prev = d
+		if i < len(e)-1 && d != e[i+1].Event.EventTimestamp.Time.Format("2006-01-02") {
+			x = count
+			count = 0
 		}
 		cs := []string{}
 		if len(event.Selects) > 1 {

@@ -36,7 +36,7 @@ body {
 
 .eventlist {
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: min-content 8rem auto;
   gap: 10px;
   padding-top: 3rem;
 }
@@ -201,4 +201,11 @@ details.query summary {
   display: flex;
   justify-content: space-between;
   flex-grow: 2;
+}
+
+.sticky-date {
+  position: sticky;
+  top: 150px;
+  transform: rotate(200deg);
+  writing-mode: vertical-lr;
 }

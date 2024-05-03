@@ -12,7 +12,7 @@ type EventShow struct {
 	Event    database.Event
 	Json     string
 	Columns  []int
-	ShowDate bool
+	ShowDate int
 	Colors   []string
 }
 
@@ -121,43 +121,46 @@ templ QueryHome(columns []string) {
 templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query string, offset int, tz *time.Location) {
 	<script>hover()</script>
 	if offset == 0 {
+		<h1 class="grid-header">Date</h1>
 		<h1 class="grid-header">Time</h1>
 		for i, h := range(headers) {
-			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d; grid-row: 1'>", i+2))
+			@templ.Raw(fmt.Sprintf("<hgroup class='grid-header' style='grid-column: %d; grid-row: 1'>", i+3))
 			<h1>{ formatIndexName(h.Qp.Column) } <span class={ "dot " + h.Color }></span> </h1>
 			<h2>{ h.Qp.Search }</h2>
 			@templ.Raw("</hgroup>")
 		}
 	}
 	for i, event := range(events) {
-		<div class="event-timestamp">
-			if event.ShowDate {
-				<h3>{ event.Event.EventTimestamp.Time.In(tz).Format("2 Jan 2006") }</h3>
-			}
+		if event.ShowDate > 0 {
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: 1; grid-row-start: %d; grid-row-end: %d;'>", i+3-event.ShowDate, i+3))
+			<h3 class="sticky-date">{ event.Event.EventTimestamp.Time.In(tz).Format("2 Jan 2006") }</h3>
+			@templ.Raw("</div>")
+		}
+		<div class="event-timestamp" style="grid-column: 2;">
 			<p>
 				{ event.Event.EventTimestamp.Time.In(tz).Format("15:04:05.000") }
 			</p>
 		</div>
 		if len(event.Columns)>1 {
-			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", event.Columns[0]+2, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", event.Columns[0]+3, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
 		} else {
-			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+2, i+2+offset))
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d'>", event.Columns[0]+3, i+2+offset))
 		}
 		@Event(event.Event, event.Json, nerd, event.Colors)
 		@templ.Raw("</div>")
 		for j, ind := range(event.Columns[1:]) {
-			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+2, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
+			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+3, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
 			<article><p>&nbsp;</p></article>
 			@templ.Raw("</div>")
 			for k := 0; k < ind - event.Columns[j] - 1; k++ {
-				@templ.Raw(fmt.Sprintf("<div class='hr-c' style='grid-column: %d; grid-row: %d'>", ind+2-k-1, i+2+offset))
+				@templ.Raw(fmt.Sprintf("<div class='hr-c' style='grid-column: %d; grid-row: %d'>", ind+3-k-1, i+2+offset))
 				<hr/>
 				@templ.Raw("</div>")
 			}
 		}
 	}
 	if query != "" {
-		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 2; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query))
+		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 3; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query))
 	}
 }
 
