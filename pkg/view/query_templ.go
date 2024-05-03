@@ -50,7 +50,7 @@ func QueryHome(columns []string) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/static/js/queries.js\"></script> <script src=\"/static/js/Sortable.min.js\"></script> <details class=\"query\" open><summary>Query</summary><div><form id=\"main-form\" hx-get=\"/query/search\" hx-target=\"#results\" hx-disabled-elt=\"[type=&#39;submit&#39;], [class=&#39;ext-form&#39;]\" hx-trigger=\"onLoadC, submit\" hx-include=\"[name=&#39;nerd_mode&#39;]\"><ul id=\"queries\"><li><fieldset role=\"group\"><select name=\"column\" required><option selected disabled value=\"\">Select a index column\r</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"/static/js/queries.js\"></script> <script src=\"/static/js/Sortable.min.js\"></script> <details class=\"query\" open><summary><h1>Query</h1></summary><div><form id=\"main-form\" hx-get=\"/query/search\" hx-target=\"#results\" hx-disabled-elt=\"[type=&#39;submit&#39;], [class=&#39;ext-form&#39;]\" hx-trigger=\"onLoadC, submit\" hx-include=\"[name=&#39;nerd_mode&#39;]\"><ul id=\"queries\"><li><fieldset role=\"group\"><select name=\"column\" required><option selected disabled value=\"\">Select a index column\r</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
