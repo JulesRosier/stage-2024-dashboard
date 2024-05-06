@@ -2,6 +2,7 @@
   --pico-spacing: 0.75rem;
   --pico-form-element-spacing-vertical: 0.4em;
   scrollbar-gutter: stable;
+  --pico-font-size: 100% !important;
 }
 
 .json-key {
