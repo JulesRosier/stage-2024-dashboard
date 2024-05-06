@@ -59,8 +59,9 @@ body {
 }
 
 .hr-c-s {
-  display: flex;
-  align-items: center;
+  margin: calc(1rem + 0.5em);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -99;
 }
 
@@ -72,8 +73,9 @@ body {
 }
 
 .hr-c {
-  display: flex;
-  align-items: center;
+  margin: calc(1rem + 0.5em);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -99;
 }
 
