@@ -103,7 +103,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		return err
 	}
 
-	e, err := h.Q.QuearySearch(c.Request().Context(), qp, start.In(tz), end.In(tz), offset, limit)
+	e, err := h.Q.QuerySearch(c.Request().Context(), qp, start.In(tz), end.In(tz), offset, limit)
 	if err != nil {
 		slog.Warn(err.Error())
 		return err

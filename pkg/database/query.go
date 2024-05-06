@@ -35,7 +35,7 @@ type QueriedEvent struct {
 	Event   Event
 }
 
-func (q *Queries) QuearySearch(
+func (q *Queries) QuerySearch(
 	ctx context.Context,
 	qps []QueryParams,
 	start time.Time,
