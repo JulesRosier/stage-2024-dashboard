@@ -334,7 +334,7 @@ func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query str
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = ShadowEvent(event.Event, event.Json, nerd, event.Colors, fmt.Sprint(i+2+offset)).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ShadowEvent(event, fmt.Sprint(i+2+offset)).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -504,7 +504,7 @@ func Event(event database.Event, json string, nerd bool, colors []string, detail
 	})
 }
 
-func ShadowEvent(event database.Event, json string, nerd bool, colors []string, detailId string) templ.Component {
+func ShadowEvent(event EventShow, detailId string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -534,14 +534,14 @@ func ShadowEvent(event database.Event, json string, nerd bool, colors []string, 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span class=\"pico-color-grey-150\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span class=\"pico-color-azure-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(shortenedName(prettyName(event.TopicName)))
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(shortenedName(prettyName(event.Event.TopicName)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 200, Col: 49}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 200, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -551,8 +551,8 @@ func ShadowEvent(event database.Event, json string, nerd bool, colors []string, 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if len(colors) > 0 {
-			for _, c := range colors {
+		if len(event.Colors) > 0 {
+			for _, c := range event.Colors {
 				var templ_7745c5c3_Var25 = []any{"dot " + c}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var25...)
 				if templ_7745c5c3_Err != nil {

@@ -150,7 +150,7 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 		@templ.Raw("</div>")
 		for j, ind := range(event.Columns[1:]) {
 			@templ.Raw(fmt.Sprintf("<div style='grid-column: %d; grid-row: %d' class='hhh-%s'>", ind+3, i+2+offset, strings.Trim(strings.Replace(fmt.Sprint(event.Columns), " ", "-", -1), "[]")))
-			@ShadowEvent(event.Event, event.Json, nerd, event.Colors, fmt.Sprint(i+2+offset))
+			@ShadowEvent(event, fmt.Sprint(i+2+offset))
 			@templ.Raw("</div>")
 			if  0 < ind - event.Columns[j] {
 				@templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d'>", ind+3, i+2+offset))
@@ -192,15 +192,15 @@ templ Event(event database.Event, json string, nerd bool, colors []string, detai
 	</article>
 }
 
-templ ShadowEvent(event database.Event, json string, nerd bool, colors []string, detailId string) {
+templ ShadowEvent(event EventShow, detailId string) {
 	<article>
 		<details>
 			<summary class="colored" onclick={ toggleDetails(detailId) }>
-				<span class="pico-color-grey-150">
-					{ shortenedName(prettyName(event.TopicName)) }
+				<span class="pico-color-azure-200">
+					{ shortenedName(prettyName(event.Event.TopicName)) }
 					<span>
-						if len(colors) > 0 {
-							for _, c := range(colors) {
+						if len(event.Colors) > 0 {
+							for _, c := range(event.Colors) {
 								<span class={ "dot " + c }></span>
 							}
 						}
