@@ -9,7 +9,8 @@ import (
 
 const querySearch = `
 select 
-id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at,
+id, inserted_at, eventhub_timestamp, event_timestamp, topic_name, topic_offset,
+topic_partition, event_headers, event_key, event_value, last_indexed_at, schema_format, schema_id, event_type,
 ARRAY [
 	%s
 ] AS selection
@@ -80,6 +81,9 @@ func (q *Queries) QuerySearch(
 			&i.EventKey,
 			&i.EventValue,
 			&i.LastIndexedAt,
+			&i.SchemaFormat,
+			&i.SchemaID,
+			&i.EventType,
 			&selections,
 		); err != nil {
 			return nil, err

@@ -424,7 +424,7 @@ func Event(event database.Event, json string, nerd bool, colors []string, detail
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
-		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(prettyName(event.TopicName))
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(prettyName(event.EventType))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 177, Col: 34}
 		}
@@ -539,7 +539,7 @@ func ShadowEvent(event EventShow, detailId string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(shortenedName(prettyName(event.Event.TopicName)))
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(shortenedName(prettyName(event.Event.EventType)))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 200, Col: 55}
 		}

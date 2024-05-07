@@ -28,7 +28,7 @@ type Event struct {
 type EventIndexConfig struct {
 	ID          int32
 	InsertedAt  pgtype.Timestamptz
-	TopicName   string
+	EventType   string
 	KeySelector []string
 	IndexColumn string
 }
@@ -36,6 +36,6 @@ type EventIndexConfig struct {
 type TimestampConfig struct {
 	ID          int32
 	InsertedAt  pgtype.Timestamptz
-	TopicName   string
+	EventType   string
 	KeySelector []string
 }

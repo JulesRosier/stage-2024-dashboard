@@ -114,9 +114,9 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 		return err
 	}
 
-	byTopic := map[string][]database.EventIndexConfig{}
+	byType := map[string][]database.EventIndexConfig{}
 	for _, config := range configs {
-		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
+		byType[config.EventType] = append(byType[config.EventType], config)
 	}
 	var query string
 	if len(e) == 0 {
@@ -151,7 +151,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			Event:    event.Event,
 			ShowDate: x,
 			Columns:  event.Selects,
-			Json:     renderer.FormatJson(event.Event.EventValue, byTopic[event.Event.TopicName]),
+			Json:     renderer.FormatJson(event.Event.EventValue, byType[event.Event.EventType]),
 			Colors:   cs,
 		})
 	}

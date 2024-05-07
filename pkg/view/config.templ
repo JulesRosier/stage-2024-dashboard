@@ -59,7 +59,7 @@ templ ConfigHome(topics []string) {
 templ EventIndexConfigCreateForm() {
 	<form hx-post="/event_index_config" hx-target="this">
 		<label>
-			Topic name
+			Event type
 			<input type="text" name="topic" list="topics" id="config-topic" required/>
 		</label>
 		<label>
@@ -89,8 +89,8 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 			id={ strconv.FormatInt(int64(config.ID), 10) + "event-index" }
 		>
 			<label>
-				Topic name
-				<input type="text" name="topic" value={ config.TopicName } list="topics" required/>
+				Event type
+				<input type="text" name="topic" value={ config.EventType } list="topics" required/>
 			</label>
 			<label>
 				Index column	
@@ -141,8 +141,8 @@ templ EventIndexConfig(config database.EventIndexConfig) {
 			</hgroup>
 		</header>
 		<div class="config-data">
-			<h6>Topic</h6>
-			<p>{ config.TopicName }</p>
+			<h6>Event type</h6>
+			<p>{ config.EventType }</p>
 			<h6>Index column</h6>
 			<p>{ config.IndexColumn }</p>
 			<h6>Key selector</h6>
@@ -200,8 +200,8 @@ templ TimestampConfigEditForm(config database.TimestampConfig) {
 			id={ strconv.FormatInt(int64(config.ID), 10) + "timestamp" }
 		>
 			<label>
-				Topic name
-				<input type="text" name="topic" value={ config.TopicName } list="topics" required/>
+				Event type
+				<input type="text" name="topic" value={ config.EventType } list="topics" required/>
 			</label>
 			<label>
 				Keys
@@ -251,7 +251,7 @@ templ TimestampConfig(config database.TimestampConfig) {
 			</hgroup>
 		</header>
 		<div>
-			<p>{ config.TopicName }</p>
+			<p>{ config.EventType }</p>
 			<p>{ strings.Join(config.KeySelector, ",") }</p>
 		</div>
 		<footer>

@@ -15,7 +15,7 @@ FROM events e
 WHERE 
 	%s
     events.id = e.id 
-    AND events.topic_name = '%s';
+    AND events.event_type = '%s';
 `
 
 const onlyNewQuery = `
@@ -52,8 +52,8 @@ func (q *Queries) FullIndex(ctx context.Context, configs []EventIndexConfig, tim
 	} else {
 		new = onlyNewQuery
 	}
-	query := fmt.Sprintf(Index, sets.String(), new, configs[0].TopicName)
-	slog.Info("Indexing", "topic", configs[0].TopicName, "timestamp?", indexTimestamp)
+	query := fmt.Sprintf(Index, sets.String(), new, configs[0].EventType)
+	slog.Info("Indexing", "event_type", configs[0].EventType, "timestamp?", indexTimestamp)
 	r, err := q.db.Exec(ctx, query)
 	return r.RowsAffected(), err
 }

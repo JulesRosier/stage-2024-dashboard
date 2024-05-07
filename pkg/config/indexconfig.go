@@ -9,7 +9,7 @@ import (
 )
 
 func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
-	events, err := q.ListAllTopics(ctx)
+	events, err := q.ListAllEventTypes(ctx)
 	if err != nil {
 		return err
 	}
@@ -31,14 +31,14 @@ func AutoEventIndexConfig(ctx context.Context, q *database.Queries) error {
 		for _, path := range uuidKeys {
 			allow := true
 			for _, config := range configs {
-				if config.TopicName == event.TopicName && compareSlice(config.KeySelector, path) {
+				if config.EventType == event.EventType && compareSlice(config.KeySelector, path) {
 					allow = false
 				}
 			}
 			if allow {
 				indexName := makeIndexName(path)
 				q.CreateEventIndexConfig(ctx, database.CreateEventIndexConfigParams{
-					TopicName:   event.TopicName,
+					EventType:   event.EventType,
 					IndexColumn: indexName,
 					KeySelector: path,
 				})

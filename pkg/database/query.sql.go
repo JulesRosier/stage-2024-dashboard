@@ -69,26 +69,26 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 
 const createEventIndexConfig = `-- name: CreateEventIndexConfig :one
 INSERT INTO event_index_configs (
-    topic_name, key_selector, index_column
+    event_type, key_selector, index_column
 ) VALUES (
  $1, $2, $3
 )
-RETURNING id, inserted_at, topic_name, key_selector, index_column
+RETURNING id, inserted_at, event_type, key_selector, index_column
 `
 
 type CreateEventIndexConfigParams struct {
-	TopicName   string
+	EventType   string
 	KeySelector []string
 	IndexColumn string
 }
 
 func (q *Queries) CreateEventIndexConfig(ctx context.Context, arg CreateEventIndexConfigParams) (EventIndexConfig, error) {
-	row := q.db.QueryRow(ctx, createEventIndexConfig, arg.TopicName, arg.KeySelector, arg.IndexColumn)
+	row := q.db.QueryRow(ctx, createEventIndexConfig, arg.EventType, arg.KeySelector, arg.IndexColumn)
 	var i EventIndexConfig
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 		&i.IndexColumn,
 	)
@@ -97,25 +97,25 @@ func (q *Queries) CreateEventIndexConfig(ctx context.Context, arg CreateEventInd
 
 const createTimestampConfig = `-- name: CreateTimestampConfig :one
 INSERT INTO timestamp_configs (
-    topic_name, key_selector 
+    event_type, key_selector 
 ) VALUES (
  $1, $2 
 )
-RETURNING id, inserted_at, topic_name, key_selector
+RETURNING id, inserted_at, event_type, key_selector
 `
 
 type CreateTimestampConfigParams struct {
-	TopicName   string
+	EventType   string
 	KeySelector []string
 }
 
 func (q *Queries) CreateTimestampConfig(ctx context.Context, arg CreateTimestampConfigParams) (TimestampConfig, error) {
-	row := q.db.QueryRow(ctx, createTimestampConfig, arg.TopicName, arg.KeySelector)
+	row := q.db.QueryRow(ctx, createTimestampConfig, arg.EventType, arg.KeySelector)
 	var i TimestampConfig
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 	)
 	return i, err
@@ -143,19 +143,19 @@ func (q *Queries) DeleteTimestampConfigs(ctx context.Context, id int32) error {
 
 const getConfigStats = `-- name: GetConfigStats :many
 with events as (
-	SELECT DISTINCT ON (e.topic_name) e.topic_name
+	SELECT DISTINCT ON (e.event_type) e.event_type
 FROM events e
 )
-select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
+select text(min(e.event_type)) as topic, count(ec.*) as config_count,
 	case
 		when count(tc.*) > 0 then 1
 		else 0
 	end as has_time_config
 from event_index_configs ec
-right join events e on e.topic_name = ec.topic_name
-left join timestamp_configs tc on tc.topic_name = e.topic_name
-group by e.topic_name
-order by min(e.topic_name)
+right join events e on e.event_type = ec.event_type
+left join timestamp_configs tc on tc.event_type = e.event_type
+group by e.event_type
+order by min(e.event_type)
 `
 
 type GetConfigStatsRow struct {
@@ -185,9 +185,9 @@ func (q *Queries) GetConfigStats(ctx context.Context) ([]GetConfigStatsRow, erro
 }
 
 const getEachEventTypeWithNoTimestampConfig = `-- name: GetEachEventTypeWithNoTimestampConfig :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
+SELECT DISTINCT ON (e.event_type) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM timestamp_configs tc
-right join events e on tc.topic_name = e.topic_name
+right join events e on tc.event_type = e.event_type
 where key_selector is null
 `
 
@@ -227,7 +227,7 @@ func (q *Queries) GetEachEventTypeWithNoTimestampConfig(ctx context.Context) ([]
 }
 
 const getEventIndexConfig = `-- name: GetEventIndexConfig :one
-SELECT id, inserted_at, topic_name, key_selector, index_column
+SELECT id, inserted_at, event_type, key_selector, index_column
 FROM event_index_configs
 WHERE id = $1
 `
@@ -238,7 +238,7 @@ func (q *Queries) GetEventIndexConfig(ctx context.Context, id int32) (EventIndex
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 		&i.IndexColumn,
 	)
@@ -299,12 +299,12 @@ func (q *Queries) GetIndexColumnsFromConfigs(ctx context.Context) ([]string, err
 
 const getRandomEvent = `-- name: GetRandomEvent :one
 SELECT id, inserted_at, eventhub_timestamp, event_timestamp, schema_id, schema_format, topic_name, topic_offset, topic_partition, event_type, event_headers, event_key, event_value, last_indexed_at FROM events
-WHERE topic_name = $1
+WHERE event_type = $1
 ORDER BY random() ASC LIMIT 1
 `
 
-func (q *Queries) GetRandomEvent(ctx context.Context, topicName string) (Event, error) {
-	row := q.db.QueryRow(ctx, getRandomEvent, topicName)
+func (q *Queries) GetRandomEvent(ctx context.Context, eventType string) (Event, error) {
+	row := q.db.QueryRow(ctx, getRandomEvent, eventType)
 	var i Event
 	err := row.Scan(
 		&i.ID,
@@ -326,7 +326,7 @@ func (q *Queries) GetRandomEvent(ctx context.Context, topicName string) (Event, 
 }
 
 const getTimestampConfig = `-- name: GetTimestampConfig :one
-SELECT id, inserted_at, topic_name, key_selector
+SELECT id, inserted_at, event_type, key_selector
 FROM timestamp_configs
 WHERE id = $1
 `
@@ -337,30 +337,30 @@ func (q *Queries) GetTimestampConfig(ctx context.Context, id int32) (TimestampCo
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 	)
 	return i, err
 }
 
-const listAllTopicNames = `-- name: ListAllTopicNames :many
-SELECT DISTINCT topic_name
+const listAllEventTypeNames = `-- name: ListAllEventTypeNames :many
+SELECT DISTINCT event_type
 FROM events
 `
 
-func (q *Queries) ListAllTopicNames(ctx context.Context) ([]string, error) {
-	rows, err := q.db.Query(ctx, listAllTopicNames)
+func (q *Queries) ListAllEventTypeNames(ctx context.Context) ([]string, error) {
+	rows, err := q.db.Query(ctx, listAllEventTypeNames)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	var items []string
 	for rows.Next() {
-		var topic_name string
-		if err := rows.Scan(&topic_name); err != nil {
+		var event_type string
+		if err := rows.Scan(&event_type); err != nil {
 			return nil, err
 		}
-		items = append(items, topic_name)
+		items = append(items, event_type)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -368,13 +368,13 @@ func (q *Queries) ListAllTopicNames(ctx context.Context) ([]string, error) {
 	return items, nil
 }
 
-const listAllTopics = `-- name: ListAllTopics :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
+const listAllEventTypes = `-- name: ListAllEventTypes :many
+SELECT DISTINCT ON (e.event_type) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM events e
 `
 
-func (q *Queries) ListAllTopics(ctx context.Context) ([]Event, error) {
-	rows, err := q.db.Query(ctx, listAllTopics)
+func (q *Queries) ListAllEventTypes(ctx context.Context) ([]Event, error) {
+	rows, err := q.db.Query(ctx, listAllEventTypes)
 	if err != nil {
 		return nil, err
 	}
@@ -409,7 +409,7 @@ func (q *Queries) ListAllTopics(ctx context.Context) ([]Event, error) {
 }
 
 const listEventIndexConfigs = `-- name: ListEventIndexConfigs :many
-SELECT id, inserted_at, topic_name, key_selector, index_column
+SELECT id, inserted_at, event_type, key_selector, index_column
 FROM event_index_configs
 ORDER BY inserted_at desc
 `
@@ -426,7 +426,7 @@ func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig
 		if err := rows.Scan(
 			&i.ID,
 			&i.InsertedAt,
-			&i.TopicName,
+			&i.EventType,
 			&i.KeySelector,
 			&i.IndexColumn,
 		); err != nil {
@@ -441,7 +441,7 @@ func (q *Queries) ListEventIndexConfigs(ctx context.Context) ([]EventIndexConfig
 }
 
 const listTimestampConfigs = `-- name: ListTimestampConfigs :many
-SELECT id, inserted_at, topic_name, key_selector
+SELECT id, inserted_at, event_type, key_selector
 FROM timestamp_configs
 ORDER BY inserted_at desc
 `
@@ -458,7 +458,7 @@ func (q *Queries) ListTimestampConfigs(ctx context.Context) ([]TimestampConfig, 
 		if err := rows.Scan(
 			&i.ID,
 			&i.InsertedAt,
-			&i.TopicName,
+			&i.EventType,
 			&i.KeySelector,
 		); err != nil {
 			return nil, err
@@ -473,16 +473,16 @@ func (q *Queries) ListTimestampConfigs(ctx context.Context) ([]TimestampConfig, 
 
 const updateEventIndexConfig = `-- name: UpdateEventIndexConfig :one
 UPDATE event_index_configs
-SET topic_name = $2,
+SET event_type = $2,
   index_column = $3,
   key_selector = $4
 WHERE id = $1
-RETURNING id, inserted_at, topic_name, key_selector, index_column
+RETURNING id, inserted_at, event_type, key_selector, index_column
 `
 
 type UpdateEventIndexConfigParams struct {
 	ID          int32
-	TopicName   string
+	EventType   string
 	IndexColumn string
 	KeySelector []string
 }
@@ -490,7 +490,7 @@ type UpdateEventIndexConfigParams struct {
 func (q *Queries) UpdateEventIndexConfig(ctx context.Context, arg UpdateEventIndexConfigParams) (EventIndexConfig, error) {
 	row := q.db.QueryRow(ctx, updateEventIndexConfig,
 		arg.ID,
-		arg.TopicName,
+		arg.EventType,
 		arg.IndexColumn,
 		arg.KeySelector,
 	)
@@ -498,7 +498,7 @@ func (q *Queries) UpdateEventIndexConfig(ctx context.Context, arg UpdateEventInd
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 		&i.IndexColumn,
 	)
@@ -507,25 +507,25 @@ func (q *Queries) UpdateEventIndexConfig(ctx context.Context, arg UpdateEventInd
 
 const updateTimestampConfig = `-- name: UpdateTimestampConfig :one
 UPDATE timestamp_configs
-SET topic_name = $2,
+SET event_type = $2,
   key_selector = $3
 WHERE id = $1
-RETURNING id, inserted_at, topic_name, key_selector
+RETURNING id, inserted_at, event_type, key_selector
 `
 
 type UpdateTimestampConfigParams struct {
 	ID          int32
-	TopicName   string
+	EventType   string
 	KeySelector []string
 }
 
 func (q *Queries) UpdateTimestampConfig(ctx context.Context, arg UpdateTimestampConfigParams) (TimestampConfig, error) {
-	row := q.db.QueryRow(ctx, updateTimestampConfig, arg.ID, arg.TopicName, arg.KeySelector)
+	row := q.db.QueryRow(ctx, updateTimestampConfig, arg.ID, arg.EventType, arg.KeySelector)
 	var i TimestampConfig
 	err := row.Scan(
 		&i.ID,
 		&i.InsertedAt,
-		&i.TopicName,
+		&i.EventType,
 		&i.KeySelector,
 	)
 	return i, err

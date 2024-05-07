@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE TABLE IF NOT EXISTS event_index_configs (
     id SERIAL PRIMARY KEY,
     inserted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    topic_name VARCHAR(255) NOT NULL,
+    event_type VARCHAR(255) NOT NULL,
     key_selector VARCHAR(255)[] NOT NULL,
     index_column VARCHAR(255) NOT NULL
 );
@@ -26,6 +26,6 @@ CREATE TABLE IF NOT EXISTS event_index_configs (
 CREATE TABLE IF NOT EXISTS timestamp_configs (
     id SERIAL PRIMARY KEY,
     inserted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    topic_name VARCHAR(255) NOT NULL,
+    event_type VARCHAR(255) NOT NULL,
     key_selector VARCHAR(255)[] NOT NULL
 );

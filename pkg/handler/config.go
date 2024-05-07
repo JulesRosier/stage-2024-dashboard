@@ -14,7 +14,7 @@ import (
 )
 
 func (h *Handler) EventIndexConfigHome(c echo.Context) error {
-	topics, err := h.Q.ListAllTopicNames(c.Request().Context())
+	topics, err := h.Q.ListAllEventTypeNames(c.Request().Context())
 	if err != nil {
 		return err
 	}
@@ -29,10 +29,10 @@ func (h *Handler) EventIndexConfigList(c echo.Context) error {
 
 	byTopic := map[string][]database.EventIndexConfig{}
 	for _, config := range configs {
-		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
+		byTopic[config.EventType] = append(byTopic[config.EventType], config)
 	}
 	keys := []string{}
-	for k, _ := range byTopic {
+	for k := range byTopic {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
@@ -42,13 +42,13 @@ func (h *Handler) EventIndexConfigList(c echo.Context) error {
 
 func (h *Handler) EventIndexConfigCreate(c echo.Context) error {
 	// TODO: field validation
-	topic := strings.TrimSpace(c.FormValue("topic"))
+	eventType := strings.TrimSpace(c.FormValue("topic"))
 	column := strings.TrimSpace(c.FormValue("column"))
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	_, err := h.Q.CreateEventIndexConfig(c.Request().Context(),
 		database.CreateEventIndexConfigParams{
-			TopicName:   topic,
+			EventType:   eventType,
 			KeySelector: strings.Split(keys, ","),
 			IndexColumn: column,
 		},
@@ -98,13 +98,13 @@ func (h *Handler) EventIndexConfigEdit(c echo.Context) error {
 		return echo.NotFoundHandler(c)
 	}
 	// TODO: field validation
-	topic := strings.TrimSpace(c.FormValue("topic"))
+	eventType := strings.TrimSpace(c.FormValue("topic"))
 	column := strings.TrimSpace(c.FormValue("column"))
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	config, err := h.Q.UpdateEventIndexConfig(c.Request().Context(), database.UpdateEventIndexConfigParams{
 		ID:          int32(id),
-		TopicName:   topic,
+		EventType:   eventType,
 		IndexColumn: column,
 		KeySelector: strings.Split(keys, ","),
 	})
@@ -143,11 +143,11 @@ func (h *Handler) TimestampConfigList(c echo.Context) error {
 
 func (h *Handler) TimestampConfigCreate(c echo.Context) error {
 	// TODO: field validation
-	topic := strings.TrimSpace(c.FormValue("topic"))
+	eventType := strings.TrimSpace(c.FormValue("topic"))
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	_, err := h.Q.CreateTimestampConfig(c.Request().Context(), database.CreateTimestampConfigParams{
-		TopicName:   topic,
+		EventType:   eventType,
 		KeySelector: strings.Split(keys, ","),
 	})
 	if err != nil {
@@ -196,12 +196,12 @@ func (h *Handler) TimestampConfigEdit(c echo.Context) error {
 		return echo.NotFoundHandler(c)
 	}
 	// TODO: field validation
-	topic := strings.TrimSpace(c.FormValue("topic"))
+	eventType := strings.TrimSpace(c.FormValue("topic"))
 	keys := strings.TrimSpace(c.FormValue("keys"))
 
 	config, err := h.Q.UpdateTimestampConfig(c.Request().Context(), database.UpdateTimestampConfigParams{
 		ID:          int32(id),
-		TopicName:   topic,
+		EventType:   eventType,
 		KeySelector: strings.Split(keys, ","),
 	})
 	if err != nil {

@@ -19,9 +19,9 @@ func Index(ctx context.Context, q *database.Queries, full bool) (int64, error) {
 		return 0, err
 	}
 
-	byTopic := map[string][]database.EventIndexConfig{}
+	byType := map[string][]database.EventIndexConfig{}
 	for _, config := range configs {
-		byTopic[config.TopicName] = append(byTopic[config.TopicName], config)
+		byType[config.EventType] = append(byType[config.EventType], config)
 	}
 
 	timestampConfigs, err := q.ListTimestampConfigs(ctx)
@@ -30,11 +30,11 @@ func Index(ctx context.Context, q *database.Queries, full bool) (int64, error) {
 	}
 	timestampByTopic := map[string]database.TimestampConfig{}
 	for _, config := range timestampConfigs {
-		timestampByTopic[config.TopicName] = config
+		timestampByTopic[config.EventType] = config
 	}
 
 	var count int64
-	for topic, configs := range byTopic {
+	for topic, configs := range byType {
 		r, err := q.FullIndex(ctx, configs, timestampByTopic[topic], full)
 		if err != nil {
 			slog.Warn("Index failed", "topic", topic, "error", err)

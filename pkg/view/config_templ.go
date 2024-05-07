@@ -105,7 +105,7 @@ func EventIndexConfigCreateForm() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/event_index_config\" hx-target=\"this\"><label>Topic name\r <input type=\"text\" name=\"topic\" list=\"topics\" id=\"config-topic\" required></label> <label>Index column\t\r <input type=\"text\" name=\"column\" required></label> <label>Keys\r <input type=\"text\" name=\"keys\" required></label> <button>Submit</button></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/event_index_config\" hx-target=\"this\"><label>Event type\r <input type=\"text\" name=\"topic\" list=\"topics\" id=\"config-topic\" required></label> <label>Index column\t\r <input type=\"text\" name=\"column\" required></label> <label>Keys\r <input type=\"text\" name=\"keys\" required></label> <button>Submit</button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -181,12 +181,12 @@ func EventIndexConfigEditForm(config database.EventIndexConfig) templ.Component 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label>Topic name\r <input type=\"text\" name=\"topic\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label>Event type\r <input type=\"text\" name=\"topic\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(config.EventType)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 93, Col: 60}
 		}
@@ -345,12 +345,12 @@ func EventIndexConfig(config database.EventIndexConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup></header><div class=\"config-data\"><h6>Topic</h6><p>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></hgroup></header><div class=\"config-data\"><h6>Event type</h6><p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(config.EventType)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 145, Col: 24}
 		}
@@ -513,12 +513,12 @@ func TimestampConfigEditForm(config database.TimestampConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label>Topic name\r <input type=\"text\" name=\"topic\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><label>Event type\r <input type=\"text\" name=\"topic\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var31 string
-		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(config.EventType)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 204, Col: 60}
 		}
@@ -650,7 +650,7 @@ func TimestampConfig(config database.TimestampConfig) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var39 string
-		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(config.TopicName)
+		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(config.EventType)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 254, Col: 24}
 		}

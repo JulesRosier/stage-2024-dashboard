@@ -25,11 +25,11 @@ func AutoTimestampConfig(ctx context.Context, q *database.Queries) error {
 		}
 		path := checkTimestamps(data, []string{})
 		if path == nil {
-			slog.Info("No timestamp found", "topic", event.TopicName, "event_id", event.ID)
+			slog.Info("No timestamp found", "event_type", event.EventType, "event_id", event.ID)
 		}
-		slog.Debug("Path found", "topic", event.TopicName, "path", path)
+		slog.Debug("Path found", "event_type", event.EventType, "path", path)
 		q.CreateTimestampConfig(ctx, database.CreateTimestampConfigParams{
-			TopicName:   event.TopicName,
+			EventType:   event.EventType,
 			KeySelector: path,
 		})
 	}

@@ -9,7 +9,7 @@ RETURNING *;
 
 -- name: CreateEventIndexConfig :one
 INSERT INTO event_index_configs (
-    topic_name, key_selector, index_column
+    event_type, key_selector, index_column
 ) VALUES (
  $1, $2, $3
 )
@@ -31,7 +31,7 @@ WHERE id = $1;
 
 -- name: UpdateEventIndexConfig :one
 UPDATE event_index_configs
-SET topic_name = $2,
+SET event_type = $2,
   index_column = $3,
   key_selector = $4
 WHERE id = $1
@@ -45,7 +45,7 @@ and column_name like 'index_%';
 
 -- name: CreateTimestampConfig :one
 INSERT INTO timestamp_configs (
-    topic_name, key_selector 
+    event_type, key_selector 
 ) VALUES (
  $1, $2 
 )
@@ -67,23 +67,23 @@ WHERE id = $1;
 
 -- name: UpdateTimestampConfig :one
 UPDATE timestamp_configs
-SET topic_name = $2,
+SET event_type = $2,
   key_selector = $3
 WHERE id = $1
 RETURNING *;
 
--- name: ListAllTopicNames :many
-SELECT DISTINCT topic_name
+-- name: ListAllEventTypeNames :many
+SELECT DISTINCT event_type
 FROM events;
 
--- name: ListAllTopics :many
-SELECT DISTINCT ON (e.topic_name) e.*
+-- name: ListAllEventTypes :many
+SELECT DISTINCT ON (e.event_type) e.*
 FROM events e;
 
 -- name: GetEachEventTypeWithNoTimestampConfig :many
-SELECT DISTINCT ON (e.topic_name) e.*
+SELECT DISTINCT ON (e.event_type) e.*
 FROM timestamp_configs tc
-right join events e on tc.topic_name = e.topic_name
+right join events e on tc.event_type = e.event_type
 where key_selector is null;
 
 -- name: GetIndexColumnsFromConfigs :many
@@ -92,21 +92,21 @@ from event_index_configs;
 
 -- name: GetConfigStats :many
 with events as (
-	SELECT DISTINCT ON (e.topic_name) e.topic_name
+	SELECT DISTINCT ON (e.event_type) e.event_type
 FROM events e
 )
-select text(min(e.topic_name)) as topic, count(ec.*) as config_count,
+select text(min(e.event_type)) as topic, count(ec.*) as config_count,
 	case
 		when count(tc.*) > 0 then 1
 		else 0
 	end as has_time_config
 from event_index_configs ec
-right join events e on e.topic_name = ec.topic_name
-left join timestamp_configs tc on tc.topic_name = e.topic_name
-group by e.topic_name
-order by min(e.topic_name);
+right join events e on e.event_type = ec.event_type
+left join timestamp_configs tc on tc.event_type = e.event_type
+group by e.event_type
+order by min(e.event_type);
 
 -- name: GetRandomEvent :one
 SELECT * FROM events
-WHERE topic_name = $1
+WHERE event_type = $1
 ORDER BY random() ASC LIMIT 1;
