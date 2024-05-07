@@ -11,7 +11,7 @@ import (
 var caser = cases.Title(language.AmericanEnglish)
 var caserM = sync.Mutex{}
 
-func prittyName(s string) string {
+func prettyName(s string) string {
 	caserM.Lock()
 	r := caser.String(strings.ReplaceAll(s, "_", " "))
 	caserM.Unlock()

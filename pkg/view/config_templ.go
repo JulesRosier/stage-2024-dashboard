@@ -276,7 +276,7 @@ func ListEventIndexConfigs(configs map[string][]database.EventIndexConfig, order
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var16 string
-			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(prittyName(k))
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(prettyName(k))
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\config.templ`, Line: 125, Col: 22}
 			}

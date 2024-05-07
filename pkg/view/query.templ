@@ -174,7 +174,7 @@ templ Event(event database.Event, json string, nerd bool, colors []string, detai
 		<details id={ detailId }>
 			<summary class="colored">
 				<span>
-					{ prittyName(event.TopicName) }
+					{ prettyName(event.TopicName) }
 					if nerd {
 						- { strconv.FormatInt(int64(event.ID), 10) }
 					}
@@ -197,7 +197,7 @@ templ ShadowEvent(event database.Event, json string, nerd bool, colors []string,
 		<details>
 			<summary class="colored" onclick={ toggleDetails(detailId) }>
 				<span class="pico-color-grey-150">
-					{ shortenedName(prittyName(event.TopicName)) }
+					{ shortenedName(prettyName(event.TopicName)) }
 					<span>
 						if len(colors) > 0 {
 							for _, c := range(colors) {

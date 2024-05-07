@@ -122,7 +122,7 @@ templ ListEventIndexConfigs(configs map[string][]database.EventIndexConfig, orde
 	// TODO: better with grid?
 	for _, k := range(order) {
 		<div>
-			<h2>{ prittyName(k) }</h2>
+			<h2>{ prettyName(k) }</h2>
 			<div class="config-group">
 				for _, config := range(configs[k]) {
 					@EventIndexConfig(config)
