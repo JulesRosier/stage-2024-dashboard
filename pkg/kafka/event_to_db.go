@@ -79,6 +79,12 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 					continue
 				}
 			}
+			eventType := "EVENT_TYPE_NOT_FOUND"
+			for _, h := range sRecord.Headers {
+				if h.Key == "EVENT_TYPE" {
+					eventType = string(h.Value)
+				}
+			}
 
 			e, err := q.CreateEvent(ctx, database.CreateEventParams{
 				EventhubTimestamp: pgtype.Timestamptz{Time: record.Timestamp, Valid: true},
@@ -90,6 +96,7 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 				EventValue:        vb,
 				SchemaID:          int32(*sRecord.Value.SchemaID),
 				SchemaFormat:      string(sRecord.Value.Encoding),
+				EventType:         eventType,
 			})
 			eventStream <- e
 			if err != nil {

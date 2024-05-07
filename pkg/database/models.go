@@ -18,6 +18,7 @@ type Event struct {
 	TopicName         string
 	TopicOffset       int64
 	TopicPartition    int32
+	EventType         string
 	EventHeaders      []byte
 	EventKey          []byte
 	EventValue        []byte

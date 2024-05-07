@@ -14,11 +14,11 @@ import (
 const createEvent = `-- name: CreateEvent :one
 INSERT INTO events (
     eventhub_timestamp, topic_name, topic_offset,
-    topic_partition, event_headers, event_key, event_value, schema_format, schema_id
+    topic_partition, event_headers, event_key, event_value, schema_format, schema_id, event_type
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
-RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, schema_id, schema_format, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at
+RETURNING id, inserted_at, eventhub_timestamp, event_timestamp, schema_id, schema_format, topic_name, topic_offset, topic_partition, event_type, event_headers, event_key, event_value, last_indexed_at
 `
 
 type CreateEventParams struct {
@@ -31,6 +31,7 @@ type CreateEventParams struct {
 	EventValue        []byte
 	SchemaFormat      string
 	SchemaID          int32
+	EventType         string
 }
 
 func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event, error) {
@@ -44,6 +45,7 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 		arg.EventValue,
 		arg.SchemaFormat,
 		arg.SchemaID,
+		arg.EventType,
 	)
 	var i Event
 	err := row.Scan(
@@ -56,6 +58,7 @@ func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Event
 		&i.TopicName,
 		&i.TopicOffset,
 		&i.TopicPartition,
+		&i.EventType,
 		&i.EventHeaders,
 		&i.EventKey,
 		&i.EventValue,
@@ -182,7 +185,7 @@ func (q *Queries) GetConfigStats(ctx context.Context) ([]GetConfigStatsRow, erro
 }
 
 const getEachEventTypeWithNoTimestampConfig = `-- name: GetEachEventTypeWithNoTimestampConfig :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM timestamp_configs tc
 right join events e on tc.topic_name = e.topic_name
 where key_selector is null
@@ -207,6 +210,7 @@ func (q *Queries) GetEachEventTypeWithNoTimestampConfig(ctx context.Context) ([]
 			&i.TopicName,
 			&i.TopicOffset,
 			&i.TopicPartition,
+			&i.EventType,
 			&i.EventHeaders,
 			&i.EventKey,
 			&i.EventValue,
@@ -294,7 +298,7 @@ func (q *Queries) GetIndexColumnsFromConfigs(ctx context.Context) ([]string, err
 }
 
 const getRandomEvent = `-- name: GetRandomEvent :one
-SELECT id, inserted_at, eventhub_timestamp, event_timestamp, schema_id, schema_format, topic_name, topic_offset, topic_partition, event_headers, event_key, event_value, last_indexed_at FROM events
+SELECT id, inserted_at, eventhub_timestamp, event_timestamp, schema_id, schema_format, topic_name, topic_offset, topic_partition, event_type, event_headers, event_key, event_value, last_indexed_at FROM events
 WHERE topic_name = $1
 ORDER BY random() ASC LIMIT 1
 `
@@ -312,6 +316,7 @@ func (q *Queries) GetRandomEvent(ctx context.Context, topicName string) (Event, 
 		&i.TopicName,
 		&i.TopicOffset,
 		&i.TopicPartition,
+		&i.EventType,
 		&i.EventHeaders,
 		&i.EventKey,
 		&i.EventValue,
@@ -364,7 +369,7 @@ func (q *Queries) ListAllTopicNames(ctx context.Context) ([]string, error) {
 }
 
 const listAllTopics = `-- name: ListAllTopics :many
-SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
+SELECT DISTINCT ON (e.topic_name) e.id, e.inserted_at, e.eventhub_timestamp, e.event_timestamp, e.schema_id, e.schema_format, e.topic_name, e.topic_offset, e.topic_partition, e.event_type, e.event_headers, e.event_key, e.event_value, e.last_indexed_at
 FROM events e
 `
 
@@ -387,6 +392,7 @@ func (q *Queries) ListAllTopics(ctx context.Context) ([]Event, error) {
 			&i.TopicName,
 			&i.TopicOffset,
 			&i.TopicPartition,
+			&i.EventType,
 			&i.EventHeaders,
 			&i.EventKey,
 			&i.EventValue,

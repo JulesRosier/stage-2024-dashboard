@@ -1,9 +1,9 @@
 -- name: CreateEvent :one
 INSERT INTO events (
     eventhub_timestamp, topic_name, topic_offset,
-    topic_partition, event_headers, event_key, event_value, schema_format, schema_id
+    topic_partition, event_headers, event_key, event_value, schema_format, schema_id, event_type
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
 RETURNING *;
 
