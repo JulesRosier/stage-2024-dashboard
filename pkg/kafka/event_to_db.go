@@ -88,6 +88,8 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 				EventHeaders:      hb,
 				EventKey:          kb,
 				EventValue:        vb,
+				SchemaID:          int32(*sRecord.Value.SchemaID),
+				SchemaFormat:      string(sRecord.Value.Encoding),
 			})
 			eventStream <- e
 			if err != nil {
