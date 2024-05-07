@@ -255,7 +255,7 @@ func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query str
 		}
 		for i, event := range events {
 			if event.ShowDate > 0 {
-				templ_7745c5c3_Err = templ.Raw(fmt.Sprintf("<div style='grid-column: 1; grid-row-start: %d; grid-row-end: %d;'>", i+3-event.ShowDate, i+3)).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = templ.Raw(fmt.Sprintf("<div style='grid-column: 1; grid-row-start: %d; grid-row-end: %d;'>", i+3-event.ShowDate+offset, i+3+offset)).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

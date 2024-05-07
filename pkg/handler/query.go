@@ -138,6 +138,9 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 			x = count
 			count = 0
 		}
+		if i == len(e)-1 {
+			x = count
+		}
 		cs := []string{}
 		if len(event.Selects) > 1 {
 			for _, c := range event.Selects {
