@@ -1,12 +1,40 @@
 package view
 
 import (
+	"Stage-2024-dashboard/pkg/helper"
+	"crypto/sha256"
+	"encoding/hex"
+	"io"
+	"os"
 	"strings"
 	"sync"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
+
+var (
+	cssPath string
+	CssHash string
+)
+
+func init() {
+	CssHash = hashFile("./static/css/main.css")
+	cssPath = "/static/css/main-" + CssHash + ".css"
+}
+
+func hashFile(path string) string {
+	file, err := os.Open(path)
+	helper.MaybeDieErr(err)
+
+	hash := sha256.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		helper.MaybeDieErr(err)
+	}
+	sum := hash.Sum(nil)
+
+	return hex.EncodeToString(sum)[:8]
+}
 
 var caser = cases.Title(language.AmericanEnglish)
 var caserM = sync.Mutex{}

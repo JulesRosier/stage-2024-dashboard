@@ -1,6 +1,7 @@
 package server
 
 import (
+	"Stage-2024-dashboard/pkg/view"
 	"log/slog"
 
 	"github.com/labstack/echo/v4"
@@ -8,6 +9,9 @@ import (
 )
 
 func (s *Server) ApplyMiddleware() {
+	s.e.Pre(echoMw.Rewrite(map[string]string{
+		"/static/css/main-" + view.CssHash + ".css": "/static/css/main.css",
+	}))
 	s.e.Use(echoMw.RequestLoggerWithConfig(echoMw.RequestLoggerConfig{
 		LogStatus:  true,
 		LogURI:     true,
