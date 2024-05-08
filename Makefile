@@ -18,3 +18,7 @@ build:
 
 start:
 	@./tmp/main.exe
+
+make run:
+	@make --no-print-directory build
+	@make --no-print-directory start
