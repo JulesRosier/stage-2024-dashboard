@@ -13,6 +13,11 @@ import (
 	"github.com/redpanda-data/console/backend/pkg/serde"
 )
 
+type stringHeader struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 func EventImporter(q *database.Queries, eventStream chan database.Event, set settings.Kafka) {
 	cl := GetClient(set)
 	s := CreateSerde(set)
@@ -62,7 +67,11 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 			if len(record.Headers) == 0 {
 				hb = nil
 			} else {
-				hb, err = json.Marshal(record.Headers)
+				stringHeaders := make([]stringHeader, len(record.Headers)-1)
+				for _, h := range record.Headers {
+					stringHeaders = append(stringHeaders, stringHeader{h.Key, string(h.Value)})
+				}
+				hb, err = json.Marshal(stringHeaders)
 				if err != nil {
 					slog.Warn("Failed to marshal record headers to bjson", "err", err)
 					continue
