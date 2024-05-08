@@ -94,6 +94,14 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 					eventType = string(h.Value)
 				}
 			}
+			id := pgtype.Int4{}
+			if sRecord.Value.SchemaID == nil {
+				id.Valid = false
+			} else {
+				x := *sRecord.Value.SchemaID
+				id.Int32 = int32(x)
+				id.Valid = true
+			}
 
 			e, err := q.CreateEvent(ctx, database.CreateEventParams{
 				EventhubTimestamp: pgtype.Timestamptz{Time: record.Timestamp, Valid: true},
@@ -103,7 +111,7 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 				EventHeaders:      hb,
 				EventKey:          kb,
 				EventValue:        vb,
-				SchemaID:          int32(*sRecord.Value.SchemaID),
+				SchemaID:          id,
 				SchemaFormat:      string(sRecord.Value.Encoding),
 				EventType:         eventType,
 			})

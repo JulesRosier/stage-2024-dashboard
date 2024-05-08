@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS events (
     inserted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     eventhub_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
     event_timestamp TIMESTAMP WITH TIME ZONE,
-    schema_id INTEGER NOT NULL,
+    schema_id INTEGER,
     schema_format TEXT NOT NULL,
     topic_name VARCHAR(255) NOT NULL,
     topic_offset BIGINT NOT NULL,

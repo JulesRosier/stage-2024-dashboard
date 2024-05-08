@@ -13,7 +13,7 @@ type Event struct {
 	InsertedAt        pgtype.Timestamptz
 	EventhubTimestamp pgtype.Timestamptz
 	EventTimestamp    pgtype.Timestamptz
-	SchemaID          int32
+	SchemaID          pgtype.Int4
 	SchemaFormat      string
 	TopicName         string
 	TopicOffset       int64

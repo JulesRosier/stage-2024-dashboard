@@ -30,7 +30,7 @@ type CreateEventParams struct {
 	EventKey          []byte
 	EventValue        []byte
 	SchemaFormat      string
-	SchemaID          int32
+	SchemaID          pgtype.Int4
 	EventType         string
 }
 
