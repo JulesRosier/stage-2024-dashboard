@@ -65,7 +65,7 @@ func ConfigStats(configs []database.GetConfigStatsRow) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h3>Config stats</h3><button hx-post=\"/event_index_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto config</button> <button hx-post=\"/timestamp_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto time</button><table class=\"striped\"><thead><tr><th scope=\"col\"></th><th scope=\"col\">Topic</th><th scope=\"col\">Config count</th><th scope=\"col\">Has time config</th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h3>Config stats</h3><button hx-post=\"/event_index_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto config</button> <button hx-post=\"/timestamp_config/auto\" hx-disabled-elt=\"this\" hx-on::after-request=\"htmx.trigger(&#39;#stats&#39;, &#39;re&#39;)\">Auto time</button><table class=\"striped\"><thead><tr><th scope=\"col\"></th><th scope=\"col\">Event type</th><th scope=\"col\">Config count</th><th scope=\"col\">Has time config</th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
