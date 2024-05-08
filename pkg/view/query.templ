@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	"Stage-2024-dashboard/pkg/render"
 )
 
 type EventShow struct {
@@ -232,9 +233,17 @@ templ Payload(event database.Event, json string, nerd bool) {
 				<div>{ strconv.FormatInt(event.TopicOffset, 10) }</div>
 				<h6>Partition</h6>
 				<div>{ strconv.FormatInt(int64(event.TopicPartition), 10) }</div>
+				<h6>Headers</h6>
+				<div>
+					<table class="headertable">
+						<tr>
+							<th>Key</th>
+							<th>Value</th>
+						</tr>
+						@templ.Raw(renderer.HeaderTableFormat(event.EventHeaders))
+					</table>
+				</div>
 			}
-			<h6>headers</h6>
-			<div>{ string(event.EventHeaders) }</div>
 			<h6>key</h6>
 			<div>{ string(event.EventKey) }</div>
 		</div>

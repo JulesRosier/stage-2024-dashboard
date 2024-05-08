@@ -67,7 +67,7 @@ func EventImporter(q *database.Queries, eventStream chan database.Event, set set
 			if len(record.Headers) == 0 {
 				hb = nil
 			} else {
-				stringHeaders := make([]stringHeader, len(record.Headers)-1)
+				stringHeaders := []stringHeader{}
 				for _, h := range record.Headers {
 					stringHeaders = append(stringHeaders, stringHeader{h.Key, string(h.Value)})
 				}
