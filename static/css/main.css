@@ -5,6 +5,19 @@
   --pico-font-size: 100% !important;
 }
 
+nav {
+  position: fixed;
+  padding-right: 2em !important;
+  top: 0;
+  z-index: 6;
+  background-color: var(--pico-background-color);
+}
+
+main.container-fluid {
+  padding-block: 0;
+  margin-top: 56px;
+}
+
 .json-key {
   color: #0074d9;
 }
@@ -39,7 +52,6 @@ body {
   display: grid;
   grid-template-columns: min-content 8rem auto;
   gap: 10px;
-  padding-top: 3rem;
 }
 
 .eventlist article {
@@ -151,7 +163,7 @@ body {
 .grid-header {
   background-color: var(--pico-background-color);
   position: sticky;
-  top: 70px;
+  top: 386px;
   z-index: 1;
   padding-left: 0.2em;
   border-bottom: 2px solid var(--pico-h1-color);
@@ -159,11 +171,8 @@ body {
 
 .scroll-top {
   position: fixed;
-  /* relative to its positioned <main> parent */
   bottom: 2rem;
-  /* stops scrolling before the end */
   right: 2rem;
-  /* offset from right hand side */
 }
 
 .scroll-top__link {
@@ -179,18 +188,25 @@ main {
   position: relative;
 }
 
-details.query {
+.toggle {
+  position: fixed;
+  top: 4.5rem;
+  right: 2rem;
+  z-index: 10;
+}
+
+div.querydiv {
+  display: grid;
   background-color: var(--pico-background-color);
   position: sticky;
   z-index: 5;
-  top: 0;
-  padding: 1em;
+  top: 56px;
   margin-bottom: 0;
   padding-bottom: 0;
   padding-left: 0.2em;
 }
 
-details.query summary {
+div.querydiv summary {
   font-size: larger;
   padding-bottom: 20px;
 }
@@ -220,7 +236,7 @@ details.query summary {
 
 .sticky-date {
   position: sticky;
-  top: 160px;
+  top: 474px;
   transform: rotate(200deg);
   writing-mode: vertical-lr;
 }

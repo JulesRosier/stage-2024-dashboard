@@ -85,7 +85,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	limitStr := c.QueryParam("limit")
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		limit = 100
+		limit = 25
 	}
 	if limit > 500 {
 		limit = 500
@@ -124,7 +124,7 @@ func (h *Handler) QuerySearch(c echo.Context) error {
 	} else {
 		q := c.Request().URL.Query()
 		q.Set("offset", strconv.Itoa(offset+limit))
-		q.Set("limit", strconv.Itoa(100))
+		q.Set("limit", strconv.Itoa(limit))
 		query = q.Encode()
 	}
 

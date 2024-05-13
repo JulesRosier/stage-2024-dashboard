@@ -26,7 +26,12 @@ templ QueryHome(columns []string) {
 	@base(true) {
 		<script src="/static/js/queries.js"></script>
 		<script src="/static/js/Sortable.min.js"></script>
-		<details class="query" open>
+		<a class="toggle">
+			<svg id="togglearrow" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" onclick={ setHeaderHeight(1) }>
+				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m5 15 7-7 7 7"></path>
+			</svg>
+		</a>
+		<div id="querydiv" class="querydiv">
 			<summary><h1>Query</h1></summary>
 			<div>
 				<form
@@ -91,7 +96,7 @@ templ QueryHome(columns []string) {
 				</label>
 			</div>
 			<hr/>
-		</details>
+		</div>
 		<div id="results" class="eventlist"></div>
 		<div class="scroll-top">
 			<a class="scroll-top__link" href="#">
@@ -167,6 +172,7 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 	}
 	if query != "" {
 		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 3; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query))
+		@setHeaderHeight(0)
 	}
 }
 
@@ -251,4 +257,39 @@ templ Payload(event database.Event, json string, nerd bool) {
 			@templ.Raw(json)
 		</div>
 	</div>
+}
+
+script setHeaderHeight(n int) {
+	var extra;
+
+	function toggle(div) {
+		let arrow = document.getElementById("togglearrow");
+		if (div.style.display === "none") {
+			div.style.display = "grid";
+			arrow.style.transform = "rotate(0deg)";
+			extra = 0;
+		} else {
+			div.style.display = "none";
+			arrow.style.transform = "rotate(180deg)";
+			extra = 50;
+			// document.getElementById("mainmain").style.marginTop = "106px";
+		}
+	}
+
+	let div = document.getElementById("querydiv");
+	let headers = document.querySelectorAll(".grid-header");
+	let dates = document.querySelectorAll(".sticky-date");
+	let nav = document.getElementById("nav");
+
+	if (n === 1) {
+		toggle(div);
+	}
+
+	headers.forEach(function(header) {
+		console.log(extra);
+		header.style.top = extra + nav.offsetHeight + div.offsetHeight + 'px';
+	});
+	dates.forEach(function(date) {
+		date.style.top =  85 + extra + nav.offsetHeight + div.offsetHeight + 'px';
+	});
 }

@@ -36,7 +36,7 @@ func base(fluid bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></head><nav class=\"container-fluid\"><ul><li><a href=\"/\"><strong>Event Viewer</strong></a></li></ul><ul><li><a href=\"/config\">Config</a></li><li><a href=\"/query\">Query</a></li><li><a href=\"/events/live\">Live</a></li><li><a href=\"/demo/home\">Demo</a></li><li><details class=\"dropdown\"><summary role=\"button\" class=\"secondary outline\">Theme</summary><ul><li><a href=\"#\" data-theme-switcher=\"auto\">Auto</a></li><li><a href=\"#\" data-theme-switcher=\"light\">Light</a></li><li><a href=\"#\" data-theme-switcher=\"dark\">Dark</a></li></ul></details></li></ul></nav><body><main")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></head><nav id=\"nav\" class=\"container-fluid\"><ul><li><a href=\"/\"><strong>Event Viewer</strong></a></li></ul><ul><li><a href=\"/config\">Config</a></li><li><a href=\"/query\">Query</a></li><li><a href=\"/events/live\">Live</a></li><li><a href=\"/demo/home\">Demo</a></li><li><details class=\"dropdown\"><summary role=\"button\" class=\"secondary outline\">Theme</summary><ul><li><a href=\"#\" data-theme-switcher=\"auto\">Auto</a></li><li><a href=\"#\" data-theme-switcher=\"light\">Light</a></li><li><a href=\"#\" data-theme-switcher=\"dark\">Dark</a></li></ul></details></li></ul></nav><body><main id=\"mainmain\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

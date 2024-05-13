@@ -5,6 +5,7 @@ window.onload = (e) => {
   addFormBtn.onclick = () => {
     queries.appendChild(formTemplate.content.cloneNode(true));
     addL();
+    setHeight();
   };
   Sortable.create(queries, { animation: 150, onUpdate: reload });
   addL();
@@ -19,6 +20,7 @@ function addL() {
     b.onclick = (e) => {
       e.target.parentElement.parentElement.remove();
       reload();
+      setHeight();
     };
   }
 }
@@ -59,5 +61,20 @@ function hover() {
         el.classList.remove("hover-color");
       });
     });
+  });
+}
+
+function setHeight() {
+  let div = document.getElementById("querydiv");
+  let headers = document.querySelectorAll(".grid-header");
+  let dates = document.querySelectorAll(".sticky-date");
+  let nav = document.getElementById("nav");
+
+
+  headers.forEach(function (header) {
+    header.style.top = nav.offsetHeight + div.offsetHeight + 'px';
+  });
+  dates.forEach(function (date) {
+    date.style.top = 85 + nav.offsetHeight + div.offsetHeight + 'px';
   });
 }

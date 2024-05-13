@@ -25,7 +25,7 @@ templ base(fluid bool) {
 				href={ cssPath }
 			/>
 		</head>
-		<nav class="container-fluid">
+		<nav id="nav" class="container-fluid">
 			<ul>
 				<li><a href="/"><strong>Event Viewer</strong></a></li>
 			</ul>
@@ -48,6 +48,7 @@ templ base(fluid bool) {
 		</nav>
 		<body>
 			<main
+				id="mainmain"
 				if fluid {
 					class="container-fluid"
 				} else {
