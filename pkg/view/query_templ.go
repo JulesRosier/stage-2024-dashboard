@@ -395,7 +395,7 @@ func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query str
 					return templ_7745c5c3_Err
 				}
 				if 0 < ind-event.Columns[j] {
-					templ_7745c5c3_Err = templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d'>", ind+3, i+2+offset)).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d;z-index: -5;'>", ind+3, i+2+offset)).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

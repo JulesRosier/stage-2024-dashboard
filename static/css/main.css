@@ -51,11 +51,10 @@ body {
 .eventlist {
   display: grid;
   grid-template-columns: min-content 8rem auto;
-  gap: 10px;
 }
 
 .eventlist article {
-  margin: 0;
+  margin: 0.3em 0.3em 0.3em 0.3em;
   max-width: 600px;
 }
 
@@ -66,16 +65,15 @@ body {
 
 .hr-c-s hr {
   border: 2px var(--pico-muted-color) solid;
-  margin: 0 -80%;
+  margin: 0 -100%;
   width: 100%;
   z-index: -1;
 }
 
 .hr-c-s {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical)
-    var(--pico-block-spacing-horizontal);
-  z-index: -99;
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  z-index: -1;
 }
 
 .hr-c hr {
@@ -87,9 +85,8 @@ body {
 
 .hr-c {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical)
-    var(--pico-block-spacing-horizontal);
-  z-index: -99;
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  z-index: -1;
 }
 
 .eventlist article details {
@@ -168,7 +165,7 @@ body {
   top: 380px;
   z-index: 1;
   padding-left: 0.2em;
-  border-bottom: 2px solid var(--pico-h1-color);
+  border-bottom: 2px solid var(--pico-color);
 }
 
 .scroll-top {

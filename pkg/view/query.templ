@@ -161,7 +161,7 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 			@ShadowEvent(event, fmt.Sprint(i+2+offset))
 			@templ.Raw("</div>")
 			if  0 < ind - event.Columns[j] {
-				@templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d'>", ind+3, i+2+offset))
+				@templ.Raw(fmt.Sprintf("<div class='hr-c-s' style='grid-column: %d; grid-row: %d;z-index: -5;'>", ind+3, i+2+offset))
 				<hr/>
 				@templ.Raw("</div>")
 			}
