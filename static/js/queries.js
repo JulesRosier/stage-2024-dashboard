@@ -69,12 +69,12 @@ function setHeight() {
   let headers = document.querySelectorAll(".grid-header");
   let dates = document.querySelectorAll(".sticky-date");
   let nav = document.getElementById("nav");
-
+  let togglediv = document.getElementById("togglediv");
 
   headers.forEach(function (header) {
-    header.style.top = nav.offsetHeight + div.offsetHeight + 'px';
+    header.style.top = togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
   });
   dates.forEach(function (date) {
-    date.style.top = 85 + nav.offsetHeight + div.offsetHeight + 'px';
+    date.style.top = 85 + togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
   });
 }
