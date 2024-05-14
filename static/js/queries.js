@@ -9,8 +9,7 @@ window.onload = (e) => {
   };
   Sortable.create(queries, { animation: 150, onUpdate: reload });
   addL();
-  document.cookie =
-    "timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+  document.cookie = "timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
 function addL() {
@@ -65,16 +64,16 @@ function hover() {
 }
 
 function setHeight() {
+  let nav = document.getElementById("nav");
+  let togglediv = document.getElementById("togglediv");
   let div = document.getElementById("querydiv");
   let headers = document.querySelectorAll(".grid-header");
   let dates = document.querySelectorAll(".sticky-date");
-  let nav = document.getElementById("nav");
-  let togglediv = document.getElementById("togglediv");
 
   headers.forEach(function (header) {
-    header.style.top = togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+    header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + "px";
   });
   dates.forEach(function (date) {
-    date.style.top = 85 + togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+    date.style.top = 85 + nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + "px";
   });
 }

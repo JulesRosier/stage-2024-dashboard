@@ -780,40 +780,39 @@ func Payload(event database.Event, json string, nerd bool) templ.Component {
 
 func setHeaderHeight(n int) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_setHeaderHeight_836f`,
-		Function: `function __templ_setHeaderHeight_836f(n){function toggle(div) {
+		Name: `__templ_setHeaderHeight_8347`,
+		Function: `function __templ_setHeaderHeight_8347(n){function toggle(div) {
 		let arrow = document.getElementById("togglearrow");
 		if (div.style.display === "none") {
 			div.style.display = "grid";
 			arrow.style.transform = "rotate(0deg)";
-			document.getElementById("mainmain").style.marginTop = "56px";
 		} else {
 			div.style.display = "none";
 			arrow.style.transform = "rotate(180deg)";
-			document.getElementById("mainmain").style.marginTop = "80px";
 		}
 	}
 
+	let nav = document.getElementById("nav");
+	let togglediv = document.getElementById("togglediv");
 	let div = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
-	let nav = document.getElementById("nav");
-	let togglediv = document.getElementById("togglediv");
 
 	if (n === 1) {
 		toggle(div);
 	}
 
+	document.getElementById("mainmain").style.marginTop = "80px";
 	headers.forEach(function(header) {
-		header.style.top = togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+		header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 'px';
 	});
 	dates.forEach(function(date) {
 		//85 px is height of header: 55px + 30px
-		date.style.top =  85 + togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+		date.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 85 +  'px';
 	});
 }`,
-		Call:       templ.SafeScript(`__templ_setHeaderHeight_836f`, n),
-		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_836f`, n),
+		Call:       templ.SafeScript(`__templ_setHeaderHeight_8347`, n),
+		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_8347`, n),
 	}
 }
 

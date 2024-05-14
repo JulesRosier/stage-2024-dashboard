@@ -39,7 +39,7 @@ main.container-fluid {
   list-style: none;
 }
 
-.json>ul {
+.json > ul {
   margin: 0;
   padding: 0;
 }
@@ -73,7 +73,8 @@ body {
 
 .hr-c-s {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -99;
 }
 
@@ -86,7 +87,8 @@ body {
 
 .hr-c {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -99;
 }
 
@@ -238,7 +240,7 @@ div.querydiv summary {
   justify-content: space-between;
 }
 
-.colored>span {
+.colored > span {
   display: flex;
   justify-content: space-between;
   flex-grow: 2;
@@ -251,7 +253,7 @@ div.querydiv summary {
   writing-mode: vertical-lr;
 }
 
-summary>h1 {
+summary > h1 {
   display: contents;
 }
 
@@ -262,5 +264,5 @@ summary>h1 {
 
 .headertable th {
   font-weight: 600;
-  --pico-color: var(--pico-h6-color)
+  --pico-color: var(--pico-h6-color);
 }

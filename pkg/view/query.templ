@@ -268,30 +268,29 @@ script setHeaderHeight(n int) {
 		if (div.style.display === "none") {
 			div.style.display = "grid";
 			arrow.style.transform = "rotate(0deg)";
-			document.getElementById("mainmain").style.marginTop = "56px";
 		} else {
 			div.style.display = "none";
 			arrow.style.transform = "rotate(180deg)";
-			document.getElementById("mainmain").style.marginTop = "80px";
 		}
 	}
 
+	let nav = document.getElementById("nav");
+	let togglediv = document.getElementById("togglediv");
 	let div = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
-	let nav = document.getElementById("nav");
-	let togglediv = document.getElementById("togglediv");
 
 	if (n === 1) {
 		toggle(div);
 	}
 
+	document.getElementById("mainmain").style.marginTop = "80px";
 	headers.forEach(function(header) {
-		header.style.top = togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+		header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 'px';
 	});
 	dates.forEach(function(date) {
 		//85 px is height of header: 55px + 30px
-		date.style.top =  85 + togglediv.offsetHeight + nav.offsetHeight + div.offsetHeight + 'px';
+		date.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 85 +  'px';
 	});
 }
 
