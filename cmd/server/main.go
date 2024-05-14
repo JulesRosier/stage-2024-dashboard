@@ -12,6 +12,7 @@ import (
 	"Stage-2024-dashboard/pkg/scheduler"
 	"Stage-2024-dashboard/pkg/server"
 	"Stage-2024-dashboard/pkg/settings"
+	"Stage-2024-dashboard/pkg/view"
 	"context"
 	"fmt"
 	"log/slog"
@@ -45,10 +46,11 @@ func main() {
 
 	q := database.NewQueries(set.Database)
 	h := handler.NewHandler(q, &eventBr)
+	rr := view.HashPublicFS()
 
 	server := server.NewServer(set.Server)
+	server.ApplyMiddleware(rr)
 	server.RegisterRoutes(h)
-	server.ApplyMiddleware()
 
 	demo.Init(set.Kafka)
 

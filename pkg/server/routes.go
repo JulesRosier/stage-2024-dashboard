@@ -1,11 +1,22 @@
 package server
 
-import "Stage-2024-dashboard/pkg/handler"
+import (
+	"Stage-2024-dashboard/pkg/handler"
+
+	"github.com/labstack/echo/v4"
+)
 
 func (s *Server) RegisterRoutes(hdlr *handler.Handler) {
 	e := s.e
 
-	e.Static("/static", "./static")
+	static := e.Group("/static")
+	static.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Response().Header().Add("Cache-Control", "public, max-age=31536000, immutable")
+			return next(c)
+		}
+	})
+	static.Static("/", "./static")
 
 	e.GET("/", hdlr.Home)
 

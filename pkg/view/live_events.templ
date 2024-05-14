@@ -7,7 +7,7 @@ import (
 
 templ EventsLiveHome() {
 	@base(false) {
-		<script src="/static/js/sse.js"></script>
+		<script src={ StaticMap["/static/js/sse.js"] }></script>
 		<hgroup>
 			<h1>Live Events</h1>
 			<h2>Drinking from the firehose</h2>

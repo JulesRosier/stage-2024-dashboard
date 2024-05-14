@@ -24,8 +24,8 @@ type EventHeaders struct {
 
 templ QueryHome(columns []string) {
 	@base(true) {
-		<script src="/static/js/queries.js"></script>
-		<script src="/static/js/Sortable.min.js"></script>
+		<script src={ StaticMap["/static/js/queries.js"] }></script>
+		<script src={ StaticMap["/static/js/Sortable.min.js"] }></script>
 		<a class="toggle">
 			<svg id="togglearrow" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" onclick={ setHeaderHeight(1) }>
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m5 15 7-7 7 7"></path>

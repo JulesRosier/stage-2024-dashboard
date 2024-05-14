@@ -8,21 +8,21 @@ templ base(fluid bool) {
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="color-scheme" content="light dark"/>
 			<title>Event Viewer</title>
-			<script src="/static/js/htmx.min.js"></script>
-			<script src="/static/js/htmx-extentions.js"></script>
-			<script src="/static/js/css-scope.js"></script>
-			<script src="/static/js/surreal.js"></script>
+			<script src={ StaticMap["/static/js/htmx.min.js"] }></script>
+			<script src={ StaticMap["/static/js/htmx-extentions.js"] }></script>
+			<script src={ StaticMap["/static/js/css-scope.js"] }></script>
+			<script src={ StaticMap["/static/js/surreal.js"] }></script>
 			<link
 				rel="stylesheet"
-				href="/static/css/pico.colors.min.css"
+				href={ StaticMap["/static/css/pico.colors.min.css"] }
 			/>
 			<link
 				rel="stylesheet"
-				href="/static/css/pico.min.css"
+				href={ StaticMap["/static/css/pico.min.css"] }
 			/>
 			<link
 				rel="stylesheet"
-				href={ cssPath }
+				href={ StaticMap["/static/css/main.css"] }
 			/>
 		</head>
 		<nav id="nav" class="container-fluid">
@@ -58,6 +58,6 @@ templ base(fluid bool) {
 				{ children... }
 			</main>
 		</body>
-		<script src="/static/js/theme-switcher.js"></script>
+		<script src={ StaticMap["/static/js/theme-switcher.js"] }></script>
 	</html>
 }
