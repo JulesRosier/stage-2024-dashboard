@@ -20,6 +20,7 @@ type Settings struct {
 	Kafka    Kafka    `yaml:"kafka"`
 	Logger   Logger   `yaml:"logger"`
 	Indexing Indexing `yaml:"indexing"`
+	Alert    Alert    `yaml:"alert"`
 }
 
 func (s *Settings) SetDefault() {
@@ -28,6 +29,7 @@ func (s *Settings) SetDefault() {
 	s.Kafka.SetDefault()
 	s.Logger.SetDefault()
 	s.Indexing.SetDefault()
+	s.Alert.SetDefault()
 }
 
 func Load() (Settings, error) {
