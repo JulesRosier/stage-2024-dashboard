@@ -772,8 +772,8 @@ func Payload(event database.Event, json string, nerd bool) templ.Component {
 
 func setHeaderHeight(n int) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_setHeaderHeight_df6f`,
-		Function: `function __templ_setHeaderHeight_df6f(n){function toggle(div) {
+		Name: `__templ_setHeaderHeight_8018`,
+		Function: `function __templ_setHeaderHeight_8018(n){function toggle(div) {
 		let arrow = document.getElementById("togglearrow");
 		if (div.style.display === "none") {
 			div.style.display = "grid";
@@ -791,7 +791,7 @@ func setHeaderHeight(n int) templ.ComponentScript {
 	let dates = document.querySelectorAll(".sticky-date");
 
 	if (n === 1) {
-		toggle(div);
+		toggle(querydiv);
 	}
 
 	document.getElementById("mainmain").style.marginTop = "80px";
@@ -802,8 +802,8 @@ func setHeaderHeight(n int) templ.ComponentScript {
 		date.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + headers[0].offsetHeight + 20 +  'px';
 	});
 }`,
-		Call:       templ.SafeScript(`__templ_setHeaderHeight_df6f`, n),
-		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_df6f`, n),
+		Call:       templ.SafeScript(`__templ_setHeaderHeight_8018`, n),
+		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_8018`, n),
 	}
 }
 
