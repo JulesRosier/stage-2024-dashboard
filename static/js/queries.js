@@ -66,14 +66,20 @@ function hover() {
 function setHeight() {
   let nav = document.getElementById("nav");
   let togglediv = document.getElementById("togglediv");
-  let div = document.getElementById("querydiv");
+  let querydiv = document.getElementById("querydiv");
   let headers = document.querySelectorAll(".grid-header");
   let dates = document.querySelectorAll(".sticky-date");
 
   headers.forEach(function (header) {
-    header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + "px";
+    header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + "px";
   });
   dates.forEach(function (date) {
-    date.style.top = 85 + nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + "px";
+    date.style.top =
+      nav.offsetHeight +
+      togglediv.offsetHeight +
+      querydiv.offsetHeight +
+      headers[0].offsetHeight +
+      20 +
+      "px";
   });
 }

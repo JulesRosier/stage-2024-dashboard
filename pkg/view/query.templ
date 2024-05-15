@@ -276,7 +276,7 @@ script setHeaderHeight(n int) {
 
 	let nav = document.getElementById("nav");
 	let togglediv = document.getElementById("togglediv");
-	let div = document.getElementById("querydiv");
+	let querydiv = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
 
@@ -286,11 +286,10 @@ script setHeaderHeight(n int) {
 
 	document.getElementById("mainmain").style.marginTop = "80px";
 	headers.forEach(function(header) {
-		header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 'px';
+		header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + 'px';
 	});
 	dates.forEach(function(date) {
-		//85 px is height of header: 55px + 30px
-		date.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 85 +  'px';
+		date.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + headers[0].offsetHeight + 20 +  'px';
 	});
 }
 

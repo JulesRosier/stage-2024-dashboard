@@ -772,8 +772,8 @@ func Payload(event database.Event, json string, nerd bool) templ.Component {
 
 func setHeaderHeight(n int) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_setHeaderHeight_8347`,
-		Function: `function __templ_setHeaderHeight_8347(n){function toggle(div) {
+		Name: `__templ_setHeaderHeight_df6f`,
+		Function: `function __templ_setHeaderHeight_df6f(n){function toggle(div) {
 		let arrow = document.getElementById("togglearrow");
 		if (div.style.display === "none") {
 			div.style.display = "grid";
@@ -786,7 +786,7 @@ func setHeaderHeight(n int) templ.ComponentScript {
 
 	let nav = document.getElementById("nav");
 	let togglediv = document.getElementById("togglediv");
-	let div = document.getElementById("querydiv");
+	let querydiv = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
 
@@ -796,15 +796,14 @@ func setHeaderHeight(n int) templ.ComponentScript {
 
 	document.getElementById("mainmain").style.marginTop = "80px";
 	headers.forEach(function(header) {
-		header.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 'px';
+		header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + 'px';
 	});
 	dates.forEach(function(date) {
-		//85 px is height of header: 55px + 30px
-		date.style.top = nav.offsetHeight + togglediv.offsetHeight + div.offsetHeight + 85 +  'px';
+		date.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + headers[0].offsetHeight + 20 +  'px';
 	});
 }`,
-		Call:       templ.SafeScript(`__templ_setHeaderHeight_8347`, n),
-		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_8347`, n),
+		Call:       templ.SafeScript(`__templ_setHeaderHeight_df6f`, n),
+		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_df6f`, n),
 	}
 }
 
