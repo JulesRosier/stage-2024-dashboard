@@ -187,6 +187,10 @@ main {
   position: relative;
 }
 
+#togglearrow:hover {
+  cursor: pointer;
+}
+
 .toggle {
   z-index: 20;
   padding-right: 2rem;
