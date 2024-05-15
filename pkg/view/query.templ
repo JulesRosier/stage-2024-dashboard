@@ -174,9 +174,9 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 	}
 	if query != "" {
 		@templ.Raw(fmt.Sprintf(`<div style='grid-column: 3; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query))
-		@queryDivPadding()
-		@setHeaderHeight(0)
 	}
+	@queryDivPadding()
+	@setHeaderHeight(0)
 }
 
 templ Event(event database.Event, json string, nerd bool, colors []string, detailId string) {
