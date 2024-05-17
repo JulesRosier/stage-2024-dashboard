@@ -16,8 +16,8 @@ type Payload struct {
 }
 
 type Block struct {
-	Type string   `json:"type"`
-	Text Markdown `json:"text"`
+	Type string `json:"type"`
+	Text any    `json:"text"`
 }
 
 type Markdown struct {
@@ -26,8 +26,15 @@ type Markdown struct {
 }
 
 // SendSlackNotification sends a POST request with a JSON payload to the specified Slack webhook URL.
-func SendSlackNotification(set settings.Alert, message string) error {
+func SendSlackNotification(set settings.Alert, title string, message string) error {
 	payload := Payload{Blocks: []Block{
+		{
+			Type: "header",
+			Text: Markdown{
+				Type: "plain_text",
+				Text: title,
+			},
+		},
 		{
 			Type: "section",
 			Text: Markdown{

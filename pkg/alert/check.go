@@ -15,7 +15,6 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 	ctx := context.Background()
 	for _, deltaCnf := range set.EventDeltas {
 		msg := strings.Builder{}
-		msg.WriteString("Violations:\n")
 		slog.Info("checking delta", "delta_config", deltaCnf)
 		deltas, err := db.CheckDeltas(ctx, deltaCnf, set.Interval)
 		if err != nil {
@@ -39,7 +38,7 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		m := msg.String()
 		endMsg := " ...```"
 		m = m[:3000-len(endMsg)] + endMsg
-		err = SendSlackNotification(set, m)
+		err = SendSlackNotification(set, "Violations", m)
 		if err != nil {
 			return err
 		}
