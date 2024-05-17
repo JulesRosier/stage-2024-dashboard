@@ -25,7 +25,7 @@ LEFT JOIN (
     FROM B
 ) AS B
 ON A.%s = B.%s AND B.rn = 1
-where A.event_timestamp - B.event_timestamp > '%fh'::INTERVAL AND A.event_timestamp >= NOW() - '70h'::INTERVAL
+where A.event_timestamp - B.event_timestamp > '%fh'::INTERVAL AND A.event_timestamp >= NOW() - '%fh'::INTERVAL
 order by delta;
 `
 
@@ -35,8 +35,8 @@ type EventDelta struct {
 	Timestamp time.Time
 }
 
-func (q *Queries) CheckDeltas(ctx context.Context, ed settings.EventDelta) ([]EventDelta, error) {
-	query := fmt.Sprintf(checkDeltasQuery, ed.TopicA, ed.TopicB, ed.Index, ed.Index, ed.Index, ed.Index, 0.47)
+func (q *Queries) CheckDeltas(ctx context.Context, ed settings.EventDelta, inter time.Duration) ([]EventDelta, error) {
+	query := fmt.Sprintf(checkDeltasQuery, ed.TopicA, ed.TopicB, ed.Index, ed.Index, ed.Index, ed.Index, ed.MaxDelta.Hours(), ed.MaxDelta.Hours()+inter.Hours())
 	rows, err := q.db.Query(ctx, query)
 	if err != nil {
 		return nil, err

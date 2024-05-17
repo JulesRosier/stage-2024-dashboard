@@ -13,11 +13,11 @@ const layout = "2006-01-02 15:04:05"
 
 func CheckDeltas(set settings.Alert, db *database.Queries) error {
 	ctx := context.Background()
-	msg := strings.Builder{}
-	msg.WriteString("Violations:\n")
 	for _, deltaCnf := range set.EventDeltas {
+		msg := strings.Builder{}
+		msg.WriteString("Violations:\n")
 		slog.Info("checking delta", "delta_config", deltaCnf)
-		deltas, err := db.CheckDeltas(ctx, deltaCnf)
+		deltas, err := db.CheckDeltas(ctx, deltaCnf, set.Interval)
 		if err != nil {
 			return err
 		}
@@ -36,13 +36,13 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		}
 		msg.WriteString(createASCIITable(headers, data))
 		msg.WriteString("```")
-	}
-	m := msg.String()
-	endMsg := " ...```"
-	m = m[:3000-len(endMsg)] + endMsg
-	err := SendSlackNotification(set, m)
-	if err != nil {
-		return err
+		m := msg.String()
+		endMsg := " ...```"
+		m = m[:3000-len(endMsg)] + endMsg
+		err = SendSlackNotification(set, m)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
