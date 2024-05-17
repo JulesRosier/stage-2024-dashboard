@@ -140,9 +140,13 @@ templ ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query st
 	}
 	for i, event := range(events) {
 		if event.ShowDate > 0 {
+			//TODO dynamic sticky date ending
+			//check if date is present, if not, add it
+			//check where the next date is, set ending to that -1 and add next date
 			@templ.Raw(fmt.Sprintf("<div style='grid-column: 1; grid-row-start: %d; grid-row-end: %d;'>", i+3-event.ShowDate+offset, i+3+offset))
 			<h3 class="sticky-date">{ event.Event.EventTimestamp.Time.In(tz).Format("2 Jan 2006") }</h3>
 			@templ.Raw("</div>")
+			<script>somethingSticky()</script>
 		}
 		<div class="event-timestamp" style="grid-column: 2;">
 			<p>
