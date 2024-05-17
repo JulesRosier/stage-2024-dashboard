@@ -11,11 +11,11 @@ const checkDeltasQuery = `
 with B as (
     select *
     from events
-    where topic_name = '%s'
+    where event_type = '%s'
 ), A as (
     select *
     from events
-    where topic_name = '%s'
+    where event_type = '%s'
 )
 SELECT A.event_timestamp - B.event_timestamp as delta, A.%s, A.event_timestamp
 FROM A
