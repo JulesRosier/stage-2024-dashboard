@@ -77,11 +77,17 @@ func renderNode(data any) string {
 		html := strings.Builder{}
 		html.WriteString("<ul>")
 		for key, val := range value {
+
 			html.WriteString("<li><span class='json-key'>")
 			html.WriteString(key)
 			html.WriteString("</span>: ")
 			html.WriteString(renderNode(val))
 			html.WriteString("</li>")
+			//TODO: add config to turn map on or off
+			loc := true
+			if key == "location" && loc {
+				html.WriteString(locationmap(val))
+			}
 		}
 		html.WriteString("</ul>")
 		return html.String()
@@ -110,4 +116,17 @@ func renderNode(data any) string {
 	default:
 		return fmt.Sprintf("%v", value)
 	}
+}
+
+func locationmap(val any) string {
+	var loc [2]string
+	for key, val := range val.(map[string]interface{}) {
+		if key == "latitude" {
+			loc[0] = fmt.Sprintf("%v", val)
+		} else {
+			loc[1] = fmt.Sprintf("%v", val)
+		}
+	}
+
+	return fmt.Sprintf("<div><iframe width=\"100%%<\" height=\"200\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0<\" marginwidth=\"0\"  loading=\"lazy\" src=\"https://maps.google.com/maps?width=100%%25&amp;height=400&amp;hl=en&amp;q=%s,%s+(123)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed\"></iframe></div>", loc[0], loc[1])
 }

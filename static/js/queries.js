@@ -83,3 +83,29 @@ function setHeight() {
       "px";
   });
 }
+
+function somethingSticky() {
+  let dates = document.querySelectorAll(".sticky-date");
+  console.log(length(dates));
+  if (dates.length <= 1) {
+    return;
+  }
+  let prevDate = "";
+  dates.forEach(function (date) {
+    //check if previous date is same as current date, set grid row end to new ending
+    //nu alle dates, maar moet enkel de nieuwe dates hebben
+    //else make new date
+    if (prevDate === "") {
+      prevDate = date;
+    } else if (prevDate === date.innerText) {
+      // vorige sticky date is hetzelfde als de huidige sticky date
+      console.log(prevDate.parentElement);
+      prevDate.parentElement.style.gridRowEnd = date.parentElement.style.gridRowEnd;
+      date.parentElement.remove();
+      return;
+    } else {
+      // vorige sticky date is niet hetzelfde als de huidige sticky date
+      return;
+    }
+  });
+}
