@@ -21,6 +21,9 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		if err != nil {
 			return err
 		}
+		if len(deltas) == 0 {
+			continue
+		}
 		msg.WriteString(fmt.Sprintf("\t%s -> %s:", deltaCnf.TopicA, deltaCnf.TopicB))
 		msg.WriteString("```")
 		data := [][]string{}
@@ -34,7 +37,10 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		msg.WriteString(createASCIITable(headers, data))
 		msg.WriteString("```")
 	}
-	err := SendSlackNotification(set, msg.String())
+	m := msg.String()
+	endMsg := " ...```"
+	m = m[:3000-len(endMsg)] + endMsg
+	err := SendSlackNotification(set, m)
 	if err != nil {
 		return err
 	}

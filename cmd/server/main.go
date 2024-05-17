@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Stage-2024-dashboard/pkg/alert"
 	"Stage-2024-dashboard/pkg/broadcast"
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/demo"
@@ -64,6 +65,7 @@ func main() {
 			slog.Warn("Failed to complete scheduled index")
 		}
 	})
+	s.Schedule(set.Alert.Interval, func() { alert.CheckDeltas(set.Alert, q) })
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

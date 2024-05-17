@@ -8,11 +8,11 @@ import (
 )
 
 const checkDeltasQuery = `
-with A as (
+with B as (
     select *
     from events
     where topic_name = '%s'
-), B as (
+), A as (
     select *
     from events
     where topic_name = '%s'
@@ -21,7 +21,7 @@ SELECT A.event_timestamp - B.event_timestamp as delta, A.%s, A.event_timestamp
 FROM A
 LEFT JOIN (
     SELECT *,
-           ROW_NUMBER() OVER (PARTITION BY %s ORDER BY event_timestamp) AS rn
+           ROW_NUMBER() OVER (PARTITION BY %s ORDER BY event_timestamp desc) AS rn
     FROM B
 ) AS B
 ON A.%s = B.%s AND B.rn = 1
@@ -36,7 +36,7 @@ type EventDelta struct {
 }
 
 func (q *Queries) CheckDeltas(ctx context.Context, ed settings.EventDelta) ([]EventDelta, error) {
-	query := fmt.Sprintf(checkDeltasQuery, ed.TopicA, ed.TopicB, ed.Index, ed.Index, ed.Index, ed.Index, ed.MaxDelta.Hours())
+	query := fmt.Sprintf(checkDeltasQuery, ed.TopicA, ed.TopicB, ed.Index, ed.Index, ed.Index, ed.Index, 0.47)
 	rows, err := q.db.Query(ctx, query)
 	if err != nil {
 		return nil, err

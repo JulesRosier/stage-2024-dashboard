@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -57,6 +58,11 @@ func SendSlackNotification(set settings.Alert, message string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+		if resp.StatusCode == http.StatusBadRequest {
+			b, _ := io.ReadAll(resp.Body)
+			fmt.Println(jsonData)
+			slog.Warn("Bad request", "payload", jsonData, "body", string(b))
+		}
 		return fmt.Errorf("received non-OK response status: %s", resp.Status)
 	}
 
@@ -113,5 +119,5 @@ func createASCIITable(headers []string, data [][]string) string {
 		table.WriteString(createRow(row))
 	}
 
-	return table.String()
+	return strings.ReplaceAll(table.String(), "\r", "")
 }
