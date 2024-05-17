@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Server) ApplyMiddleware(reRoutes map[string]string) {
-	slog.Info("In middleware func", "routes", reRoutes)
+	slog.Debug("In middleware func", "routes", reRoutes)
 	s.e.Pre(echoMw.Rewrite(reRoutes))
 	s.e.Use(echoMw.RequestLoggerWithConfig(echoMw.RequestLoggerConfig{
 		LogStatus:  true,
