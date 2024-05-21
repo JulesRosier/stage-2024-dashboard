@@ -10,6 +10,7 @@ import (
 )
 
 const layout = "2006-01-02 15:04:05"
+const maxMsgLen = 3000
 
 func CheckDeltas(set settings.Alert, db *database.Queries) error {
 	ctx := context.Background()
@@ -26,18 +27,20 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		msg.WriteString(fmt.Sprintf("\t%s -> %s:", deltaCnf.TopicA, deltaCnf.TopicB))
 		msg.WriteString("```")
 		data := [][]string{}
-		var headers []string
-		if len(deltas) > 0 {
-			headers = []string{"Delta", "Event ID", "Timestamp"}
-		}
+		headers := []string{"Delta", "Event ID", "Timestamp"}
 		for _, delta := range deltas {
 			data = append(data, []string{delta.Delta.String(), delta.Id, delta.Timestamp.Format(layout)})
 		}
 		msg.WriteString(createASCIITable(headers, data))
 		msg.WriteString("```")
 		m := msg.String()
-		endMsg := " ...```"
-		m = m[:3000-len(endMsg)] + endMsg
+		endMsg := "\n...```"
+		i := strings.LastIndex(m[:maxMsgLen], "\n")
+		room := maxMsgLen - i
+		if room < len(endMsg) {
+			i = strings.LastIndex(m[:i-len(endMsg)], "\n")
+		}
+		m = m[:i] + endMsg
 		err = SendSlackNotification(set, "Violations", m)
 		if err != nil {
 			return err
