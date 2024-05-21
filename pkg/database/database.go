@@ -33,7 +33,7 @@ func NewQueries(set settings.Database) *Queries {
 
 	dbTemp, err := pgxpool.New(ctx, connStr)
 	if err != nil {
-		helper.DieMsg("Database err", err)
+		helper.DieMsg(err, "Database err")
 	}
 
 	slog.Info("Checking if database exists", "database", DbDatabase)
@@ -54,7 +54,7 @@ func NewQueries(set settings.Database) *Queries {
 
 	db, err := pgxpool.New(ctx, connStr)
 	if err != nil {
-		helper.DieMsg("Database err", err)
+		helper.DieMsg(err, "Database err")
 	}
 
 	// create tables

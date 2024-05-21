@@ -15,7 +15,7 @@ func Die(err error) {
 	os.Exit(1)
 }
 
-func DieMsg(msg string, err error) {
+func DieMsg(err error, msg string) {
 	slog.LogAttrs(
 		context.Background(),
 		slog.LevelError,
@@ -27,7 +27,7 @@ func DieMsg(msg string, err error) {
 
 func MaybeDie(err error, msg string) {
 	if err != nil {
-		DieMsg(msg, err)
+		DieMsg(err, msg)
 	}
 }
 
