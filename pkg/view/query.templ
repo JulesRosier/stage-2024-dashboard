@@ -85,15 +85,6 @@ templ QueryHome(columns []string) {
 				<button id="add-form">Add query</button>
 				<label>
 					<input name="nerd_mode" type="checkbox" role="switch"/>
-					<script>
-					me('prev').on('change', event => {
-						let e = me(event)
-						localStorage.setItem("nerd_mode", e.checked)
-					})
-					me('prev').run(event => {
-						me(event).checked = (localStorage.getItem("nerd_mode") == "true")
-					})
-				</script>
 					Advanced
 				</label>
 			</div>

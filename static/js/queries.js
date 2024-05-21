@@ -2,6 +2,7 @@ window.onload = (e) => {
   const formTemplate = document.getElementById("form-template");
   const queries = document.getElementById("queries");
   const addFormBtn = document.getElementById("add-form");
+  const nerdInput = document.querySelector('[name="nerd_mode"]');
   addFormBtn.onclick = () => {
     queries.appendChild(formTemplate.content.cloneNode(true));
     addL();
@@ -9,7 +10,13 @@ window.onload = (e) => {
   };
   Sortable.create(queries, { animation: 150, onUpdate: reload });
   addL();
-  document.cookie = "timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+  document.cookie =
+    "timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  nerdInput.checked = localStorage.getItem("nerd_mode") == "true";
+  nerdInput.onchange = (event) => {
+    localStorage.setItem("nerd_mode", event.target.checked);
+  };
 };
 
 function addL() {
@@ -71,7 +78,8 @@ function setHeight() {
   let dates = document.querySelectorAll(".sticky-date");
 
   headers.forEach(function (header) {
-    header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + "px";
+    header.style.top =
+      nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + "px";
   });
   dates.forEach(function (date) {
     date.style.top =
@@ -100,7 +108,8 @@ function stickyDateGridEnd() {
       prevDate = date;
     } else if (prevDate.textContent === date.textContent) {
       date.parentElement.remove();
-      prevDate.parentElement.style.gridRowEnd = date.parentElement.style.gridRowEnd;
+      prevDate.parentElement.style.gridRowEnd =
+        date.parentElement.style.gridRowEnd;
     } else {
       date.parentElement.style.display = "block";
       prevDate = date;
