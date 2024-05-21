@@ -84,7 +84,7 @@ function setHeight() {
   });
 }
 
-function somethingSticky() {
+function stickyDateGridEnd() {
   const dates = document.querySelectorAll(".sticky-date");
   if (dates.length === 0) {
     return;
