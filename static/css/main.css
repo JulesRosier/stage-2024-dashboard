@@ -191,6 +191,10 @@ main {
   position: relative;
 }
 
+#togglearrow {
+  transition: transform 0.2s ease-in-out;
+}
+
 #togglearrow:hover {
   cursor: pointer;
 }
@@ -220,7 +224,6 @@ div.querydiv {
   margin-bottom: 0;
   padding-bottom: 0;
   padding-left: 0.2em;
-  padding-top: 26px;
 }
 
 div.querydiv summary {
