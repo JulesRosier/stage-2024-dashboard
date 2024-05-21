@@ -15,7 +15,7 @@ ARRAY [
 	%s
 ] AS selection
 from events
-where %s
+where ( %s )
 AND event_timestamp BETWEEN '%s' and '%s'
 order by event_timestamp desc, id desc
 OFFSET %d
