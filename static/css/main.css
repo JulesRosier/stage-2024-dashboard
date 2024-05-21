@@ -73,7 +73,8 @@ body {
 
 .hr-c-s {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -1;
 }
 
@@ -86,7 +87,8 @@ body {
 
 .hr-c {
   margin: calc(1rem + 0.5em);
-  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
   z-index: -1;
 }
 
@@ -268,4 +270,13 @@ summary > h1 {
 .headertable th {
   font-weight: 600;
   --pico-color: var(--pico-h6-color);
+}
+
+.timestamp-config-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.timestamp-config-list article {
+  flex-grow: 1;
 }

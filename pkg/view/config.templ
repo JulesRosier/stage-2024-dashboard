@@ -47,7 +47,7 @@ templ ConfigHome(topics []string) {
 			</div>
 		</details>
 		<hr/>
-		<div hx-trigger="load, newTimestampConfig from:body" hx-get="/h/timestamp_config/list"></div>
+		<div hx-trigger="load, newTimestampConfig from:body" hx-get="/h/timestamp_config/list" class="timestamp-config-list"></div>
 		<datalist id="topics">
 			for _, topic := range(topics) {
 				<option value={ topic }></option>
@@ -119,7 +119,6 @@ templ EventIndexConfigEditForm(config database.EventIndexConfig) {
 }
 
 templ ListEventIndexConfigs(configs map[string][]database.EventIndexConfig, order []string) {
-	// TODO: better with grid?
 	for _, k := range(order) {
 		<div>
 			<h2>{ prettyName(k) }</h2>
@@ -226,17 +225,6 @@ templ TimestampConfigEditForm(config database.TimestampConfig) {
 }
 
 templ ListTimestampConfigs(configs []database.TimestampConfig) {
-	// TODO: better with grid?
-	<style>
-			me {
-				display: flex;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}	
-			me article {
-				flex-grow: 1;
-			}
-	</style>
 	for _, config := range(configs) {
 		@TimestampConfig(config)
 	}
