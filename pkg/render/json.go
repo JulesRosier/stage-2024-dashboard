@@ -84,7 +84,7 @@ func renderNode(data any) string {
 			html.WriteString(renderNode(val))
 			html.WriteString("</li>")
 			//TODO: add config to turn map on or off
-			loc := true
+			loc := false
 			if key == "location" && loc {
 				html.WriteString(locationmap(val))
 			}
