@@ -776,26 +776,22 @@ func Payload(event database.Event, json string, nerd bool) templ.Component {
 
 func setHeaderHeight(n int) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_setHeaderHeight_8018`,
-		Function: `function __templ_setHeaderHeight_8018(n){function toggle(div) {
-		let arrow = document.getElementById("togglearrow");
-		if (div.style.display === "none") {
-			div.style.display = "grid";
-			arrow.style.transform = "rotate(0deg)";
-		} else {
-			div.style.display = "none";
-			arrow.style.transform = "rotate(180deg)";
-		}
-	}
-
-	let nav = document.getElementById("nav");
+		Name: `__templ_setHeaderHeight_3d2b`,
+		Function: `function __templ_setHeaderHeight_3d2b(n){let nav = document.getElementById("nav");
 	let togglediv = document.getElementById("togglediv");
 	let querydiv = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
 
 	if (n === 1) {
-		toggle(querydiv);
+		let arrow = document.getElementById("togglearrow");
+		if (querydiv.style.display === "none") {
+			querydiv.style.display = "grid";
+			arrow.style.transform = "rotate(0deg)";
+		} else {
+			querydiv.style.display = "none";
+			arrow.style.transform = "rotate(180deg)";
+		}
 	}
 
 	document.getElementById("mainmain").style.marginTop = "80px";
@@ -806,8 +802,8 @@ func setHeaderHeight(n int) templ.ComponentScript {
 		date.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + headers[0].offsetHeight + 20 +  'px';
 	});
 }`,
-		Call:       templ.SafeScript(`__templ_setHeaderHeight_8018`, n),
-		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_8018`, n),
+		Call:       templ.SafeScript(`__templ_setHeaderHeight_3d2b`, n),
+		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_3d2b`, n),
 	}
 }
 
