@@ -85,27 +85,25 @@ function setHeight() {
 }
 
 function somethingSticky() {
-  let dates = document.querySelectorAll(".sticky-date");
-  console.log(length(dates));
-  if (dates.length <= 1) {
+  const dates = document.querySelectorAll(".sticky-date");
+  if (dates.length === 0) {
+    return;
+  }
+  if (dates.length === 1) {
+    dates[0].parentElement.style.display = "block";
     return;
   }
   let prevDate = "";
-  dates.forEach(function (date) {
-    //check if previous date is same as current date, set grid row end to new ending
-    //nu alle dates, maar moet enkel de nieuwe dates hebben
-    //else make new date
+  dates.forEach((date) => {
     if (prevDate === "") {
+      date.parentElement.style.display = "block";
       prevDate = date;
-    } else if (prevDate === date.innerText) {
-      // vorige sticky date is hetzelfde als de huidige sticky date
-      console.log(prevDate.parentElement);
-      prevDate.parentElement.style.gridRowEnd = date.parentElement.style.gridRowEnd;
+    } else if (prevDate.textContent === date.textContent) {
       date.parentElement.remove();
-      return;
+      prevDate.parentElement.style.gridRowEnd = date.parentElement.style.gridRowEnd;
     } else {
-      // vorige sticky date is niet hetzelfde als de huidige sticky date
-      return;
+      date.parentElement.style.display = "block";
+      prevDate = date;
     }
   });
 }
