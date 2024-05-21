@@ -51,7 +51,7 @@ func CreateIndexColumns(ctx context.Context, q *database.Queries) error {
 		return err
 	}
 	for _, c := range cs {
-		err := q.AddColumn(ctx, "index_"+c)
+		err := q.AddColumn(ctx, IndexPrefix+c)
 		if err != nil {
 			return err
 		}

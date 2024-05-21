@@ -42,14 +42,17 @@ func main() {
 
 	eventStream := make(chan database.Event, 10)
 
+	server := server.NewServer(set.Server)
+	defer server.Stop()
+
 	ctx, cancel := context.WithCancel(context.Background())
 	eventBr := broadcast.NewBroadcastServer(ctx, eventStream)
+	defer cancel()
 
 	q := database.NewQueries(set.Database)
 	h := handler.NewHandler(q, &eventBr)
 	rr := view.HashPublicFS()
 
-	server := server.NewServer(set.Server)
 	server.ApplyMiddleware(rr)
 	server.RegisterRoutes(h)
 
@@ -59,6 +62,7 @@ func main() {
 	go kafka.EventImporter(q, eventStream, set.Kafka)
 
 	s := scheduler.NewScheduler()
+	defer s.Stop()
 	s.Schedule(set.Indexing.Interval, func() {
 		_, err := indexing.Index(context.Background(), q, false)
 		if err != nil {
@@ -72,7 +76,4 @@ func main() {
 	<-quit
 	slog.Info("Received an interrupt signal, exiting...")
 
-	s.Stop()
-	cancel()
-	server.Stop()
 }

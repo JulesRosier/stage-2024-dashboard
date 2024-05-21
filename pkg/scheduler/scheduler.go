@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"log/slog"
 	"sync"
 	"time"
 )
@@ -20,6 +21,7 @@ func NewScheduler() Scheduler {
 }
 
 func (s Scheduler) Stop() {
+	slog.Info("Stopping scheduler")
 	close(s.doneCh)
 	s.wg.Wait()
 }
