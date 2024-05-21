@@ -776,8 +776,8 @@ func Payload(event database.Event, json string, nerd bool) templ.Component {
 
 func setHeaderHeight(n int) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_setHeaderHeight_ac4f`,
-		Function: `function __templ_setHeaderHeight_ac4f(n){let nav = document.getElementById("nav");
+		Name: `__templ_setHeaderHeight_e750`,
+		Function: `function __templ_setHeaderHeight_e750(n){let nav = document.getElementById("nav");
 	let togglediv = document.getElementById("togglediv");
 	let querydiv = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
@@ -802,28 +802,12 @@ func setHeaderHeight(n int) templ.ComponentScript {
 	headers.forEach(function(header) {
 		header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + 'px';
 	});
-	setStickyDateHeight();
-}`,
-		Call:       templ.SafeScript(`__templ_setHeaderHeight_ac4f`, n),
-		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_ac4f`, n),
-	}
-}
-
-func setStickyDateHeight() templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_setStickyDateHeight_c451`,
-		Function: `function __templ_setStickyDateHeight_c451(){let nav = document.getElementById("nav");
-	let togglediv = document.getElementById("togglediv");
-	let querydiv = document.getElementById("querydiv");
-	let headers = document.querySelectorAll(".grid-header");
-	let dates = document.querySelectorAll(".sticky-date");
-
 	dates.forEach(function(date) {
 		date.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + headers[0].offsetHeight + 20 +  'px';
 	});
 }`,
-		Call:       templ.SafeScript(`__templ_setStickyDateHeight_c451`),
-		CallInline: templ.SafeScriptInline(`__templ_setStickyDateHeight_c451`),
+		Call:       templ.SafeScript(`__templ_setHeaderHeight_e750`, n),
+		CallInline: templ.SafeScriptInline(`__templ_setHeaderHeight_e750`, n),
 	}
 }
 
