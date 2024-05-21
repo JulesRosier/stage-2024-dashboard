@@ -117,7 +117,7 @@ func QueryHome(columns []string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(column))
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(FormatIndexName(column))
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 55, Col: 60}
 				}
@@ -179,7 +179,7 @@ func QueryHome(columns []string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(column))
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(FormatIndexName(column))
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 118, Col: 57}
 				}
@@ -244,7 +244,7 @@ func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query str
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(formatIndexName(h.Qp.Column))
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(FormatIndexName(h.Qp.Column))
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\query.templ`, Line: 136, Col: 37}
 				}

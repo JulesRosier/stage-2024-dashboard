@@ -18,7 +18,7 @@ func prettyName(s string) string {
 	return r
 }
 
-func formatIndexName(n string) string {
+func FormatIndexName(n string) string {
 	n, _ = strings.CutPrefix(n, "index_")
 	r := caser.String(strings.ReplaceAll(n, "_", " "))
 	return r

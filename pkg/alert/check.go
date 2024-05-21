@@ -3,6 +3,7 @@ package alert
 import (
 	"Stage-2024-dashboard/pkg/database"
 	"Stage-2024-dashboard/pkg/settings"
+	"Stage-2024-dashboard/pkg/view"
 	"context"
 	"fmt"
 	"log/slog"
@@ -27,7 +28,7 @@ func CheckDeltas(set settings.Alert, db *database.Queries) error {
 		msg.WriteString(fmt.Sprintf("\t%s -> %s:", deltaCnf.TopicA, deltaCnf.TopicB))
 		msg.WriteString("```")
 		data := [][]string{}
-		headers := []string{"Delta", "Event ID", "Timestamp"}
+		headers := []string{"Delta", view.FormatIndexName(deltaCnf.Index), "Timestamp"}
 		for _, delta := range deltas {
 			data = append(data, []string{delta.Delta.String(), delta.Id, delta.Timestamp.Format(layout)})
 		}
