@@ -56,7 +56,7 @@ func base(fluid bool) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(StaticMap["/static/css/pico.colors.min.css"])
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 16, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 15, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -69,7 +69,7 @@ func base(fluid bool) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(StaticMap["/static/css/pico.min.css"])
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 20, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 19, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -82,7 +82,7 @@ func base(fluid bool) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(StaticMap["/static/css/main.css"])
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 24, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 23, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -118,7 +118,7 @@ func base(fluid bool) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(StaticMap["/static/js/theme-switcher.js"])
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 60, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg\view\base.templ`, Line: 59, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
