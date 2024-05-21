@@ -260,6 +260,7 @@ script setHeaderHeight(n int) {
 	let querydiv = document.getElementById("querydiv");
 	let headers = document.querySelectorAll(".grid-header");
 	let dates = document.querySelectorAll(".sticky-date");
+	let results = document.getElementById("results");
 
 	if (n === 1) {
 		let arrow = document.getElementById("togglearrow");
@@ -272,7 +273,10 @@ script setHeaderHeight(n int) {
 		}
 	}
 
+	if (document.getElementById("results").innerHTML != "") {
 	document.getElementById("mainmain").style.marginTop = "80px";
+  }
+
 	headers.forEach(function(header) {
 		header.style.top = nav.offsetHeight + togglediv.offsetHeight + querydiv.offsetHeight + 'px';
 	});
@@ -282,6 +286,6 @@ script setHeaderHeight(n int) {
 }
 
 script queryDivPadding() {
-	let div = document.getElementById("querydiv");
-	div.style.paddingTop = "0px";
+	document.getElementById("querydiv").style.paddingTop = "0px";
+	document.getElementById("mainmain").style.marginTop = "80px";
 }
