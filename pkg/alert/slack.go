@@ -93,38 +93,38 @@ func createASCIITable(headers []string, data [][]string) string {
 		}
 	}
 
-	createSeparator := func() string {
-		var separator strings.Builder
-		for _, width := range colWidths {
-			separator.WriteString("|-")
-			separator.WriteString(strings.Repeat("-", width))
-			separator.WriteString("-")
-		}
-		separator.WriteString("|\n")
-		return separator.String()
-	}
-
-	createRow := func(row []string) string {
-		var result strings.Builder
-		for colIdx, cell := range row {
-			result.WriteString("| ")
-			result.WriteString(cell)
-			padding := colWidths[colIdx] - len(cell)
-			result.WriteString(strings.Repeat(" ", padding))
-			result.WriteString(" ")
-		}
-		result.WriteString("|\n")
-		return result.String()
-	}
-
 	var table strings.Builder
 
-	table.WriteString(createRow(headers))
-	table.WriteString(createSeparator())
+	table.WriteString(createRow(colWidths, headers))
+	table.WriteString(createSeparator(colWidths))
 
 	for _, row := range data[1:] {
-		table.WriteString(createRow(row))
+		table.WriteString(createRow(colWidths, row))
 	}
 
 	return strings.ReplaceAll(table.String(), "\r", "")
+}
+
+func createSeparator(colWidths []int) string {
+	var separator strings.Builder
+	for _, width := range colWidths {
+		separator.WriteString("|-")
+		separator.WriteString(strings.Repeat("-", width))
+		separator.WriteString("-")
+	}
+	separator.WriteString("|\n")
+	return separator.String()
+}
+
+func createRow(colWidths []int, row []string) string {
+	var result strings.Builder
+	for colIdx, cell := range row {
+		result.WriteString("| ")
+		result.WriteString(cell)
+		padding := colWidths[colIdx] - len(cell)
+		result.WriteString(strings.Repeat(" ", padding))
+		result.WriteString(" ")
+	}
+	result.WriteString("|\n")
+	return result.String()
 }
