@@ -2,6 +2,7 @@ package renderer
 
 import (
 	"Stage-2024-dashboard/pkg/database"
+	"Stage-2024-dashboard/pkg/helper"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -107,6 +108,11 @@ func renderNode(data any) string {
 			html.WriteString(w)
 		} else {
 			slog.Warn("linknode content was not a string", "node", value.node)
+			loc, err := json.Marshal(value.node)
+			helper.MaybeDieErr(err)
+			stringloc := strings.ReplaceAll(string(loc), ":", ": ")
+			stringloc = strings.ReplaceAll(stringloc, ",", ", ")
+			html.WriteString(stringloc)
 			renderNode(value.node)
 		}
 		html.WriteString("`)'>")
