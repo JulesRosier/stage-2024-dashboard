@@ -429,7 +429,7 @@ func ListEvents(events []EventShow, headers []EventHeaders, nerd bool, query str
 			}
 		}
 		if query != "" {
-			templ_7745c5c3_Err = templ.Raw(fmt.Sprintf(`<div style='grid-column: 3; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query)).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = templ.Raw(fmt.Sprintf(`<div style='z-index: -100; grid-column: 3; grid-row: %d' hx-get='/query/search?%s' hx-trigger='revealed' hx-swap='afterend'></div>`, offset+len(events)+1, query)).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
