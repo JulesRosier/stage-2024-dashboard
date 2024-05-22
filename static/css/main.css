@@ -51,12 +51,12 @@ body {
 
 .eventlist {
   display: grid;
-  grid-template-columns: 5.5rem 8rem repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: 5.5rem 8rem repeat(auto-fit, minmax(11rem, 1fr));
 }
 
 .eventlist article {
   margin: 0.3em;
-  max-width: 500px;
+  max-width: 540px;
 }
 
 .eventlist p {
