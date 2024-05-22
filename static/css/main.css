@@ -51,12 +51,12 @@ body {
 
 .eventlist {
   display: grid;
-  grid-template-columns: min-content 8rem auto;
+  grid-template-columns: 5.5rem 8rem repeat(auto-fit, minmax(315px, 1fr));
 }
 
 .eventlist article {
   margin: 0.3em;
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .eventlist p {
@@ -192,7 +192,7 @@ main {
 }
 
 #togglearrow {
-  transition: transform 0.2s ease-in-out;
+  transition: transform var(--pico-transition);
 }
 
 #togglearrow:hover {
