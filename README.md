@@ -3,45 +3,65 @@
 ## Config
 
 ```yml
+# Default configs
 # config/config.yaml
 server:
   port: 3000
+  bind: 127.0.0.1
+  debug: false
 database:
-  user: ps_user
-  password: SecurePassword
-  database: dashboard
-  host: postgres
+  user: postgres
+  password: postgres
+  database: event-viewer
+  host: 127.0.0.1
   port: 5432
 kafka:
-  consumeGroup: eventviewer
-  brokers:
-    - redpanda-0.redpanda.redpanda.svc.cluster.local:9093
-    - redpanda-1.redpanda.redpanda.svc.cluster.local:9093
-    - redpanda-2.redpanda.redpanda.svc.cluster.local:9093
+  brokers: []
+  consumeGroup: ""
   schemaRegistry:
-    urls:
-      - redpanda-0.redpanda.redpanda.svc.cluster.local:8081
-      - redpanda-1.redpanda.redpanda.svc.cluster.local:8081
-      - redpanda-2.redpanda.redpanda.svc.cluster.local:8081
+    urls: []
   auth:
-    user: superuser
-    password: secretpassword
+    user: ""
+    password: ""
+logger:
+  level: INFO
+indexing:
+  interval: 1h0m0s
+alert:
+  slack:
+    webhookURL: ""
+  eventDeltas: []
+  interval: 1h0m0
 ```
 
 ```yml
+# Example configs
+# config/config.yaml
 server:
   port: 4000
+  debug: true
 database:
   user: postgres
   password: password
-  database: demo
+  database: dashboard
 kafka:
-  consumeGroup: testing
+  consumeGroup: dashboard
   brokers:
     - localhost:19092
   schemaRegistry:
     urls:
       - localhost:18081
+indexing:
+  interval: 5m
+alert:
+  interval: 200h
+  slack:
+    webhookURL: "https://hooks.slack.com/services/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"
+  eventDeltas:
+    - topicA: bike_reserved
+      topicB: bike_picked_up
+      index: index_bike_id
+      maxDelta: 25m0s
 ```
 
 ## Dev Setup
@@ -80,14 +100,12 @@ go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 go install github.com/a-h/templ/cmd/templ@latest
 ```
 
-Air is optional but strongly recommended.
-
-```sh
-go install github.com/cosmtrek/air@latest
-```
-
 ### Code gen
 
 ```sh
 make codegen
 ```
+
+### Running and building local
+
+see `Makefile`
